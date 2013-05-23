@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>Dominos</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="dominos.css" />
+
+    <!-- JS Scripts -->
+    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="dominos.js"></script>
+</head>
+<body>
+    <table id="mainTable">
+	    <tr>
+	        <td id="navigation">
+	            <table>
+		            <tr><td id="turn">Player 1 Turn</td></tr>
+	                <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
+	                <tr><td><input id="btnAutoMove" type="button" name="new" value="Auto Move"/></td></tr>
+	            </table>
+	        </td>
+
+	        <td id="content">
+	            <canvas id="board" width="1200px" height="600px"></canvas>  
+	        </td>
+	    </tr>
+	</table>
+</body>
+</html>
