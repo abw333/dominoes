@@ -53,17 +53,21 @@ $(function() {
       var position = 691;
       for (var domino_i = game.chain_center + 1; domino_i < game.chain.length; domino_i++) {
       	var domino = game.chain[domino_i];
+        domino.image.style.position = "absolute";
       	domino.image.style.left = position.toString() + "px";
       	if (domino.first == domino.second) {
           domino.setOrientation("b");
           domino.image.style.top = "250px";
           position += 31;
       	} else {
-          domino.setOrientation("r");
+          if (game.directions[domino_i] == "in") {
+            domino.setOrientation("l");
+          } else {
+            domino.setOrientation("r");
+          }
           domino.image.style.top = "265px";
           position += 61;
       	}
-        domino.image.style.position = "absolute";
         document.body.appendChild(domino.image);
       }
 
@@ -75,9 +79,13 @@ $(function() {
           domino.image.style.top = "250px";
           position -= 31;
       	} else {
-          domino.setOrientation("r");
           domino.image.style.top = "265px";
           position -= 61;
+          if (game.directions[domino_i] == "in") {
+            domino.setOrientation("r");
+          } else {
+            domino.setOrientation("l");
+          }
       	}
       	domino.image.style.left = position.toString() + "px";
         domino.image.style.position = "absolute";

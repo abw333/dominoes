@@ -19,14 +19,15 @@ var Game = function() {
 	this.hands = {};
 	this.chain = [];
 	this.chain_center = 0;
-    this.chain_left = this.max_dots;
-    this.chain_right = this.max_dots;
-    this.turn = 0;
+  this.chain_left = this.max_dots;
+  this.chain_right = this.max_dots;
+  this.turn = 0;
+  this.directions = [];
 
 	var dominos = [];
-	for (var first = 0; first <= this.max_dots; first++) {
-	  for (var second = first; second <= this.max_dots; second++) {
-        dominos.push(new Domino(first, second))
+	for (var smaller = 0; smaller <= this.max_dots; smaller++) {
+	  for (var larger = smaller; larger <= this.max_dots; larger++) {
+        dominos.push(new Domino(larger, smaller))
 	  }
 	}
 
@@ -48,6 +49,7 @@ var Game = function() {
       if (domino.first == this.max_dots && domino.second == this.max_dots) {
         this.turn = (player_num + 1) % this.num_players;
         this.chain.push(domino);
+        this.directions.push("in");
       } else {
         this.hands[player_num].push(domino);
       }
@@ -145,16 +147,20 @@ var Game = function() {
       if (side == "right") {
       	this.chain.push(domino);
       	if (this.chain_right == domino.first) {
+          this.directions.push("in");
       		this.chain_right = domino.second;
       	} else {
+          this.directions.push("out");
       		this.chain_right = domino.first;
       	}
       } else {
       	this.chain.unshift(domino);
       	this.chain_center++;
       	if (this.chain_left == domino.first) {
+          this.directions.unshift("in");
       		this.chain_left = domino.second;
       	} else {
+          this.directions.unshift("out");
       		this.chain_left = domino.first;
       	}
       }
