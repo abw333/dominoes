@@ -1,11 +1,13 @@
 import common
 import copy
 import domino
+import itertools
 import random
+import threading
 
 FIXED_MOVES = 10
 
-def compute_all_possible_games(game):
+def compute_all_possible_games(game, return_holder, return_key):
     in_progress = [game]
     completed = []
 
@@ -24,7 +26,7 @@ def compute_all_possible_games(game):
             else:
                 completed.append(new_game)
 
-    return completed
+    return_holder[return_key] = completed
 
 with common.stopwatch('Computing all possible games'):
     game = domino.Game()
@@ -34,5 +36,27 @@ with common.stopwatch('Computing all possible games'):
         move = random.choice(moves)
         game.make_move(*move)
 
-    completed = compute_all_possible_games(game)
-    print(len(completed))
+    completed = {}
+
+    moves = game.valid_moves()
+
+    if game.board.left_end() == game.board.right_end():
+        moves = [m for m in moves if m[1] == 'LEFT']
+
+    threads = []
+    for i, move in enumerate(moves):
+        new_game = copy.deepcopy(game)
+        new_game.make_move(*move)
+
+        thread = threading.Thread(target=compute_all_possible_games,
+                                  args=(new_game, completed, i))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
+
+    completed = completed.values()
+    completed = itertools.chain(*completed)
+
+    print(len(list(completed)))
