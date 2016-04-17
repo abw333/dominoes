@@ -3,14 +3,17 @@ import copy
 import domino
 import itertools
 import multiprocessing
+import os
 import random
 
-FIXED_MOVES = 5
+FIXED_MOVES = 3
 
 def compute_all_possible_games(game):
+    pid = os.getpid()
     games = [game]
     completed = []
 
+    depth = 0
     while games:
         new_games = []
         def list_to_update(result):
@@ -30,6 +33,10 @@ def compute_all_possible_games(game):
             list_to_update(result).append(game)
 
         games = new_games
+
+        depth += 1
+        print('Process {}, Depth {}: {} games, {} completed'.format(
+                pid, depth, len(games), len(completed)))
 
     return completed
 
