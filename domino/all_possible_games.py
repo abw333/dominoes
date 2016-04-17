@@ -5,29 +5,31 @@ import itertools
 import multiprocessing
 import random
 
-FIXED_MOVES = 0
+FIXED_MOVES = 5
 
 def compute_all_possible_games(game):
-    in_progress = [game]
+    games = [game]
     completed = []
 
-    def list_to_update(result):
-        if result is None:
-            return in_progress
-        else:
-            return completed
+    while games:
+        new_games = []
+        def list_to_update(result):
+            if result is None:
+                return new_games
+            else:
+                return completed
 
-    while in_progress:
-        game = in_progress.pop()
-        moves = game.valid_moves()
+        for game in games:
+            moves = game.valid_moves()
+            for move in moves[:-1]:
+                new_game = copy.deepcopy(game)
+                result = new_game.make_move(*move)
+                list_to_update(result).append(new_game)
 
-        for move in moves[:-1]:
-            new_game = copy.deepcopy(game)
-            result = new_game.make_move(*move)
-            list_to_update(result).append(new_game)
+            result = game.make_move(*moves[-1])
+            list_to_update(result).append(game)
 
-        result = game.make_move(*moves[-1])
-        list_to_update(result).append(game)
+        games = new_games
 
     return completed
 
