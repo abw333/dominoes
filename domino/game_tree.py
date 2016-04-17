@@ -35,11 +35,11 @@ class Node:
         self.parent_node = parent_node
         self.parent_move = parent_move
 
-    def num_leaf_nodes(self):
+    def leaf_nodes(self):
         if not self.children:
-            return 1
+            return [self]
 
-        return sum(child.num_leaf_nodes() for child in self.children.values())
+        return sum([child.leaf_nodes() for child in self.children.values()], [])
 
     def bfs(self):
         pid = os.getpid()

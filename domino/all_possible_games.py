@@ -33,4 +33,4 @@ with common.stopwatch('Computation of all possible games'):
         node.parent_node.children[node.parent_move] = searched_nodes[i]
 
 with common.stopwatch('Counting all possible games'):
-    print(root.num_leaf_nodes())
+    print(len(root.leaf_nodes()))
