@@ -1,9 +1,19 @@
 import common
 import copy
 import domino
+import random
+
+FIXED_MOVES = 10
 
 with common.stopwatch('Computing all possible games'):
-    in_progress = [domino.Game()]
+    game = domino.Game()
+
+    for i in range(FIXED_MOVES):
+        moves = game.valid_moves()
+        move = random.choice(moves)
+        game.make_move(*move)
+
+    in_progress = [game]
     completed = []
 
     while in_progress:
