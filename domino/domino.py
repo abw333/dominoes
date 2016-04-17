@@ -72,15 +72,15 @@ class SkinnyBoard:
         return self.right
 
     def ends(self):
-        return self.left_end(), self.right_end()
+        return self.left, self.right
 
     def add_left(self, domino):
         if not self.length:
             self.left = domino.first
             self.right = domino.second
-        elif domino.second == self.left_end():
+        elif domino.second == self.left:
             self.left = domino.first
-        elif domino.first == self.left_end():
+        elif domino.first == self.left:
             self.left = domino.second
         else:
             raise Exception('{0} cannot be added to the left of'
@@ -92,9 +92,9 @@ class SkinnyBoard:
         if not self.length:
             self.left = domino.first
             self.right = domino.second
-        if domino.first == self.right_end():
+        elif domino.first == self.right:
             self.right = domino.second
-        elif domino.second == self.right_end():
+        elif domino.second == self.right:
             self.left = domino.first
         else:
             raise Exception('{0} cannot be added to the right of'
