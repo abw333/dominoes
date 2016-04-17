@@ -59,9 +59,72 @@ class Board:
     def __str__(self):
         return ''.join([str(domino) for domino in self.board])
 
+class SkinnyBoard:
+    def __init__(self):
+        self.left = None
+        self.right = None
+        self.length = 0
+
+    def left_end(self):
+        return self.left
+
+    def right_end(self):
+        return self.right
+
+    def ends(self):
+        return self.left_end(), self.right_end()
+
+    def add_left(self, domino):
+        if not self.length:
+            self.left = domino.first
+            self.right = domino.second
+        elif domino.second == self.left_end():
+            self.left = domino.first
+        elif domino.first == self.left_end():
+            self.left = domino.second
+        else:
+            raise Exception('{0} cannot be added to the left of'
+                            ' the board - numbers do not match!'.format(domino))
+
+        self.length += 1
+
+    def add_right(self, domino):
+        if not self.length:
+            self.left = domino.first
+            self.right = domino.second
+        if domino.first == self.right_end():
+            self.right = domino.second
+        elif domino.second == self.right_end():
+            self.left = domino.first
+        else:
+            raise Exception('{0} cannot be added to the right of'
+                            ' the board - numbers do not match!'.format(domino))
+
+        self.length += 1
+
+    def __len__(self):
+        return self.length
+
+    def __str__(self):
+        if not self.length:
+            return ''
+        elif self.length == 1:
+            return str(Domino(self.left, self.right))
+        else:
+            left_domino = Domino(self.left, '?')
+            right_domino = Domino('?', self.right)
+            middle_dominos = [Domino('?', '?')] * (self.length - 2)
+            dominos = [left_domino] + middle_dominos + [right_domino]
+            return ''.join([str(domino) for domino in dominos])
+
 class Game:
-    def __init__(self, starting_player=0, starting_domino=None):
-        self.board = Board()
+    def __init__(self, starting_player=0,
+                 starting_domino=None, skinny_board=False):
+        if skinny_board:
+            self.board = SkinnyBoard()
+        else:
+            self.board = Board()
+
         self.hands = self.randomized_hands()
 
         if starting_domino is None:

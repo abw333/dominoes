@@ -32,7 +32,7 @@ def compute_all_possible_games(game):
     return completed
 
 with common.stopwatch('Initializing random game'):
-    game = domino.Game()
+    game = domino.Game(skinny_board=True)
 
     for i in range(FIXED_MOVES):
         moves = game.valid_moves()
