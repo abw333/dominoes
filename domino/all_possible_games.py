@@ -5,7 +5,7 @@ import itertools
 import multiprocessing
 import random
 
-FIXED_MOVES = 10
+FIXED_MOVES = 0
 
 def compute_all_possible_games(game):
     in_progress = [game]
@@ -40,14 +40,17 @@ with common.stopwatch('Initializing random game'):
         game.make_move(*move)
 
 with common.stopwatch('Computation of all possible games'):
-    moves = game.valid_moves()
+    games = [game]
+    for i in range(2):
+        new_games = []
+        for game in games:
+            moves = game.valid_moves()
+            for move in moves:
+                new_game = copy.deepcopy(game)
+                new_game.make_move(*move)
+                new_games.append(new_game)
 
-    games = []
-    for move in moves:
-        new_game = copy.deepcopy(game)
-        new_game.make_move(*move)
-
-        games.append(new_game)
+        games = new_games
 
     with multiprocessing.Pool(len(games)) as pool:
         completed = pool.map(compute_all_possible_games, games)
