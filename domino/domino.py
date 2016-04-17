@@ -109,10 +109,11 @@ class Game:
         moves = []
 
         left_end, right_end = self.board.ends()
+        equal_ends = left_end == right_end
         for domino in self.hands[self.turn]:
             if left_end in domino:
                 moves.append((domino, 'LEFT'))
-            if right_end in domino:
+            if right_end in domino and not equal_ends:
                 moves.append((domino, 'RIGHT'))
 
         return moves

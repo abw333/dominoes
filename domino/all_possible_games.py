@@ -15,9 +15,6 @@ def compute_all_possible_games(game, return_holder, return_key):
         game = in_progress.pop()
         moves = game.valid_moves()
 
-        if game.board.left_end() == game.board.right_end():
-            moves = [m for m in moves if m[1] == 'LEFT']
-
         for move in moves:
             new_game = copy.deepcopy(game)
             result = new_game.make_move(*move)
@@ -39,9 +36,6 @@ with common.stopwatch('Computing all possible games'):
     completed = {}
 
     moves = game.valid_moves()
-
-    if game.board.left_end() == game.board.right_end():
-        moves = [m for m in moves if m[1] == 'LEFT']
 
     threads = []
     for i, move in enumerate(moves):
