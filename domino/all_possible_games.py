@@ -6,7 +6,29 @@ import multiprocessing
 import os
 import random
 
-FIXED_MOVES = 3
+FIXED_MOVES = 0
+SERIAL_DEPTH = 2
+
+def bfs_step(games, completed):
+    new_games = []
+
+    def list_to_update(result):
+        if result is None:
+            return new_games
+        else:
+            return completed
+
+    for game in games:
+        moves = game.valid_moves()
+        for move in moves[:-1]:
+            new_game = copy.deepcopy(game)
+            result = new_game.make_move(*move)
+            list_to_update(result).append(new_game)
+
+        result = game.make_move(*moves[-1])
+        list_to_update(result).append(game)
+
+    return new_games, completed
 
 def compute_all_possible_games(game):
     pid = os.getpid()
@@ -15,24 +37,7 @@ def compute_all_possible_games(game):
 
     depth = 0
     while games:
-        new_games = []
-        def list_to_update(result):
-            if result is None:
-                return new_games
-            else:
-                return completed
-
-        for game in games:
-            moves = game.valid_moves()
-            for move in moves[:-1]:
-                new_game = copy.deepcopy(game)
-                result = new_game.make_move(*move)
-                list_to_update(result).append(new_game)
-
-            result = game.make_move(*moves[-1])
-            list_to_update(result).append(game)
-
-        games = new_games
+        games, completed = bfs_step(games, completed)
 
         depth += 1
         print('Process {}, Depth {}: {} games, {} completed'.format(
@@ -50,16 +55,8 @@ with common.stopwatch('Initializing random game'):
 
 with common.stopwatch('Computation of all possible games'):
     games = [game]
-    for i in range(2):
-        new_games = []
-        for game in games:
-            moves = game.valid_moves()
-            for move in moves:
-                new_game = copy.deepcopy(game)
-                new_game.make_move(*move)
-                new_games.append(new_game)
-
-        games = new_games
+    for i in range(SERIAL_DEPTH):
+        games, _ = bfs_step(games, [])
 
     with multiprocessing.Pool(len(games)) as pool:
         completed = pool.map(compute_all_possible_games, games)
