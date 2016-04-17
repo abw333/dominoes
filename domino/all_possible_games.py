@@ -2,12 +2,12 @@ import common
 import copy
 import domino
 import itertools
+import multiprocessing
 import random
-import threading
 
-FIXED_MOVES = 10
+FIXED_MOVES = 8
 
-def compute_all_possible_games(game, return_holder, return_key):
+def compute_all_possible_games(game):
     in_progress = [game]
     completed = []
 
@@ -23,9 +23,9 @@ def compute_all_possible_games(game, return_holder, return_key):
             else:
                 completed.append(new_game)
 
-    return_holder[return_key] = completed
+    return completed
 
-with common.stopwatch('Computing all possible games'):
+with common.stopwatch('Initializing random game'):
     game = domino.Game()
 
     for i in range(FIXED_MOVES):
@@ -33,24 +33,19 @@ with common.stopwatch('Computing all possible games'):
         move = random.choice(moves)
         game.make_move(*move)
 
-    completed = {}
-
+with common.stopwatch('Computation of all possible games'):
     moves = game.valid_moves()
 
-    threads = []
-    for i, move in enumerate(moves):
+    games = []
+    for move in moves:
         new_game = copy.deepcopy(game)
         new_game.make_move(*move)
 
-        thread = threading.Thread(target=compute_all_possible_games,
-                                  args=(new_game, completed, i))
-        thread.start()
-        threads.append(thread)
+        games.append(new_game)
 
-    for thread in threads:
-        thread.join()
+    with multiprocessing.Pool(len(games)) as pool:
+        completed = pool.map(compute_all_possible_games, games)
 
-    completed = completed.values()
     completed = itertools.chain(*completed)
 
     print(len(list(completed)))
