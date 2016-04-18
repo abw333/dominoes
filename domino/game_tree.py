@@ -2,7 +2,7 @@ import copy
 import numpy
 import os
 
-class Node:
+class GameNode:
     def __init__(self, game=None, children=None, result=None,
                  parent_node=None, parent_move=None):
         if children is None:
@@ -29,8 +29,8 @@ class Node:
             new_nodes = []
 
             def make_move(node, game, move):
-                node.children[move] = Node(result=game.make_move(*move),
-                                           parent_node=node, parent_move=move)
+                node.children[move] = GameNode(result=game.make_move(*move),
+                                               parent_node=node, parent_move=move)
                 if node.children[move].result is None:
                     node.children[move].game = game
                     new_nodes.append(node.children[move])

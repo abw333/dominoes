@@ -19,7 +19,7 @@ with common.stopwatch('Initializing random game'):
         move = random.choice(moves)
         game.make_move(*move)
 
-    root = game_tree.Node(game=game)
+    root = game_tree.GameNode(game=game)
 
 with common.stopwatch('Computation of all possible games'):
     root.bfs(max_depth=SERIAL_DEPTH)
