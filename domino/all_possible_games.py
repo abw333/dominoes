@@ -5,8 +5,8 @@ import multiprocessing
 import random
 
 FIXED_MOVES = 5
-SERIAL_DEPTH = 3
-NUM_PROCESSES = 16
+SERIAL_DEPTH = 5
+NUM_PROCESSES = 12
 
 def run_bfs(node):
     node.bfs()
@@ -26,7 +26,7 @@ with common.stopwatch('Initializing game tree'):
 
 with common.stopwatch('Running BFS to depth {} serially'.format(SERIAL_DEPTH)):
     root.bfs(max_depth=SERIAL_DEPTH)
-    nodes = root.leaf_nodes()
+    nodes = list(root.leaf_nodes())
 
 with common.stopwatch('Running remaining BFS using {} processes'.format(NUM_PROCESSES)):
     with multiprocessing.Pool(NUM_PROCESSES) as pool:
@@ -37,4 +37,4 @@ with common.stopwatch('Combining BFS results'):
         node.parent_node.children[node.parent_move] = searched_nodes[i]
 
 with common.stopwatch('Counting all possible games'):
-    print(len(root.leaf_nodes()))
+    print(len(list(root.leaf_nodes())))

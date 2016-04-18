@@ -16,9 +16,11 @@ class GameNode:
 
     def leaf_nodes(self):
         if not self.children:
-            return [self]
+            yield self
 
-        return sum([child.leaf_nodes() for child in self.children.values()], [])
+        for child in self.children.values():
+            for leaf_node in child.leaf_nodes():
+                yield leaf_node
 
     def bfs(self, max_depth=numpy.inf):
         pid = os.getpid()
