@@ -20,11 +20,10 @@ with common.stopwatch('Initializing random game'):
         game.make_move(*move)
 
     root = game_tree.Node(game=game)
-    nodes = [root]
 
 with common.stopwatch('Computation of all possible games'):
-    for i in range(SERIAL_DEPTH):
-        nodes = game_tree.bfs_step(nodes)
+    root.bfs(max_depth=SERIAL_DEPTH)
+    nodes = root.leaf_nodes()
 
     with multiprocessing.Pool(len(nodes)) as pool:
         searched_nodes = pool.map(run_bfs, nodes)

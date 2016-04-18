@@ -1,4 +1,5 @@
 import copy
+import numpy
 import os
 
 def bfs_step(nodes):
@@ -41,12 +42,12 @@ class Node:
 
         return sum([child.leaf_nodes() for child in self.children.values()], [])
 
-    def bfs(self):
+    def bfs(self, max_depth=numpy.inf):
         pid = os.getpid()
         nodes = [self]
         depth = 0
 
-        while nodes:
+        while nodes and depth < max_depth:
             nodes = bfs_step(nodes)
 
             depth += 1
