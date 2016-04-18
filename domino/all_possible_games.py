@@ -27,7 +27,7 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
         root = game_tree.GameNode(game=game)
 
     with common.stopwatch('Running BFS to depth {} serially'.format(serial_depth)):
-        root.bfs(max_depth=serial_depth)
+        root.bfs(max_depth=serial_depth, parent_pointers=True)
         nodes = list(root.leaf_nodes())
 
     with common.stopwatch('Running remaining BFS using {} processes'.format(num_processes)):

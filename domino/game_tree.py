@@ -22,7 +22,7 @@ class GameNode:
             for leaf_node in child.leaf_nodes():
                 yield leaf_node
 
-    def bfs(self, max_depth=numpy.inf):
+    def bfs(self, max_depth=numpy.inf, parent_pointers=False):
         pid = os.getpid()
         nodes = [self]
         depth = 0
@@ -31,8 +31,16 @@ class GameNode:
             new_nodes = []
 
             def make_move(node, game, move):
+                if parent_pointers:
+                    parent_node = node
+                    parent_move = move
+                else:
+                    parent_node = None
+                    parent_move = None
+
                 node.children[move] = GameNode(result=game.make_move(*move),
-                                               parent_node=node, parent_move=move)
+                                               parent_node=parent_node,
+                                               parent_move=parent_move)
                 if node.children[move].result is None:
                     node.children[move].game = game
                     new_nodes.append(node.children[move])
