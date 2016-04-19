@@ -5,7 +5,7 @@ import game_tree
 import multiprocessing
 import random
 
-FIXED_MOVES = 4
+FIXED_MOVES = 30
 SERIAL_DEPTH = 5
 NUM_PROCESSES = 12
 CHUNK_SIZE = 1
@@ -18,16 +18,23 @@ def run_bfs(node):
 def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
                        num_processes=NUM_PROCESSES):
     with common.stopwatch('Initializing random game'):
-        game = domino.Game(skinny_board=True)
+        game = domino.Game()
 
     with common.stopwatch('Playing {} moves at random'.format(fixed_moves)):
         for i in range(fixed_moves):
             moves = game.valid_moves()
             move = random.choice(moves)
-            game.make_move(*move)
+            result = game.make_move(*move)
 
-    with common.stopwatch('Saving game state'):
+            if result is not None:
+                print('Fixed moves ended the game - returning early.')
+                return
+
+    with common.stopwatch('Saving original game state'):
         orig_game = copy.deepcopy(game)
+
+    with common.stopwatch('Changing to skinny board representation'):
+        game.skinny_board()
 
     with common.stopwatch('Initializing game tree'):
         root = game_tree.GameNode(game=game)

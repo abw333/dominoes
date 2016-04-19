@@ -65,10 +65,19 @@ class Board:
         return ''.join([str(domino) for domino in self.board])
 
 class SkinnyBoard:
-    def __init__(self):
-        self.left = None
-        self.right = None
-        self.length = 0
+    def __init__(self, left=None, right=None, length=0):
+        self.left = left
+        self.right = right
+        self.length = length
+
+    @classmethod
+    def from_board(cls, board):
+        if len(board):
+            left, right = board.ends()
+        else:
+            left, right = None, None
+
+        return cls(left, right, len(board))
 
     def left_end(self):
         return self.left
@@ -137,6 +146,9 @@ class Game:
         else:
             self.turn = self.domino_hand(starting_domino)
             self.make_move(starting_domino, 'LEFT')
+
+    def skinny_board(self):
+        self.board = SkinnyBoard.from_board(self.board)
 
     def randomized_hands(self):
         dominos = [Domino(i, j) for i in range(7) for j in range(i, 7)]
