@@ -10,6 +10,7 @@ NUM_PROCESSES = 12
 
 def run_bfs(node):
     node.bfs()
+    node.prune()
     return node
 
 def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
@@ -37,9 +38,6 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
     with common.stopwatch('Combining BFS results'):
         for i, node in enumerate(nodes):
             node.parent_node.children[node.parent_move] = searched_nodes[i]
-
-    with common.stopwatch('Counting all possible games'):
-        print(len(list(root.leaf_nodes())))
 
     with common.stopwatch('Computing optimal play'):
         print(root.optimal_play())

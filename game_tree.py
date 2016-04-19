@@ -88,3 +88,9 @@ class GameNode:
             current_node = current_node.children[current_node.optimal_move]
 
         return moves, result
+
+    def prune(self):
+        optimal_move, _ = self.minimax()
+        if optimal_move is not None:
+            self.children = {optimal_move: self.children[optimal_move]}
+            self.children[optimal_move].prune()
