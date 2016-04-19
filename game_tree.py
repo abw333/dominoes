@@ -77,3 +77,14 @@ class GameNode:
             self.result = self.children[self.optimal_move].result
 
         return self.optimal_move, self.result
+
+    def optimal_play(self):
+        move, result = self.minimax()
+        current_node = self
+        moves = []
+
+        while current_node.optimal_move is not None:
+            moves.append(current_node.optimal_move)
+            current_node = current_node.children[current_node.optimal_move]
+
+        return moves, result
