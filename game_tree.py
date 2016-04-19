@@ -3,13 +3,14 @@ import numpy
 import os
 
 class GameNode:
-    def __init__(self, game=None, children=None, result=None,
-                 parent_node=None, parent_move=None):
+    def __init__(self, game=None, children=None, depth=0,
+                 result=None, parent_node=None, parent_move=None):
         if children is None:
             children = {}
 
         self.game = game
         self.children = children
+        self.depth = depth
         self.result = result
         self.parent_node = parent_node
         self.parent_move = parent_move
@@ -25,10 +26,11 @@ class GameNode:
     def bfs(self, max_depth=numpy.inf, parent_pointers=False):
         pid = os.getpid()
         nodes = [self]
-        depth = 0
+        depth = self.depth
 
         while nodes and depth < max_depth:
             new_nodes = []
+            depth += 1
 
             def make_move(node, game, move):
                 if parent_pointers:
@@ -39,6 +41,7 @@ class GameNode:
                     parent_move = None
 
                 node.children[move] = GameNode(result=game.make_move(*move),
+                                               depth=depth,
                                                parent_node=parent_node,
                                                parent_move=parent_move)
                 if node.children[move].result is None:
@@ -56,7 +59,6 @@ class GameNode:
                 node.game = None
 
             nodes = new_nodes
-            depth += 1
 
             print('Process {}, Depth {}: {} active games'.format(
                     pid, depth, len(nodes)))
