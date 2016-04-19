@@ -1,6 +1,5 @@
 import copy
 import numpy
-import os
 
 class GameNode:
     def __init__(self, game=None, children=None,
@@ -26,7 +25,6 @@ class GameNode:
                 yield leaf_node
 
     def bfs(self, max_depth=numpy.inf, parent_pointers=False):
-        pid = os.getpid()
         nodes = [self]
         depth = self.depth
 
@@ -61,9 +59,6 @@ class GameNode:
                 node.game = None
 
             nodes = new_nodes
-
-            print('Process {}, Depth {}: {} active games'.format(
-                    pid, depth, len(nodes)))
 
     def minimax(self):
         if self.result is None:

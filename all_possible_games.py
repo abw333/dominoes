@@ -4,9 +4,10 @@ import game_tree
 import multiprocessing
 import random
 
-FIXED_MOVES = 4
+FIXED_MOVES = 0
 SERIAL_DEPTH = 5
 NUM_PROCESSES = 12
+CHUNK_SIZE = 1
 
 def run_bfs(node):
     node.bfs()
@@ -33,7 +34,13 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
 
     with common.stopwatch('Running remaining BFS using {} processes'.format(num_processes)):
         with multiprocessing.Pool(num_processes) as pool:
-            searched_nodes = pool.map(run_bfs, nodes)
+            searched_nodes = []
+            for i, searched_node in enumerate(pool.imap(run_bfs, nodes, CHUNK_SIZE)):
+                searched_nodes.append(searched_node)
+
+                complete = i + 1
+                pct_complete = round(100 * complete / len(nodes), 2)
+                print('{}/{} ({}%) tasks completed'.format(complete, len(nodes), pct_complete))
 
     with common.stopwatch('Combining BFS results'):
         for i, node in enumerate(nodes):
