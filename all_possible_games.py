@@ -4,7 +4,7 @@ import game_tree
 import multiprocessing
 import random
 
-FIXED_MOVES = 5
+FIXED_MOVES = 4
 SERIAL_DEPTH = 5
 NUM_PROCESSES = 12
 
@@ -40,6 +40,9 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
 
     with common.stopwatch('Counting all possible games'):
         print(len(list(root.leaf_nodes())))
+
+    with common.stopwatch('Computing optimal moves'):
+        print(root.minimax())
 
     return root
 

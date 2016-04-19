@@ -12,6 +12,9 @@ class Domino:
     def __str__(self):
         return '[{0}|{1}]'.format(self.first, self.second)
 
+    def __repr__(self):
+        return str(self)
+
     def __eq__(self, other):
         return sorted((self.first, self.second)) == sorted((other.first, other.second))
 

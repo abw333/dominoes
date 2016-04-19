@@ -3,8 +3,9 @@ import numpy
 import os
 
 class GameNode:
-    def __init__(self, game=None, children=None, depth=0,
-                 result=None, parent_node=None, parent_move=None):
+    def __init__(self, game=None, children=None,
+                 depth=0, result=None, optimal_move=None,
+                 parent_node=None, parent_move=None):
         if children is None:
             children = {}
 
@@ -12,6 +13,7 @@ class GameNode:
         self.children = children
         self.depth = depth
         self.result = result
+        self.optimal_move = optimal_move
         self.parent_node = parent_node
         self.parent_move = parent_move
 
@@ -62,3 +64,16 @@ class GameNode:
 
             print('Process {}, Depth {}: {} active games'.format(
                     pid, depth, len(nodes)))
+
+    def minimax(self):
+        if self.result is None:
+            if self.depth % 2:
+                self.optimal_move = min(self.children,
+                                        key=lambda move: self.children[move].minimax()[1][2])
+            else:
+                self.optimal_move = max(self.children,
+                                        key=lambda move: self.children[move].minimax()[1][2])
+
+            self.result = self.children[self.optimal_move].result
+
+        return self.optimal_move, self.result
