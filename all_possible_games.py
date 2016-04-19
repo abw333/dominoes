@@ -1,10 +1,11 @@
 import common
+import copy
 import domino
 import game_tree
 import multiprocessing
 import random
 
-FIXED_MOVES = 0
+FIXED_MOVES = 4
 SERIAL_DEPTH = 5
 NUM_PROCESSES = 12
 CHUNK_SIZE = 1
@@ -24,6 +25,9 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
             moves = game.valid_moves()
             move = random.choice(moves)
             game.make_move(*move)
+
+    with common.stopwatch('Saving game state'):
+        orig_game = copy.deepcopy(game)
 
     with common.stopwatch('Initializing game tree'):
         root = game_tree.GameNode(game=game)
@@ -47,7 +51,14 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
             node.parent_node.children[node.parent_move] = searched_nodes[i]
 
     with common.stopwatch('Computing optimal play'):
-        print(root.optimal_play())
+        moves, result = root.optimal_play()
+
+    with common.stopwatch('Printing optimal play'):
+        for move in moves:
+            orig_game.make_move(*move)
+            print(orig_game)
+
+        print(result)
 
     return root
 
