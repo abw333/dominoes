@@ -1,7 +1,6 @@
 import common
 import copy
 import domino
-import game_tree
 import multiprocessing
 import random
 
@@ -37,7 +36,7 @@ def all_possible_games(fixed_moves=FIXED_MOVES, serial_depth=SERIAL_DEPTH,
         game.skinny_board()
 
     with common.stopwatch('Initializing game tree'):
-        root = game_tree.GameNode(game=game)
+        root = domino.GameNode(game=game)
 
     with common.stopwatch('Running BFS to depth {} serially'.format(serial_depth)):
         root.bfs(max_depth=serial_depth, parent_pointers=True)
