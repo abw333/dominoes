@@ -1,4 +1,4 @@
-import collections
+import domino.board as board
 import random
 
 class Domino:
@@ -26,43 +26,6 @@ class Domino:
 
     def __contains__(self, key):
         return key == self.first or key == self.second
-
-class Board:
-    def __init__(self):
-        self.board = collections.deque()
-
-    def left_end(self):
-        return self.board[0].first
-
-    def right_end(self):
-        return self.board[-1].second
-
-    def ends(self):
-        return self.left_end(), self.right_end()
-
-    def add_left(self, domino):
-        if not self.board or domino.second == self.left_end():
-            self.board.appendleft(domino)
-        elif domino.first == self.left_end():
-            self.board.appendleft(domino.inverted())
-        else:
-            raise Exception('{0} cannot be added to the left of'
-                            ' the board - numbers do not match!'.format(domino))
-
-    def add_right(self, domino):
-        if not self.board or domino.first == self.right_end():
-            self.board.append(domino)
-        elif domino.second == self.right_end():
-            self.board.append(domino.inverted())
-        else:
-            raise Exception('{0} cannot be added to the right of'
-                            ' the board - numbers do not match!'.format(domino))
-
-    def __len__(self):
-        return len(self.board)
-
-    def __str__(self):
-        return ''.join([str(domino) for domino in self.board])
 
 class SkinnyBoard:
     def __init__(self, left=None, right=None, length=0):
@@ -137,7 +100,7 @@ class Game:
         if skinny_board:
             self.board = SkinnyBoard()
         else:
-            self.board = Board()
+            self.board = board.Board()
 
         self.hands = self.randomized_hands()
 
@@ -226,7 +189,7 @@ class Game:
         if domino not in self.hands[self.turn]:
             raise Exception('Cannot make move - {0} is not'
                             ' in the hand of player {1}.'.format(domino, self.turn))
-        
+
         if left_or_right == 'LEFT':
             self.board.add_left(domino)
         elif left_or_right == 'RIGHT':
