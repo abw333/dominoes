@@ -1,3 +1,5 @@
+from domino.domino import Domino
+
 class SkinnyBoard:
     def __init__(self, left=None, right=None, length=0):
         self.left = left
