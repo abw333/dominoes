@@ -1,3 +1,4 @@
+import collections
 import domino
 import unittest
 
@@ -24,6 +25,31 @@ class TestDomino(unittest.TestCase):
         d = domino.Domino(1, 2)
 
         self.assertEqual(repr(d), '[1|2]')
+
+    def test_eq(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(1, 2)
+        d3 = domino.Domino(2, 1)
+
+        # order of values does not matter
+        self.assertEqual(d1, d2)
+        self.assertEqual(d1, d3)
+
+        d4 = domino.Domino(1, 1)
+        d5 = domino.Domino(1, 1)
+
+        # it's OK if both values are the same
+        self.assertEqual(d4, d5)
+
+        # both values must be the same
+        self.assertNotEqual(d1, d4)
+
+        PseudoDomino = collections.namedtuple('PseudoDomino',
+                                              ['first', 'second'])
+        pd = PseudoDomino(1, 2)
+
+        # needs to be a real Domino instance
+        self.assertNotEqual(d1, pd)
 
 if __name__ == '__main__':
     unittest.main()
