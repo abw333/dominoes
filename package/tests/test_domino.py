@@ -21,7 +21,7 @@ class TestDomino(unittest.TestCase):
 
         self.assertEqual(str(d), '[1|2]')
 
-    def	test_repr(self):
+    def test_repr(self):
         d = domino.Domino(1, 2)
 
         self.assertEqual(repr(d), '[1|2]')
