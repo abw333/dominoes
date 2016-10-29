@@ -51,5 +51,23 @@ class TestDomino(unittest.TestCase):
         # needs to be a real Domino instance
         self.assertNotEqual(d1, pd)
 
+    def test_hash(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(2, 1)
+        d3 = domino.Domino(1, 3)
+
+        d_set = {d1}
+
+        self.assertTrue(d1 in d_set)
+        self.assertTrue(d2 in d_set)
+        self.assertFalse(d3 in d_set)
+
+    def test_contains(self):
+        d = domino.Domino(1, 2)
+
+        self.assertTrue(1 in d)
+        self.assertTrue(2 in d)
+        self.assertFalse(3 in d)
+
 if __name__ == '__main__':
     unittest.main()
