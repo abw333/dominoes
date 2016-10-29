@@ -1,4 +1,6 @@
 language: python
 python: "3.5"
+before_install: "pip install codecov"
 install: "pip install package/"
 script: "python package/tests/test_domino.py"
+after_success: "codecov"
