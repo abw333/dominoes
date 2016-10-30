@@ -4,7 +4,7 @@ import random
 def play_random_game(game):
     while True:
         random_move = random.choice(game.valid_moves())
-        if game.make_move(random_move) is not None:
+        if game.make_move(*random_move) is not None:
             return
 
 series = domino.Series()
