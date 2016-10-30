@@ -1,5 +1,8 @@
 import collections
 
+class EmptyBoardException(Exception):
+    pass
+
 class Board:
     '''
     Python class for objects that represent a domino board.
@@ -33,17 +36,25 @@ class Board:
 
     def left_end(self):
         '''
-        Returns the outward-facing value on the left end of
-        the board. Raises an exception if the board is empty.
+        Returns the outward-facing value on the left end of the
+        board. Raises an EmptyBoardException if the board is empty.
         '''
-        return self.board[0].first
+        try:
+            return self.board[0].first
+        except IndexError:
+            raise EmptyBoardException('Cannot retrieve the left end of'
+                                      ' the board because it is empty!')
 
     def right_end(self):
         '''
-        Returns the outward-facing value on the right end of
-        the board. Raises an exception if the board is empty.
+        Returns the outward-facing value on the right end of the
+        board. Raises an EmptyBoardException if the board is empty.
         '''
-        return self.board[-1].second
+        try:
+            return self.board[-1].second
+        except IndexError:
+            raise EmptyBoardException('Cannot retrieve the right end of'
+                                      ' the board because it is empty!')
 
     def add_left(self, domino):
         '''
