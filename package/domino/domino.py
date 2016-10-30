@@ -1,9 +1,12 @@
 class Domino:
     '''
-    Python class representing a single domino.
+    Python class for objects that represent a domino. Each
+    domino is a rectangular tile with a line dividing its
+    face into two square ends. Each end is marked with an
+    integer value, typically ranging from 0 to 6 or 9.
 
-    :param int first: first value on the domino
-    :param int second: second value on the domino
+    :param int first: value on one end
+    :param int second: value on the other end
 
     Usage::
         >>> import domino
