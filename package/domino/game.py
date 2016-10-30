@@ -40,10 +40,10 @@ class Game:
         if not self.board:
             return False
 
-        left_end, right_end = self.board.ends()
         for hand in self.hands:
             for domino in hand:
-                if left_end in domino or right_end in domino:
+                if self.board.left_end() in domino or \
+                   self.board.right_end() in domino:
                     return False
 
         return True
@@ -60,13 +60,11 @@ class Game:
             return [(domino, 'LEFT') for domino in self.hands[self.turn]]
 
         moves = []
-
-        left_end, right_end = self.board.ends()
-        equal_ends = left_end == right_end
         for domino in self.hands[self.turn]:
-            if left_end in domino:
+            if self.board.left_end() in domino:
                 moves.append((domino, 'LEFT'))
-            if right_end in domino and not equal_ends:
+            if self.board.right_end() in domino and \
+               self.board.left_end() != self.board.right_end():
                 moves.append((domino, 'RIGHT'))
 
         return moves
