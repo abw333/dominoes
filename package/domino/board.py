@@ -3,6 +3,9 @@ import collections
 class EmptyBoardException(Exception):
     pass
 
+class EndsMismatchException(Exception):
+    pass
+
 class Board:
     '''
     Python class for objects that represent a domino board.
@@ -20,7 +23,7 @@ class Board:
         >>> b
         [1|2]
         >>> b.add_right(d2)
-        Exception: [1|3] cannot be added to the right of the board - values do not match!
+        EndsMismatchException: [1|3] cannot be added to the right of the board - values do not match!
         >>> b.add_left(d2)
         >>> b
         [3|1][1|2]
@@ -59,7 +62,7 @@ class Board:
     def add_left(self, domino):
         '''
         Adds the provided domino to the left end of the board.
-        Raises an exception if the values do not match.
+        Raises an EndsMismatchException if the values do not match.
 
         :param Domino domino: domino to add
         '''
@@ -70,13 +73,13 @@ class Board:
         elif domino.second == self.left_end():
             self.board.appendleft(domino)
         else:
-            raise Exception('{} cannot be added to the left of'
-                            ' the board - values do not match!'.format(domino))
+            raise EndsMismatchException('{} cannot be added to the left of'
+                                        ' the board - values do not match!'.format(domino))
 
     def add_right(self, domino):
         '''
         Adds the provided domino to the right end of the board.
-        Raises an exception if the values do not match.
+        Raises an EndsMismatchException if the values do not match.
 
         :param Domino domino: domino to add
         '''
@@ -87,8 +90,8 @@ class Board:
         elif domino.second == self.right_end():
             self.board.append(domino.inverted())
         else:
-            raise Exception('{} cannot be added to the right of'
-                            ' the board - values do not match!'.format(domino))
+            raise EndsMismatchException('{} cannot be added to the right of'
+                                        ' the board - values do not match!'.format(domino))
 
     def __len__(self):
         return len(self.board)

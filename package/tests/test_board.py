@@ -39,7 +39,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|3][3|1][1|2]')
         self.assertEqual(repr(b), '[2|3][3|1][1|2]')
 
-        self.assertRaises(Exception, b.add_left, d4)
+        self.assertRaises(domino.EndsMismatchException, b.add_left, d4)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -79,7 +79,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1][1|3][3|2]')
         self.assertEqual(repr(b), '[2|1][1|3][3|2]')
 
-        self.assertRaises(Exception, b.add_right, d4)
+        self.assertRaises(domino.EndsMismatchException, b.add_right, d4)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)

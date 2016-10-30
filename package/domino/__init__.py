@@ -1,5 +1,6 @@
 from domino.board import Board
 from domino.board import EmptyBoardException
+from domino.board import EndsMismatchException
 from domino.domino import Domino
 from domino.game import Game
 from domino.game_node import GameNode
