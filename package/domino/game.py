@@ -40,10 +40,10 @@ class Game:
         if not self.board:
             return False
 
+        left_end, right_end = self.board.ends()
         for hand in self.hands:
             for domino in hand:
-                if self.board.left_end() in domino or \
-                   self.board.right_end() in domino:
+                if left_end in domino or right_end in domino:
                     return False
 
         return True
