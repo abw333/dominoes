@@ -61,7 +61,7 @@ class Board:
 
         :param Domino d: domino to add
         '''
-        if not self.board:
+        if not self:
             self.board.append(d)
         elif d.first == self.left_end():
             self.board.appendleft(d.inverted())
@@ -80,7 +80,7 @@ class Board:
 
         :param Domino d: domino to add
         '''
-        if not self.board:
+        if not self:
             self.board.append(d)
         elif d.first == self.right_end():
             self.board.append(d)
