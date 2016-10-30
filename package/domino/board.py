@@ -10,29 +10,23 @@ class Board:
         >>> import domino
         >>> d1 = domino.Domino(1, 2)
         >>> d2 = domino.Domino(1, 3)
-        >>> d3 = domino.Domino(2, 3)
-        >>> d4 = domino.Domino(2, 2)
         >>> b = domino.Board()
         >>> b
 
-        >>> b.add(d1)
+        >>> b.add_left(d1)
         >>> b
         [1|2]
-        >>> b.add(d2)
+        >>> b.add_right(d2)
+        Exception: [1|3] cannot be added to the right of the board - numbers do not match!
+        >>> b.add_left(d2)
         >>> b
         [3|1][1|2]
-        >>> b.add(d3)
-        >>> b
-        [2|3][3|1][1|2]
-        >>> b.add(d4)
-        >>> b
-        [2|2][2|3][3|1][1|2]
         >>> b.left_end()
-        2
+        3
         >>> b.right_end()
         2
         >>> len(b)
-        4
+        2
     '''
     def __init__(self):
         self.board = collections.deque()
@@ -66,3 +60,6 @@ class Board:
 
     def __str__(self):
         return ''.join([str(domino) for domino in self.board])
+
+    def __repr__(self):
+        return str(self)
