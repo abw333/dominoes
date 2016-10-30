@@ -1,6 +1,39 @@
 import domino
 
 class SkinnyBoard:
+    '''
+    Python class for objects that represent a domino board.
+    A domino board consists of a series of dominoes placed
+    end to end such that the values on connected ends match.
+    This class reduces the memory required by each instance
+    by remembering only the values at the ends of the board.
+
+    :param int left: value on the left end of the board
+    :param int right: value on the right end of the board
+    :param int length: amount of dominoes on the board
+
+    Usage::
+        >>> import domino
+        >>> d1 = domino.Domino(1, 2)
+        >>> d2 = domino.Domino(1, 3)
+        >>> b = domino.SkinnyBoard()
+        >>> b
+
+        >>> b.add_left(d1)
+        >>> b
+        [1|2]
+        >>> b.add_right(d2)
+        EndsMismatchException: [1|3] cannot be added to the right of the board - values do not match!
+        >>> b.add_left(d2)
+        >>> b
+        [3|?][?|2]
+        >>> b.left_end()
+        3
+        >>> b.right_end()
+        2
+        >>> len(b)
+        2
+    '''
     def __init__(self, left=None, right=None, length=0):
         self.left = left
         self.right = right
@@ -8,6 +41,12 @@ class SkinnyBoard:
 
     @classmethod
     def from_board(cls, board):
+        '''
+        Initializes a SkinnyBoard instance
+        to represent a given Board instance.
+
+        :param Board board: board to represent
+        '''
         if len(board):
             left = board.left_end()
             right = board.right_end()
@@ -18,6 +57,10 @@ class SkinnyBoard:
         return cls(left, right, len(board))
 
     def left_end(self):
+        '''
+        Returns the outward-facing value on the left end of the
+        board. Raises an EmptyBoardException if the board is empty.
+        '''
         if not self:
             raise domino.EmptyBoardException('Cannot retrieve the left end of'
                                              ' the board because it is empty!')
@@ -25,6 +68,10 @@ class SkinnyBoard:
         return self.left
 
     def right_end(self):
+        '''
+        Returns the outward-facing value on the right end of the
+        board. Raises an EmptyBoardException if the board is empty.
+        '''
         if not self:
             raise domino.EmptyBoardException('Cannot retrieve the right end of'
                                              ' the board because it is empty!')
@@ -32,6 +79,12 @@ class SkinnyBoard:
         return self.right
 
     def add_left(self, d):
+        '''
+        Adds the provided domino to the left end of the board.
+        Raises an EndsMismatchException if the values do not match.
+
+        :param Domino d: domino to add
+        '''
         if not self:
             self.left = d.first
             self.right = d.second
@@ -48,6 +101,12 @@ class SkinnyBoard:
         self.length += 1
 
     def add_right(self, d):
+        '''
+        Adds the provided domino to the right end of the board.
+        Raises an EndsMismatchException if the values do not match.
+
+        :param Domino d: domino to add
+        '''
         if not self:
             self.left = d.first
             self.right = d.second
