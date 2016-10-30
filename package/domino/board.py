@@ -1,10 +1,5 @@
 import collections
-
-class EmptyBoardException(Exception):
-    pass
-
-class EndsMismatchException(Exception):
-    pass
+import domino
 
 class Board:
     '''
@@ -45,8 +40,8 @@ class Board:
         try:
             return self.board[0].first
         except IndexError:
-            raise EmptyBoardException('Cannot retrieve the left end of'
-                                      ' the board because it is empty!')
+            raise domino.EmptyBoardException('Cannot retrieve the left end of'
+                                             ' the board because it is empty!')
 
     def right_end(self):
         '''
@@ -56,48 +51,52 @@ class Board:
         try:
             return self.board[-1].second
         except IndexError:
-            raise EmptyBoardException('Cannot retrieve the right end of'
-                                      ' the board because it is empty!')
+            raise domino.EmptyBoardException('Cannot retrieve the right end of'
+                                             ' the board because it is empty!')
 
-    def add_left(self, domino):
+    def add_left(self, d):
         '''
         Adds the provided domino to the left end of the board.
         Raises an EndsMismatchException if the values do not match.
 
-        :param Domino domino: domino to add
+        :param Domino d: domino to add
         '''
         if not self.board:
-            self.board.append(domino)
-        elif domino.first == self.left_end():
-            self.board.appendleft(domino.inverted())
-        elif domino.second == self.left_end():
-            self.board.appendleft(domino)
+            self.board.append(d)
+        elif d.first == self.left_end():
+            self.board.appendleft(d.inverted())
+        elif d.second == self.left_end():
+            self.board.appendleft(d)
         else:
-            raise EndsMismatchException('{} cannot be added to the left of'
-                                        ' the board - values do not match!'.format(domino))
+            raise domino.EndsMismatchException(
+                '{} cannot be added to the left of'
+                ' the board - values do not match!'.format(d)
+            )
 
-    def add_right(self, domino):
+    def add_right(self, d):
         '''
         Adds the provided domino to the right end of the board.
         Raises an EndsMismatchException if the values do not match.
 
-        :param Domino domino: domino to add
+        :param Domino d: domino to add
         '''
         if not self.board:
-            self.board.append(domino)
-        elif domino.first == self.right_end():
-            self.board.append(domino)
-        elif domino.second == self.right_end():
-            self.board.append(domino.inverted())
+            self.board.append(d)
+        elif d.first == self.right_end():
+            self.board.append(d)
+        elif d.second == self.right_end():
+            self.board.append(d.inverted())
         else:
-            raise EndsMismatchException('{} cannot be added to the right of'
-                                        ' the board - values do not match!'.format(domino))
+            raise domino.EndsMismatchException(
+                '{} cannot be added to the right of'
+                ' the board - values do not match!'.format(d)
+            )
 
     def __len__(self):
         return len(self.board)
 
     def __str__(self):
-        return ''.join([str(domino) for domino in self.board])
+        return ''.join(str(d) for d in self.board)
 
     def __repr__(self):
         return str(self)
