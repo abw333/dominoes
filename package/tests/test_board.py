@@ -87,5 +87,11 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1][1|3][3|2]')
         self.assertEqual(repr(b), '[2|1][1|3][3|2]')
 
+    def test_empty_board_exception(self):
+        b = domino.Board()
+
+        self.assertRaises(domino.EmptyBoardException, b.left_end)
+        self.assertRaises(domino.EmptyBoardException, b.right_end)
+
 if __name__ == '__main__':
     unittest.main()

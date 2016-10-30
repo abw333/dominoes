@@ -1,4 +1,5 @@
 from domino.board import Board
+from domino.board import EmptyBoardException
 from domino.domino import Domino
 from domino.game import Game
 from domino.game_node import GameNode
