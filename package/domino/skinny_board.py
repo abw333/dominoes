@@ -35,9 +35,9 @@ class SkinnyBoard:
         2
     '''
     def __init__(self, left=None, right=None, length=0):
-        self.left = left
-        self.right = right
-        self.length = length
+        self._left = left
+        self._right = right
+        self._length = length
 
     @classmethod
     def from_board(cls, board):
@@ -65,7 +65,7 @@ class SkinnyBoard:
             raise domino.EmptyBoardException('Cannot retrieve the left end of'
                                              ' the board because it is empty!')
 
-        return self.left
+        return self._left
 
     def right_end(self):
         '''
@@ -76,7 +76,7 @@ class SkinnyBoard:
             raise domino.EmptyBoardException('Cannot retrieve the right end of'
                                              ' the board because it is empty!')
 
-        return self.right
+        return self._right
 
     def add_left(self, d):
         '''
@@ -86,19 +86,19 @@ class SkinnyBoard:
         :param Domino d: domino to add
         '''
         if not self:
-            self.left = d.first
-            self.right = d.second
+            self._left = d.first
+            self._right = d.second
         elif d.second == self.left_end():
-            self.left = d.first
+            self._left = d.first
         elif d.first == self.left_end():
-            self.left = d.second
+            self._left = d.second
         else:
             raise domino.EndsMismatchException(
                 '{} cannot be added to the left of'
                 ' the board - values do not match!'.format(d)
             )
 
-        self.length += 1
+        self._length += 1
 
     def add_right(self, d):
         '''
@@ -108,32 +108,32 @@ class SkinnyBoard:
         :param Domino d: domino to add
         '''
         if not self:
-            self.left = d.first
-            self.right = d.second
+            self._left = d.first
+            self._right = d.second
         elif d.first == self.right_end():
-            self.right = d.second
+            self._right = d.second
         elif d.second == self.right_end():
-            self.left = d.first
+            self._left = d.first
         else:
             raise domino.EndsMismatchException(
                 '{} cannot be added to the right of'
                 ' the board - values do not match!'.format(d)
             )
 
-        self.length += 1
+        self._length += 1
 
     def __len__(self):
-        return self.length
+        return self._length
 
     def __str__(self):
         if not self:
             return ''
-        elif self.length == 1:
-            return str(domino.Domino(self.left, self.right))
+        elif self._length == 1:
+            return str(domino.Domino(self._left, self._right))
         else:
-            left_domino = domino.Domino(self.left, '?')
-            right_domino = domino.Domino('?', self.right)
-            middle_dominoes = [domino.Domino('?', '?')] * (self.length - 2)
+            left_domino = domino.Domino(self._left, '?')
+            right_domino = domino.Domino('?', self._right)
+            middle_dominoes = [domino.Domino('?', '?')] * (self._length - 2)
             dominoes = [left_domino] + middle_dominoes + [right_domino]
             return ''.join(str(d) for d in dominoes)
 
