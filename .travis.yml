@@ -1,6 +1,8 @@
 language: python
 python: "3.5"
 before_install: "pip install codecov"
-install: "pip install package/"
-script: "python package/tests/test_domino.py"
+install:
+  - "cd package/"
+  - "pip install ."
+script: "coverage run --source=domino/ setup.py test"
 after_success: "codecov"
