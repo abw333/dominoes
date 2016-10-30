@@ -1,6 +1,39 @@
 import collections
 
 class Board:
+    '''
+    Python class for objects that represent a domino board.
+    A domino board consists of a series of dominoes placed
+    end to end such that the values on connected ends match.
+
+    Usage::
+        >>> import domino
+        >>> d1 = domino.Domino(1, 2)
+        >>> d2 = domino.Domino(1, 3)
+        >>> d3 = domino.Domino(2, 3)
+        >>> d4 = domino.Domino(2, 2)
+        >>> b = domino.Board()
+        >>> b
+
+        >>> b.add(d1)
+        >>> b
+        [1|2]
+        >>> b.add(d2)
+        >>> b
+        [3|1][1|2]
+        >>> b.add(d3)
+        >>> b
+        [2|3][3|1][1|2]
+        >>> b.add(d4)
+        >>> b
+        [2|2][2|3][3|1][1|2]
+        >>> b.left_end()
+        2
+        >>> b.right_end()
+        2
+        >>> len(b)
+        4
+    '''
     def __init__(self):
         self.board = collections.deque()
 
