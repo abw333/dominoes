@@ -10,9 +10,6 @@ class Board:
     def right_end(self):
         return self.board[-1].second
 
-    def ends(self):
-        return self.left_end(), self.right_end()
-
     def add(self, domino):
         if not self.board:
             self.board.append(domino)
