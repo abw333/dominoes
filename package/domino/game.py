@@ -1,6 +1,12 @@
 import domino
 import random
 
+def randomized_hands():
+    dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
+    random.shuffle(dominoes)
+    return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
+
+
 class Game:
     def __init__(self, starting_player=0,
                  starting_domino=None, skinny_board=False):
@@ -9,7 +15,7 @@ class Game:
         else:
             self.board = domino.Board()
 
-        self.hands = self.randomized_hands()
+        self.hands = randomized_hands()
 
         if starting_domino is None:
             self.turn = starting_player
@@ -19,11 +25,6 @@ class Game:
 
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
-
-    def randomized_hands(self):
-        dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
-        random.shuffle(dominoes)
-        return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
 
     def domino_hand(self, d):
         for i, hand in enumerate(self.hands):
