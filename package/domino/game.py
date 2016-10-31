@@ -8,7 +8,7 @@ def randomized_hands():
 
 
 class Game:
-    def __init__(self, starting_player=0, starting_domino=None):
+    def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
 
         self.hands = randomized_hands()
