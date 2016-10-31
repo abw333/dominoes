@@ -68,14 +68,14 @@ class Game:
             return self.turn, 'WON', sum(self.remaining_points())
         elif self.is_stuck():
             player_points = self.remaining_points()
-            team0_points = player_points[0] + player_points[2]
-            team1_points = player_points[1] + player_points[3]
-            if team0_points < team1_points:
-                return self.turn, 'STUCK', -1 ** self.turn * (team0_points + team1_points)
-            elif team0_points == team1_points:
+            team_points = [player_points[0] + player_points[2],
+                           player_points[1] + player_points[3]]
+            if team_points[0] < team_points[1]:
+                return self.turn, 'STUCK', -1 ** self.turn * sum(team_points)
+            elif team_points[0] == team_points[1]:
                 return self.turn, 'STUCK', 0
             else:
-                return self.turn, 'STUCK', -1 ** (1 + self.turn) * (team0_points + team1_points)
+                return self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points)
 
     def next_turn(self):
         result = self.result()
