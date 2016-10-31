@@ -6,7 +6,6 @@ def randomized_hands():
     random.shuffle(dominoes)
     return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
 
-
 class Game:
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
@@ -89,8 +88,8 @@ class Game:
 
     def make_move(self, d, left):
         if d not in self.hands[self.turn]:
-            raise Exception('Cannot make move - {0} is not'
-                            ' in the hand of player {1}.'.format(d, self.turn))
+            raise Exception('Cannot make move - {} is not'
+                            ' in the hand of player {}.'.format(d, self.turn))
 
         if left:
             self.board.add_left(d)
@@ -104,24 +103,24 @@ class Game:
         string_list = ['Board:', str(self.board)]
         for i, hand in enumerate(self.hands):
             hand_string = ''.join(str(d) for d in hand)
-            string_list.extend(["Player {0}'s hand:".format(i), hand_string])
+            string_list.extend(["Player {}'s hand:".format(i), hand_string])
 
         result = self.result()
         if result is None:
-            string_list.append("Player {0}'s turn".format(self.turn))
+            string_list.append("Player {}'s turn".format(self.turn))
         else:
             last_mover, result_type, points = result
             if result_type == 'WON':
-                string_list.append('Player {0} won and '
-                                   'scored {1} points!'.format(last_mover, points))
+                string_list.append('Player {} won and '
+                                   'scored {} points!'.format(last_mover, points))
             elif result_type == 'STUCK':
                 if points > 0:
-                    string_list.append('Player {0} stuck the '
-                                       'game and won {1} points!'.format(last_mover, points))
+                    string_list.append('Player {} stuck the '
+                                       'game and won {} points!'.format(last_mover, points))
                 elif not points:
-                    string_list.append('Player {0} stuck the game and tied!'.format(last_mover))
+                    string_list.append('Player {} stuck the game and tied!'.format(last_mover))
                 else:
-                    string_list.append('Player {0} stuck the '
-                                       'game and lost {1} points!'.format(last_mover, points))
+                    string_list.append('Player {} stuck the '
+                                       'game and lost {} points!'.format(last_mover, points))
 
         return '\n'.join(string_list)
