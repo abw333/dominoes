@@ -27,7 +27,11 @@ class Game:
                 return i
 
     def has_empty_hand(self):
-        return bool([hand for hand in self.hands if not hand])
+        for hand in self.hands:
+            if not hand:
+                return True
+
+        return False
 
     def remaining_points(self):
         points = []
@@ -130,3 +134,6 @@ class Game:
                                        'game and lost {} points!'.format(last_mover, points))
 
         return '\n'.join(string_list)
+
+    def __repr__(self):
+        return str(self)
