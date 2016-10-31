@@ -43,11 +43,11 @@ class Game:
         return True
 
     def remaining_points(self):
-        player_points = {}
-        for i, hand in enumerate(self.hands):
-            player_points[i] = sum(d.first + d.second for d in hand)
+        points = []
+        for hand in self.hands:
+            points.append(sum(d.first + d.second for d in hand))
 
-        return player_points
+        return points
 
     def valid_moves(self):
         if not self.board:
@@ -65,7 +65,7 @@ class Game:
 
     def result(self):
         if self.has_empty_hand():
-            return self.turn, 'WON', sum(self.remaining_points().values())
+            return self.turn, 'WON', sum(self.remaining_points())
         elif self.is_stuck():
             player_points = self.remaining_points()
             team0_points = player_points[0] + player_points[2]
