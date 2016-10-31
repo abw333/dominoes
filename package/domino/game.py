@@ -45,7 +45,7 @@ class Game:
     def remaining_points(self):
         player_points = {}
         for i, hand in enumerate(self.hands):
-            player_points[i] = sum([d.first + d.second for d in hand])
+            player_points[i] = sum(d.first + d.second for d in hand)
 
         return player_points
 
@@ -103,7 +103,7 @@ class Game:
     def __str__(self):
         string_list = ['Board:', str(self.board)]
         for i, hand in enumerate(self.hands):
-            hand_string = ''.join([str(d) for d in hand])
+            hand_string = ''.join(str(d) for d in hand)
             string_list.extend(["Player {0}'s hand:".format(i), hand_string])
 
         result = self.result()
