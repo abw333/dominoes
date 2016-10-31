@@ -113,7 +113,7 @@ class SkinnyBoard:
         elif d.first == self.right_end():
             self._right = d.second
         elif d.second == self.right_end():
-            self._left = d.first
+            self._right = d.first
         else:
             raise domino.EndsMismatchException(
                 '{} cannot be added to the right of'
