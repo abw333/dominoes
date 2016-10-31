@@ -29,24 +29,30 @@ class Game:
     def has_empty_hand(self):
         return bool([hand for hand in self.hands if not hand])
 
-    def is_stuck(self):
-        if not self.board:
-            return False
-
-        for hand in self.hands:
-            for d in hand:
-                if self.board.left_end() in d or \
-                   self.board.right_end() in d:
-                    return False
-
-        return True
-
     def remaining_points(self):
         points = []
         for hand in self.hands:
             points.append(sum(d.first + d.second for d in hand))
 
         return points
+
+    def has_valid_move(self, turn):
+        if not self.board:
+            return True
+
+        for d in self.hands[turn]:
+            if self.board.left_end() in d or \
+               self.board.right_end() in d:
+                return True
+
+        return False
+
+    def is_stuck(self):
+        for turn in range(len(self.hands)):
+            if self.has_valid_move(turn):
+                return False
+
+        return True
 
     def valid_moves(self):
         if not self.board:
@@ -83,7 +89,7 @@ class Game:
 
         while True:
             self.turn = (self.turn + 1) % 4
-            if self.valid_moves():
+            if self.has_valid_move(self.turn):
                 break
 
     def make_move(self, d, left):
