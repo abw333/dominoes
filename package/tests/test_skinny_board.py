@@ -5,7 +5,11 @@ class TestSkinnyBoard(unittest.TestCase):
     def test_init(self):
         b = domino.SkinnyBoard()
 
-        self.assertIsNotNone(b)
+        self.assertEqual(len(b), 0)
+        self.assertRaises(domino.EmptyBoardException, b.left_end)
+        self.assertRaises(domino.EmptyBoardException, b.right_end)
+        self.assertEqual(str(b), '')
+        self.assertEqual(repr(b), '')
 
     def test_from_board(self):
         b = domino.Board()
@@ -21,10 +25,14 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(len(sb1), 0)
         self.assertRaises(domino.EmptyBoardException, sb1.left_end)
         self.assertRaises(domino.EmptyBoardException, sb1.right_end)
+        self.assertEqual(str(sb1), '')
+        self.assertEqual(repr(sb1), '')
 
         self.assertEqual(len(sb2), 1)
         self.assertEqual(sb2.left_end(), 1)
         self.assertEqual(sb2.right_end(), 2)
+        self.assertEqual(str(sb2), '[1|2]')
+        self.assertEqual(repr(sb2), '[1|2]')
 
     def test_add_left(self):
         b = domino.SkinnyBoard()
@@ -105,12 +113,6 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(b.right_end(), 2)
         self.assertEqual(str(b), '[2|?][?|?][?|2]')
         self.assertEqual(repr(b), '[2|?][?|?][?|2]')
-
-    def test_empty_board_exception(self):
-        b = domino.SkinnyBoard()
-
-        self.assertRaises(domino.EmptyBoardException, b.left_end)
-        self.assertRaises(domino.EmptyBoardException, b.right_end)
 
 if __name__ == '__main__':
     unittest.main()
