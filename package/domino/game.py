@@ -17,7 +17,7 @@ class Game:
             self.turn = starting_player
         else:
             self.turn = self.domino_hand(starting_domino)
-            self.make_move(starting_domino, 'LEFT')
+            self.make_move(starting_domino, True)
 
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
@@ -51,15 +51,15 @@ class Game:
 
     def valid_moves(self):
         if not self.board:
-            return [(d, 'LEFT') for d in self.hands[self.turn]]
+            return [(d, True) for d in self.hands[self.turn]]
 
         moves = []
         for d in self.hands[self.turn]:
             if self.board.left_end() in d:
-                moves.append((d, 'LEFT'))
+                moves.append((d, True))
             if self.board.right_end() in d and \
                self.board.left_end() != self.board.right_end():
-                moves.append((d, 'RIGHT'))
+                moves.append((d, False))
 
         return moves
 
@@ -87,17 +87,15 @@ class Game:
             if self.valid_moves():
                 break
 
-    def make_move(self, d, left_or_right):
+    def make_move(self, d, left):
         if d not in self.hands[self.turn]:
             raise Exception('Cannot make move - {0} is not'
                             ' in the hand of player {1}.'.format(d, self.turn))
 
-        if left_or_right == 'LEFT':
+        if left:
             self.board.add_left(d)
-        elif left_or_right == 'RIGHT':
-            self.board.add_right(d)
         else:
-            raise Exception('Cannot make move - `left_or_right` must be "LEFT" or "RIGHT".')
+            self.board.add_right(d)
 
         self.hands[self.turn].remove(d)
         return self.next_turn()
