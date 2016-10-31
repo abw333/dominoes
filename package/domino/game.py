@@ -1,16 +1,13 @@
+import domino
 import random
-
-from domino.board import Board
-from domino.domino import Domino
-from domino.skinny_board import SkinnyBoard
 
 class Game:
     def __init__(self, starting_player=0,
                  starting_domino=None, skinny_board=False):
         if skinny_board:
-            self.board = SkinnyBoard()
+            self.board = domino.SkinnyBoard()
         else:
-            self.board = Board()
+            self.board = domino.Board()
 
         self.hands = self.randomized_hands()
 
@@ -21,16 +18,16 @@ class Game:
             self.make_move(starting_domino, 'LEFT')
 
     def skinny_board(self):
-        self.board = SkinnyBoard.from_board(self.board)
+        self.board = domino.SkinnyBoard.from_board(self.board)
 
     def randomized_hands(self):
-        dominos = [Domino(i, j) for i in range(7) for j in range(i, 7)]
-        random.shuffle(dominos)
-        return dominos[0:7], dominos[7:14], dominos[14:21], dominos[21:28]
+        dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
+        random.shuffle(dominoes)
+        return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
 
-    def domino_hand(self, domino):
+    def domino_hand(self, d):
         for i, hand in enumerate(self.hands):
-            if domino in hand:
+            if d in hand:
                 return i
 
     def has_empty_hand(self):
@@ -41,9 +38,9 @@ class Game:
             return False
 
         for hand in self.hands:
-            for domino in hand:
-                if self.board.left_end() in domino or \
-                   self.board.right_end() in domino:
+            for d in hand:
+                if self.board.left_end() in d or \
+                   self.board.right_end() in d:
                     return False
 
         return True
@@ -51,21 +48,21 @@ class Game:
     def remaining_points(self):
         player_points = {}
         for i, hand in enumerate(self.hands):
-            player_points[i] = sum([domino.first + domino.second for domino in hand])
+            player_points[i] = sum([d.first + d.second for d in hand])
 
         return player_points
 
     def valid_moves(self):
         if not self.board:
-            return [(domino, 'LEFT') for domino in self.hands[self.turn]]
+            return [(d, 'LEFT') for d in self.hands[self.turn]]
 
         moves = []
-        for domino in self.hands[self.turn]:
-            if self.board.left_end() in domino:
-                moves.append((domino, 'LEFT'))
-            if self.board.right_end() in domino and \
+        for d in self.hands[self.turn]:
+            if self.board.left_end() in d:
+                moves.append((d, 'LEFT'))
+            if self.board.right_end() in d and \
                self.board.left_end() != self.board.right_end():
-                moves.append((domino, 'RIGHT'))
+                moves.append((d, 'RIGHT'))
 
         return moves
 
@@ -93,25 +90,25 @@ class Game:
             if self.valid_moves():
                 break
 
-    def make_move(self, domino, left_or_right):
-        if domino not in self.hands[self.turn]:
+    def make_move(self, d, left_or_right):
+        if d not in self.hands[self.turn]:
             raise Exception('Cannot make move - {0} is not'
-                            ' in the hand of player {1}.'.format(domino, self.turn))
+                            ' in the hand of player {1}.'.format(d, self.turn))
 
         if left_or_right == 'LEFT':
-            self.board.add_left(domino)
+            self.board.add_left(d)
         elif left_or_right == 'RIGHT':
-            self.board.add_right(domino)
+            self.board.add_right(d)
         else:
             raise Exception('Cannot make move - `left_or_right` must be "LEFT" or "RIGHT".')
 
-        self.hands[self.turn].remove(domino)
+        self.hands[self.turn].remove(d)
         return self.next_turn()
 
     def __str__(self):
         string_list = ['Board:', str(self.board)]
         for i, hand in enumerate(self.hands):
-            hand_string = ''.join([str(domino) for domino in hand])
+            hand_string = ''.join([str(d) for d in hand])
             string_list.extend(["Player {0}'s hand:".format(i), hand_string])
 
         result = self.result()
