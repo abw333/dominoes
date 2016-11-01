@@ -38,11 +38,11 @@ class Game:
 
         return points
 
-    def has_valid_move(self, turn):
+    def has_valid_move(self):
         if not self.board:
             return True
 
-        for d in self.hands[turn]:
+        for d in self.hands[self.turn]:
             if self.board.left_end() in d or \
                self.board.right_end() in d:
                 return True
@@ -83,7 +83,7 @@ class Game:
         stuck = True
         for _ in range(num_players):
             self.turn = (self.turn + 1) % num_players
-            if self.has_valid_move(self.turn):
+            if self.has_valid_move():
                 stuck = False
                 break
 
