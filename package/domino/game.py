@@ -89,13 +89,15 @@ class Game:
         else:
             self.board.add_right(d)
 
-        result = None
         if self.has_empty_hand():
-            result = Result(self.turn, 'WON', sum(self.remaining_points()))
-        elif self.is_stuck():
+            self.result = Result(self.turn, 'WON', sum(self.remaining_points()))
+            return self.result
+
+        if self.is_stuck():
             player_points = self.remaining_points()
             team_points = [player_points[0] + player_points[2],
                            player_points[1] + player_points[3]]
+
             if team_points[0] < team_points[1]:
                 result = Result(self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
             elif team_points[0] == team_points[1]:
@@ -103,7 +105,6 @@ class Game:
             else:
                 result = Result(self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
 
-        if result is not None:
             self.result = result
             return result
 
