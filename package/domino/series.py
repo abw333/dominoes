@@ -15,7 +15,7 @@ class Series:
             raise Exception('Cannot start a new game - series '
                             'ended with a score of {0} to {1}'.format(*self.scores))
 
-        result = self.games[-1].result()
+        result = self.games[-1].result
         if result is None:
             raise Exception('Cannot start a new game - the latest one has not finished!')
 

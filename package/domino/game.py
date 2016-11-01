@@ -18,6 +18,8 @@ class Game:
             self.turn = self.domino_hand(starting_domino)
             self.make_move(starting_domino, True)
 
+        self.result = None
+
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
 
@@ -72,7 +74,7 @@ class Game:
 
         return moves
 
-    def result(self):
+    def compute_result(self):
         if self.has_empty_hand():
             return self.turn, 'WON', sum(self.remaining_points())
         elif self.is_stuck():
@@ -98,8 +100,9 @@ class Game:
 
         self.hands[self.turn].remove(d)
 
-        result = self.result()
+        result = self.compute_result()
         if result is not None:
+            self.result = result
             return result
 
         while True:
@@ -113,11 +116,10 @@ class Game:
             hand_string = ''.join(str(d) for d in hand)
             string_list.extend(["Player {}'s hand:".format(i), hand_string])
 
-        result = self.result()
-        if result is None:
+        if self.result is None:
             string_list.append("Player {}'s turn".format(self.turn))
         else:
-            last_mover, result_type, points = result
+            last_mover, result_type, points = self.result
             if result_type == 'WON':
                 string_list.append('Player {} won and '
                                    'scored {} points!'.format(last_mover, points))
