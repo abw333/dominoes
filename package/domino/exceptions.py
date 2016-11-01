@@ -11,3 +11,10 @@ class EndsMismatchException(Exception):
     involving mismatched domino ends.
     '''
     pass
+
+class NoSuchDominoException(Exception):
+    '''
+    Exception to be raised for errors
+    involving a specific missing domino.
+    '''
+    pass
