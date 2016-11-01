@@ -15,27 +15,25 @@ class Series:
             raise Exception('Cannot start a new game - series '
                             'ended with a score of {0} to {1}'.format(*self.scores))
 
-        result = self.games[-1].result()
+        result = self.games[-1].result
         if result is None:
             raise Exception('Cannot start a new game - the latest one has not finished!')
 
-        last_mover, result_type, points = result
-
-        if points >= 0:
-            self.scores[last_mover % 2] += points
+        if result.points >= 0:
+            self.scores[result.player % 2] += result.points
         else:
-            self.scores[(last_mover + 1) % 2] -= points
+            self.scores[(result.player + 1) % 2] -= result.points
 
         if self.is_over():
             return
 
-        if result_type == 'WON':
-            self.games.append(Game(starting_player=last_mover))
-        elif result_type == 'STUCK':
-            if points >= 0:
-                self.games.append(Game(starting_player=last_mover))
+        if result.type == 'WON':
+            self.games.append(Game(starting_player=result.player))
+        elif result.type == 'STUCK':
+            if result.points >= 0:
+                self.games.append(Game(starting_player=result.player))
             else:
-                self.games.append(Game(starting_player=(last_mover + 1) % 4))
+                self.games.append(Game(starting_player=(result.player + 1) % 4))
 
         return self.games[-1]
 
