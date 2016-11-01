@@ -1,3 +1,4 @@
+import collections
 import domino
 import random
 
@@ -5,6 +6,8 @@ def randomized_hands():
     dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
     return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
+
+Result = collections.namedtuple('Result', ['player', 'type', 'points'])
 
 class Game:
     def __init__(self, starting_domino=None, starting_player=0):
@@ -75,7 +78,9 @@ class Game:
         return moves
 
     def make_move(self, d, left):
-        if d not in self.hands[self.turn]:
+        try:
+            self.hands[self.turn].remove(d)
+        except ValueError:
             raise Exception('Cannot make move - {} is not'
                             ' in the hand of player {}.'.format(d, self.turn))
 
@@ -84,21 +89,19 @@ class Game:
         else:
             self.board.add_right(d)
 
-        self.hands[self.turn].remove(d)
-
         result = None
         if self.has_empty_hand():
-            result = (self.turn, 'WON', sum(self.remaining_points()))
+            result = Result(self.turn, 'WON', sum(self.remaining_points()))
         elif self.is_stuck():
             player_points = self.remaining_points()
             team_points = [player_points[0] + player_points[2],
                            player_points[1] + player_points[3]]
             if team_points[0] < team_points[1]:
-                result = (self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
+                result = Result(self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
             elif team_points[0] == team_points[1]:
-                result = (self.turn, 'STUCK', 0)
+                result = Result(self.turn, 'STUCK', 0)
             else:
-                result = (self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
+                result = Result(self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
 
         if result is not None:
             self.result = result
@@ -118,19 +121,26 @@ class Game:
         if self.result is None:
             string_list.append("Player {}'s turn".format(self.turn))
         else:
-            last_mover, result_type, points = self.result
-            if result_type == 'WON':
-                string_list.append('Player {} won and '
-                                   'scored {} points!'.format(last_mover, points))
-            elif result_type == 'STUCK':
-                if points > 0:
-                    string_list.append('Player {} stuck the '
-                                       'game and won {} points!'.format(last_mover, points))
-                elif not points:
-                    string_list.append('Player {} stuck the game and tied!'.format(last_mover))
+            if self.result.type == 'WON':
+                string_list.append(
+                    'Player {} won and scored {} points!'.format(self.result.player,
+                                                                 self.result.points)
+                )
+            elif self.result.type == 'STUCK':
+                if self.result.points > 0:
+                    string_list.append(
+                        'Player {} stuck the game and won {} points!'.format(self.result.player,
+                                                                             self.result.points)
+                    )
+                elif not self.result.points:
+                    string_list.append(
+                        'Player {} stuck the game and tied!'.format(self.result.player)
+                    )
                 else:
-                    string_list.append('Player {} stuck the '
-                                       'game and lost {} points!'.format(last_mover, points))
+                    string_list.append(
+                        'Player {} stuck the game and lost {} points!'.format(self.result.player,
+                                                                              self.result.points)
+                    )
 
         return '\n'.join(string_list)
 
