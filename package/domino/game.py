@@ -74,20 +74,6 @@ class Game:
 
         return moves
 
-    def compute_result(self):
-        if self.has_empty_hand():
-            return self.turn, 'WON', sum(self.remaining_points())
-        elif self.is_stuck():
-            player_points = self.remaining_points()
-            team_points = [player_points[0] + player_points[2],
-                           player_points[1] + player_points[3]]
-            if team_points[0] < team_points[1]:
-                return self.turn, 'STUCK', -1 ** self.turn * sum(team_points)
-            elif team_points[0] == team_points[1]:
-                return self.turn, 'STUCK', 0
-            else:
-                return self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points)
-
     def make_move(self, d, left):
         if d not in self.hands[self.turn]:
             raise Exception('Cannot make move - {} is not'
@@ -100,7 +86,20 @@ class Game:
 
         self.hands[self.turn].remove(d)
 
-        result = self.compute_result()
+        result = None
+        if self.has_empty_hand():
+            result = (self.turn, 'WON', sum(self.remaining_points()))
+        elif self.is_stuck():
+            player_points = self.remaining_points()
+            team_points = [player_points[0] + player_points[2],
+                           player_points[1] + player_points[3]]
+            if team_points[0] < team_points[1]:
+                result = (self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
+            elif team_points[0] == team_points[1]:
+                result = (self.turn, 'STUCK', 0)
+            else:
+                result = (self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
+
         if result is not None:
             self.result = result
             return result
