@@ -86,16 +86,6 @@ class Game:
             else:
                 return self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points)
 
-    def next_turn(self):
-        result = self.result()
-        if result is not None:
-            return result
-
-        while True:
-            self.turn = (self.turn + 1) % 4
-            if self.has_valid_move(self.turn):
-                break
-
     def make_move(self, d, left):
         if d not in self.hands[self.turn]:
             raise Exception('Cannot make move - {} is not'
@@ -107,7 +97,15 @@ class Game:
             self.board.add_right(d)
 
         self.hands[self.turn].remove(d)
-        return self.next_turn()
+
+        result = self.result()
+        if result is not None:
+            return result
+
+        while True:
+            self.turn = (self.turn + 1) % 4
+            if self.has_valid_move(self.turn):
+                break
 
     def __str__(self):
         string_list = ['Board:', str(self.board)]
