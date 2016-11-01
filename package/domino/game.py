@@ -31,13 +31,6 @@ class Game:
             if d in hand:
                 return i
 
-    def has_empty_hand(self):
-        for hand in self.hands:
-            if not hand:
-                return True
-
-        return False
-
     def remaining_points(self):
         points = []
         for hand in self.hands:
@@ -89,7 +82,7 @@ class Game:
         else:
             self.board.add_right(d)
 
-        if self.has_empty_hand():
+        if not self.hands[self.turn]:
             self.result = Result(self.turn, 'WON', sum(self.remaining_points()))
             return self.result
 
