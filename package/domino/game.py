@@ -49,13 +49,6 @@ class Game:
 
         return False
 
-    def is_stuck(self):
-        for turn in range(len(self.hands)):
-            if self.has_valid_move(turn):
-                return False
-
-        return True
-
     def valid_moves(self):
         if not self.board:
             return [(d, True) for d in self.hands[self.turn]]
@@ -86,25 +79,27 @@ class Game:
             self.result = Result(self.turn, 'WON', sum(self.remaining_points()))
             return self.result
 
-        if self.is_stuck():
+        num_players = len(self.hands)
+        stuck = True
+        for _ in range(num_players):
+            self.turn = (self.turn + 1) % num_players
+            if self.has_valid_move(self.turn):
+                stuck = False
+                break
+
+        if stuck:
             player_points = self.remaining_points()
             team_points = [player_points[0] + player_points[2],
                            player_points[1] + player_points[3]]
 
             if team_points[0] < team_points[1]:
-                result = Result(self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
+                self.result = Result(self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
             elif team_points[0] == team_points[1]:
-                result = Result(self.turn, 'STUCK', 0)
+                self.result = Result(self.turn, 'STUCK', 0)
             else:
-                result = Result(self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
+                self.result = Result(self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
 
-            self.result = result
-            return result
-
-        while True:
-            self.turn = (self.turn + 1) % 4
-            if self.has_valid_move(self.turn):
-                break
+            return self.result
 
     def __str__(self):
         string_list = ['Board:', str(self.board)]
