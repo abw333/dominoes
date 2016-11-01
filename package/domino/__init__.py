@@ -2,6 +2,7 @@ from domino.board import Board
 from domino.domino import Domino
 from domino.exceptions import EmptyBoardException
 from domino.exceptions import EndsMismatchException
+from domino.exceptions import NoSuchDominoException
 from domino.game import Game
 from domino.game_node import GameNode
 from domino.hand import Hand
