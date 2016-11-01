@@ -5,9 +5,36 @@ import random
 def randomized_hands():
     dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
-    return dominoes[0:7], dominoes[7:14], dominoes[14:21], dominoes[21:28]
+    return [Hand(dominoes[0:7]), Hand(dominoes[7:14]),
+            Hand(dominoes[14:21]), Hand(dominoes[21:28])]
 
 Result = collections.namedtuple('Result', ['player', 'type', 'points'])
+
+class Hand:
+    def __init__(self, dominoes):
+        self.dominoes = dominoes
+
+    def play(self, d):
+        try:
+            self.dominoes.remove(d)
+        except ValueError:
+            raise Exception('Cannot make move -'
+                            ' {} is not in hand!'.format(d))
+
+    def __contains__(self, d):
+        return d in self.dominoes
+
+    def __iter__(self):
+        return iter(self.dominoes)
+
+    def __len__(self):
+        return len(self.dominoes)
+
+    def __str__(self):
+        return ''.join(str(d) for d in self.dominoes)
+
+    def __repr__(self):
+        return str(self)
 
 class Game:
     def __init__(self, starting_domino=None, starting_player=0):
@@ -64,11 +91,7 @@ class Game:
         return moves
 
     def make_move(self, d, left):
-        try:
-            self.hands[self.turn].remove(d)
-        except ValueError:
-            raise Exception('Cannot make move - {} is not'
-                            ' in the hand of player {}.'.format(d, self.turn))
+        self.hands[self.turn].play(d)
 
         if left:
             self.board.add_left(d)
@@ -104,8 +127,7 @@ class Game:
     def __str__(self):
         string_list = ['Board:', str(self.board)]
         for i, hand in enumerate(self.hands):
-            hand_string = ''.join(str(d) for d in hand)
-            string_list.extend(["Player {}'s hand:".format(i), hand_string])
+            string_list.extend(["Player {}'s hand:".format(i), str(hand)])
 
         if self.result is None:
             string_list.append("Player {}'s turn".format(self.turn))
