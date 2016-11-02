@@ -19,7 +19,7 @@ class Game:
         if starting_domino is None:
             self.turn = starting_player
         else:
-            self.turn = self.domino_hand(starting_domino)
+            self.turn = self._domino_hand(starting_domino)
             self.make_move(starting_domino, True)
 
         self.result = None
@@ -27,19 +27,19 @@ class Game:
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
 
-    def domino_hand(self, d):
+    def _domino_hand(self, d):
         for i, hand in enumerate(self.hands):
             if d in hand:
                 return i
 
-    def remaining_points(self):
+    def _remaining_points(self):
         points = []
         for hand in self.hands:
             points.append(sum(d.first + d.second for d in hand))
 
         return points
 
-    def has_valid_move(self):
+    def _has_valid_move(self):
         if not self.board:
             return True
 
@@ -73,19 +73,19 @@ class Game:
             self.board.add_right(d)
 
         if not self.hands[self.turn]:
-            self.result = Result(self.turn, 'WON', sum(self.remaining_points()))
+            self.result = Result(self.turn, 'WON', sum(self._remaining_points()))
             return self.result
 
         num_players = len(self.hands)
         stuck = True
         for _ in range(num_players):
             self.turn = (self.turn + 1) % num_players
-            if self.has_valid_move():
+            if self._has_valid_move():
                 stuck = False
                 break
 
         if stuck:
-            player_points = self.remaining_points()
+            player_points = self._remaining_points()
             team_points = [player_points[0] + player_points[2],
                            player_points[1] + player_points[3]]
 
