@@ -67,10 +67,15 @@ class Game:
     def make_move(self, d, left):
         self.hands[self.turn].play(d)
 
-        if left:
-            self.board.add_left(d)
-        else:
-            self.board.add_right(d)
+        try:
+            if left:
+                self.board.add_left(d)
+            else:
+                self.board.add_right(d)
+        except domino.EndsMismatchException as error:
+            self.hands[self.turn].draw(d)
+
+            raise error
 
         if not self.hands[self.turn]:
             self.result = Result(self.turn, 'WON', sum(self._remaining_points()))
