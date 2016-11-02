@@ -22,6 +22,15 @@ class TestHand(unittest.TestCase):
         self.assertTrue(d1 in h)
         self.assertFalse(d2 in h)
 
+    def test_getitem(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(1, 3)
+
+        h = domino.Hand([d1, d2])
+
+        self.assertEqual(h[0], d1)
+        self.assertEqual(h[1], d2)
+
     def test_iter(self):
         h = domino.Hand([])
 

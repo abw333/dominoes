@@ -1,6 +1,7 @@
+import collections
 import domino
 
-class Hand:
+class Hand(collections.abc.Sequence):
     '''
     Python class for objects that represent a hand of dominoes.
 
@@ -40,11 +41,8 @@ class Hand:
             raise domino.NoSuchDominoException('Cannot make move -'
                                                ' {} is not in hand!'.format(d))
 
-    def __contains__(self, d):
-        return d in self._dominoes
-
-    def __iter__(self):
-        return iter(self._dominoes)
+    def __getitem__(self, i):
+        return self._dominoes[i]
 
     def __len__(self):
         return len(self._dominoes)
