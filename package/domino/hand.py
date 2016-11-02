@@ -25,7 +25,7 @@ class Hand:
         [1|3]
     '''
     def __init__(self, dominoes):
-        self.dominoes = list(dominoes)
+        self._dominoes = list(dominoes)
 
     def play(self, d):
         '''
@@ -35,22 +35,22 @@ class Hand:
         :param Domino d: domino to remove from the hand
         '''
         try:
-            self.dominoes.remove(d)
+            self._dominoes.remove(d)
         except ValueError:
             raise domino.NoSuchDominoException('Cannot make move -'
                                                ' {} is not in hand!'.format(d))
 
     def __contains__(self, d):
-        return d in self.dominoes
+        return d in self._dominoes
 
     def __iter__(self):
-        return iter(self.dominoes)
+        return iter(self._dominoes)
 
     def __len__(self):
-        return len(self.dominoes)
+        return len(self._dominoes)
 
     def __str__(self):
-        return ''.join(str(d) for d in self.dominoes)
+        return ''.join(str(d) for d in self._dominoes)
 
     def __repr__(self):
         return str(self)
