@@ -27,9 +27,9 @@ class Series:
         if self.is_over():
             return
 
-        if result.type == 'WON':
+        if result.won:
             self.games.append(Game(starting_player=result.player))
-        elif result.type == 'STUCK':
+        else:
             if result.points >= 0:
                 self.games.append(Game(starting_player=result.player))
             else:
