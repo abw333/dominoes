@@ -26,6 +26,7 @@ class TestHand(unittest.TestCase):
         h = domino.Hand([])
 
         self.assertIsInstance(h, collections.Iterable)
+        self.assertIsNotNone(iter(h))
 
     def test_len(self):
         h1 = domino.Hand([])
