@@ -11,6 +11,51 @@ def randomized_hands():
 Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
 class Game:
+    '''
+    Python class for objects that represent a dominoes game.
+
+    This variation of the dominoes game is played
+    using 28 dominoes, which use values from 0 to 6:
+    [0|0][0|1][0|2][0|3][0|4][0|5][0|6]
+    [1|1][1|2][1|3][1|4][1|5][1|6]
+    [2|2][2|3][2|4][2|5][2|6]
+    [3|3][3|4][3|5][3|6]
+    [4|4][4|5][4|6]
+    [5|5][5|6]
+    [6|6]
+
+    These dominoes are shuffled, and distributed evenly among
+    4 players. These players then sit on the edges of a square.
+    Players sitting opposite of each other are on the same team,
+    and the center of the square is the game board. Throughout
+    the game, each player will only be able to see their hand,
+    the game board, and the amount of dominoes left in the hands
+    of the other players. Note that no player can see the values
+    on the dominoes in the hands of the other players.
+
+    The 4 players will then take turns placing dominoes from their
+    hands onto the game board. Prior to distributing the dominoes,
+    the 4 players will agree on which player will play first,
+    either by designating a specific player or a specific domino
+    that must be played first (often [6|6]). After the game starts,
+    play proceeds clockwise.
+
+    If a player is able to place a domino on the board, he/she must.
+    Only if they have no possible moves, can the pass on their turn.
+
+    The game ends either when a player runs out of dominoes or when no
+    player can play a domino (in which case we say the game is stuck).
+
+    If a player runs out of dominoes, his/her team will earn a number
+    of points computed by adding all the values of all the dominoes
+    remaining in the hands of the 3 other players.
+
+    If the game is stuck, each team will add up all the values of
+    all the dominoes remaining in their hands. The team with the
+    lower score wins, and earns a number of points computed by
+    adding both teams' scores. If both teams have the same score,
+    the game is declared a tie, and neither team earns any points.
+    '''
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
 
