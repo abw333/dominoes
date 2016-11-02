@@ -41,6 +41,14 @@ class Hand(collections.abc.Sequence):
             raise domino.NoSuchDominoException('Cannot make move -'
                                                ' {} is not in hand!'.format(d))
 
+    def draw(self, d):
+        '''
+        Adds a domino to the hand.
+
+        :param Domino d: domino to add to the hand
+        '''
+        self._dominoes.append(d)
+
     def __getitem__(self, i):
         return self._dominoes[i]
 

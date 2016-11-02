@@ -105,5 +105,27 @@ class TestHand(unittest.TestCase):
         self.assertFalse(d1 in h)
         self.assertFalse(d2 in h)
 
+    def test_draw(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(1, 3)
+
+        h = domino.Hand([])
+
+        self.assertEqual(len(h), 0)
+        self.assertFalse(d1 in h)
+        self.assertFalse(d2 in h)
+
+        h.draw(d2)
+
+        self.assertEqual(len(h), 1)
+        self.assertFalse(d1 in h)
+        self.assertTrue(d2 in h)
+
+        h.draw(d1)
+
+        self.assertEqual(len(h), 2)
+        self.assertTrue(d1 in h)
+        self.assertTrue(d2 in h)
+
 if __name__ == '__main__':
     unittest.main()
