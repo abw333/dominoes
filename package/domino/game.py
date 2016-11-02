@@ -8,7 +8,7 @@ def randomized_hands():
     return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
             domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
 
-Result = collections.namedtuple('Result', ['player', 'type', 'points'])
+Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
 class Game:
     def __init__(self, starting_domino=None, starting_player=0):
@@ -67,13 +67,18 @@ class Game:
     def make_move(self, d, left):
         self.hands[self.turn].play(d)
 
-        if left:
-            self.board.add_left(d)
-        else:
-            self.board.add_right(d)
+        try:
+            if left:
+                self.board.add_left(d)
+            else:
+                self.board.add_right(d)
+        except domino.EndsMismatchException as error:
+            self.hands[self.turn].draw(d)
+
+            raise error
 
         if not self.hands[self.turn]:
-            self.result = Result(self.turn, 'WON', sum(self._remaining_points()))
+            self.result = Result(self.turn, True, sum(self._remaining_points()))
             return self.result
 
         num_players = len(self.hands)
@@ -90,28 +95,29 @@ class Game:
                            player_points[1] + player_points[3]]
 
             if team_points[0] < team_points[1]:
-                self.result = Result(self.turn, 'STUCK', -1 ** self.turn * sum(team_points))
+                self.result = Result(self.turn, False, pow(-1, self.turn) * sum(team_points))
             elif team_points[0] == team_points[1]:
-                self.result = Result(self.turn, 'STUCK', 0)
+                self.result = Result(self.turn, False, 0)
             else:
-                self.result = Result(self.turn, 'STUCK', -1 ** (1 + self.turn) * sum(team_points))
+                self.result = Result(self.turn, False, pow(-1, self.turn + 1) * sum(team_points))
 
             return self.result
 
     def __str__(self):
-        string_list = ['Board:', str(self.board)]
+        string_list = ['Board: {}'.format(self.board)]
+
         for i, hand in enumerate(self.hands):
-            string_list.extend(["Player {}'s hand:".format(i), str(hand)])
+            string_list.append("Player {}'s hand: {}".format(i, hand))
 
         if self.result is None:
             string_list.append("Player {}'s turn".format(self.turn))
         else:
-            if self.result.type == 'WON':
+            if self.result.won:
                 string_list.append(
                     'Player {} won and scored {} points!'.format(self.result.player,
                                                                  self.result.points)
                 )
-            elif self.result.type == 'STUCK':
+            else:
                 if self.result.points > 0:
                     string_list.append(
                         'Player {} stuck the game and won {} points!'.format(self.result.player,
@@ -123,8 +129,9 @@ class Game:
                     )
                 else:
                     string_list.append(
-                        'Player {} stuck the game and lost {} points!'.format(self.result.player,
-                                                                              self.result.points)
+                        'Player {} stuck the game and won'
+                        ' the opposing team {} points!'.format(self.result.player,
+                                                               -1 * self.result.points)
                     )
 
         return '\n'.join(string_list)
