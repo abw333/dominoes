@@ -95,18 +95,19 @@ class Game:
                            player_points[1] + player_points[3]]
 
             if team_points[0] < team_points[1]:
-                self.result = Result(self.turn, False, -1 ** self.turn * sum(team_points))
+                self.result = Result(self.turn, False, pow(-1, self.turn) * sum(team_points))
             elif team_points[0] == team_points[1]:
                 self.result = Result(self.turn, False, 0)
             else:
-                self.result = Result(self.turn, False, -1 ** (1 + self.turn) * sum(team_points))
+                self.result = Result(self.turn, False, pow(-1, self.turn + 1) * sum(team_points))
 
             return self.result
 
     def __str__(self):
-        string_list = ['Board:', str(self.board)]
+        string_list = ['Board: {}'.format(self.board)]
+
         for i, hand in enumerate(self.hands):
-            string_list.extend(["Player {}'s hand:".format(i), str(hand)])
+            string_list.append("Player {}'s hand: {}".format(i, hand))
 
         if self.result is None:
             string_list.append("Player {}'s turn".format(self.turn))
@@ -128,8 +129,9 @@ class Game:
                     )
                 else:
                     string_list.append(
-                        'Player {} stuck the game and lost {} points!'.format(self.result.player,
-                                                                              self.result.points)
+                        'Player {} stuck the game and won'
+                        ' the opposing team {} points!'.format(self.result.player,
+                                                               -1 * self.result.points)
                     )
 
         return '\n'.join(string_list)
