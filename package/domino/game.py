@@ -164,7 +164,7 @@ class Game:
         '''
         Returns a list of valid moves for the player whose turn it is. Moves
         are represented by a tuple of Domino and bool. The Domino indicates
-        the domino that can be played, and the bool indicates on what side of
+        the domino that can be played, and the bool indicates on what end of
         the board the domino can be played (True for left, False for right).
         '''
         if not self.board:
@@ -181,6 +181,21 @@ class Game:
         return moves
 
     def make_move(self, d, left):
+        '''
+        Plays a domino from the hand of the player whose turn it is onto one
+        end of the game board. If the game ends, a Result object is returned.
+        Otherwise, None is returned and the turn is advanced to the next player
+        who has a valid move.
+
+        Raises a GameOverException if the game has already ended,
+        a NoSuchDominoException if the domino to be played is not in the hand
+        of the player whose turn it is, and an EndsMismatchException if the
+        domino cannot be placed on the specified position in the board.
+
+        :param Domino d: domino to be played
+        :param bool left: end of the board on which to play the
+                          domino (True for left, False for right)
+        '''
         if self.result is not None:
             raise domino.GameOverException('Cannot make a move - the game is over!')
 
@@ -192,14 +207,18 @@ class Game:
             else:
                 self.board.add_right(d)
         except domino.EndsMismatchException as error:
+            # return the domino to the hand if it cannot be placed on the board
             self.hands[self.turn].draw(d)
 
             raise error
 
+        # check if the game ended due to a player running out of dominoes
         if not self.hands[self.turn]:
             self.result = Result(self.turn, True, sum(self._remaining_points()))
             return self.result
 
+        # advance the turn to the next player with a valid move.
+        # if no player has a valid move, the game is stuck.
         num_players = len(self.hands)
         stuck = True
         for _ in range(num_players):
