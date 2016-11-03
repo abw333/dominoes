@@ -30,10 +30,10 @@ class Hand(collections.abc.Sequence):
 
     def play(self, d):
         '''
-        Removes a domino from the hand. Raises a
-        NoSuchDominoException if the domino is not in the hand.
+        Removes a domino from the hand.
 
         :param Domino d: domino to remove from the hand
+        :raises NoSuchDominoException: if the domino is not in the hand
         '''
         try:
             self._dominoes.remove(d)

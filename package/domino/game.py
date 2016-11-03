@@ -111,10 +111,10 @@ class Game:
 
     def _validate_player(self, player):
         '''
-        Checks that a player is a valid player. Valid players are: 0, 1,
-        2, and 3. Raises a NoSuchPlayerException if the player is invalid.
+        Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
 
         :param int player: player to be validated
+        :raises NoSuchPlayerException: if the player is invalid
         '''
         valid_players = range(len(self.hands))
         if player not in valid_players:
@@ -124,10 +124,10 @@ class Game:
 
     def _domino_hand(self, d):
         '''
-        Returns the player whose hand contains a specified domino. Raises
-        a NoSuchDominoException if no hand contains the specified domino.
+        Returns the player whose hand contains a specified domino.
 
         :param Domino d: domino to find within the players' hands
+        :raises NoSuchDominoException: if no hand contains the specified domino
         '''
         for i, hand in enumerate(self.hands):
             if d in hand:
@@ -187,14 +187,14 @@ class Game:
         Otherwise, None is returned and the turn is advanced to the next player
         who has a valid move.
 
-        Raises a GameOverException if the game has already ended,
-        a NoSuchDominoException if the domino to be played is not in the hand
-        of the player whose turn it is, and an EndsMismatchException if the
-        domino cannot be placed on the specified position in the board.
-
         :param Domino d: domino to be played
         :param bool left: end of the board on which to play the
                           domino (True for left, False for right)
+        :raises GameOverException: if the game has already ended
+        :raises NoSuchDominoException: if the domino to be played is not in
+                                       the hand of the player whose turn it is
+        :raises EndsMismatchException: if the domino cannot be placed on
+                                       the specified position in the board
         '''
         if self.result is not None:
             raise domino.GameOverException('Cannot make a move - the game is over!')
