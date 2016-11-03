@@ -3,20 +3,98 @@ import domino
 import random
 
 def randomized_hands():
+    '''
+    Returns 4 hands of 7 dominoes each by randomly shuffing the
+    28 dominoes used in this variation of the dominoes game.
+    '''
     dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
     return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
             domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
 
+'''
+namedtuple to represent the result of a dominoes game.
+
+The attributes are defined as follows:
+    player (int): the last player to make a move.
+    won (bool): True if the game ended due to an empty hand.
+                False if the game ended due to being stuck
+    points (int): the absolute value of this quantity indicates
+                  the amount of points earned by the winning team.
+                  This quantity is positive if the last player to
+                  make a move is part of the winning team, and
+                  negative otherwise. If it is 0, it means the
+                  game ended in a tie.
+'''
 Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
 class Game:
+    '''
+    Python class for objects that represent a dominoes game.
+
+    This variation of the dominoes game is played
+    using 28 dominoes, which use values from 0 to 6:
+    [0|0][0|1][0|2][0|3][0|4][0|5][0|6]
+    [1|1][1|2][1|3][1|4][1|5][1|6]
+    [2|2][2|3][2|4][2|5][2|6]
+    [3|3][3|4][3|5][3|6]
+    [4|4][4|5][4|6]
+    [5|5][5|6]
+    [6|6]
+
+    These dominoes are shuffled, and distributed evenly among
+    4 players. These players then sit on the edges of a square.
+    Players sitting opposite of each other are on the same team,
+    and the center of the square is the game board. Throughout
+    the game, each player will only be able to see their hand,
+    the game board, and the amount of dominoes left in the hands
+    of the other players. Note that no player can see the values
+    on the dominoes in the hands of the other players.
+
+    The 4 players will then take turns placing dominoes from their
+    hands onto the game board. The game board consists of a chain
+    of dominoes placed end to end such that the values on connected
+    ends always match.
+
+    Prior to distributing the dominoes, the 4 players will agree on
+    which player will play first, either by designating a specific
+    player or a specific domino that must be played first (often [6|6]).
+    After the game starts, play proceeds clockwise.
+
+    If a player is able to place a domino on the board, he/she must.
+    Only if they have no possible moves, can the pass on their turn.
+
+    The game ends either when a player runs out of dominoes or when no
+    player can play a domino (in which case we say the game is stuck).
+
+    If a player runs out of dominoes, his/her team will earn a number
+    of points computed by adding all the values of all the dominoes
+    remaining in the hands of the 3 other players.
+
+    If the game is stuck, each team will add up all the values of
+    all the dominoes remaining in their hands. The team with the
+    lower score wins, and earns a number of points computed by
+    adding both teams' scores. If both teams have the same score,
+    the game is declared a tie, and neither team earns any points.
+
+    :param Domino starting_domino: the domino that should be played
+                                   to start the game. The player
+                                   with this domino in their hand
+                                   will play first.
+    :param int starting_player: the player that should play first.
+                                This value is ignored if a starting
+                                domino is provided. Players are
+                                referred to by their indexes: 0, 1,
+                                2, and 3. 0 and 2 are on one team,
+                                and 1 and 3 are on another team.
+    '''
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
 
         self.hands = randomized_hands()
 
         if starting_domino is None:
+            self._validate_player(starting_player)
             self.turn = starting_player
         else:
             self.turn = self._domino_hand(starting_domino)
@@ -27,10 +105,19 @@ class Game:
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
 
+    def _validate_player(self, player):
+        valid_players = range(len(self.hands))
+        if player not in valid_players:
+            valid_players = ', '.join(str(p) for p in valid_players)
+            raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
+                                               ' are: {}'.format(player, valid_players))
+
     def _domino_hand(self, d):
         for i, hand in enumerate(self.hands):
             if d in hand:
                 return i
+
+        raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
     def _remaining_points(self):
         points = []
