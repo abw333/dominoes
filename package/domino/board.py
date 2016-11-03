@@ -34,8 +34,9 @@ class Board:
 
     def left_end(self):
         '''
-        Returns the outward-facing value on the left end of the
-        board. Raises an EmptyBoardException if the board is empty.
+        Returns the outward-facing value on the left end of the board.
+
+        :raises EmptyBoardException: if the board is empty
         '''
         try:
             return self.board[0].first
@@ -45,8 +46,9 @@ class Board:
 
     def right_end(self):
         '''
-        Returns the outward-facing value on the right end of the
-        board. Raises an EmptyBoardException if the board is empty.
+        Returns the outward-facing value on the right end of the board.
+
+        :raises EmptyBoardException: if the board is empty
         '''
         try:
             return self.board[-1].second
@@ -57,9 +59,9 @@ class Board:
     def add_left(self, d):
         '''
         Adds the provided domino to the left end of the board.
-        Raises an EndsMismatchException if the values do not match.
 
         :param Domino d: domino to add
+        :raises EndsMismatchException: if the values do not match
         '''
         if not self:
             self.board.append(d)
@@ -76,9 +78,9 @@ class Board:
     def add_right(self, d):
         '''
         Adds the provided domino to the right end of the board.
-        Raises an EndsMismatchException if the values do not match.
 
         :param Domino d: domino to add
+        :raises EndsMismatchException: if the values do not match
         '''
         if not self:
             self.board.append(d)
