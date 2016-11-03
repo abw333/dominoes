@@ -103,9 +103,19 @@ class Game:
         self.result = None
 
     def skinny_board(self):
+        '''
+        Converts the board representation used by this game from a regular
+        Board to a less descriptive but more memory efficient SkinnyBoard.
+        '''
         self.board = domino.SkinnyBoard.from_board(self.board)
 
     def _validate_player(self, player):
+        '''
+        Checks that a player is a valid player. Valid players are: 0, 1,
+        2, and 3. Raises a NoSuchPlayerException if the player is invalid.
+
+        :param int player: player to be validated
+        '''
         valid_players = range(len(self.hands))
         if player not in valid_players:
             valid_players = ', '.join(str(p) for p in valid_players)
@@ -113,6 +123,12 @@ class Game:
                                                ' are: {}'.format(player, valid_players))
 
     def _domino_hand(self, d):
+        '''
+        Returns the player whose hand contains a specified domino. Raises
+        a NoSuchDominoException if no hand contains the specified domino.
+
+        :param Domino d: domino to find within the players' hands
+        '''
         for i, hand in enumerate(self.hands):
             if d in hand:
                 return i
@@ -120,6 +136,9 @@ class Game:
         raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
     def _remaining_points(self):
+        '''
+        Returns the amount of points left in the hands of each of the 4 players.
+        '''
         points = []
         for hand in self.hands:
             points.append(sum(d.first + d.second for d in hand))
@@ -127,6 +146,10 @@ class Game:
         return points
 
     def _has_valid_move(self):
+        '''
+        Returns a boolean indicating whether the
+        player whose turn it is has any valid moves.
+        '''
         if not self.board:
             return True
 
@@ -138,6 +161,12 @@ class Game:
         return False
 
     def valid_moves(self):
+        '''
+        Returns a list of valid moves for the player whose turn it is. Moves
+        are represented by a tuple of Domino and bool. The Domino indicates
+        the domino that can be played, and the bool indicates on what side of
+        the board the domino can be played (True for left, False for right).
+        '''
         if not self.board:
             return [(d, True) for d in self.hands[self.turn]]
 
