@@ -76,6 +76,14 @@ class Game:
     lower score wins, and earns a number of points computed by
     adding both teams' scores. If both teams have the same score,
     the game is declared a tie, and neither team earns any points.
+
+    :param Domino starting_domino: the domino that should be played
+                                   to start the game. The player
+                                   with this domino in their hand
+                                   will play first.
+    :param int starting_player: the player that should play first.
+                                This value is ignored if a staring
+                                domino is provided.
     '''
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
