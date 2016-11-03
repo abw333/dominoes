@@ -106,6 +106,8 @@ class Game:
             if d in hand:
                 return i
 
+        raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
+
     def _remaining_points(self):
         points = []
         for hand in self.hands:
