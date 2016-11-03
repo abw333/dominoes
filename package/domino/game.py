@@ -181,6 +181,9 @@ class Game:
         return moves
 
     def make_move(self, d, left):
+        if self.result is not None:
+            raise domino.GameOverException('Cannot make a move - the game is over!')
+
         self.hands[self.turn].play(d)
 
         try:

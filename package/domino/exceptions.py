@@ -12,6 +12,13 @@ class EndsMismatchException(Exception):
     '''
     pass
 
+class GameOverException(Exception):
+    '''
+    Exception to be raised for errors
+    involving a game that has ended.
+    '''
+    pass
+
 class NoSuchDominoException(Exception):
     '''
     Exception to be raised for errors
