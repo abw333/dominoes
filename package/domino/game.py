@@ -34,11 +34,14 @@ class Game:
     on the dominoes in the hands of the other players.
 
     The 4 players will then take turns placing dominoes from their
-    hands onto the game board. Prior to distributing the dominoes,
-    the 4 players will agree on which player will play first,
-    either by designating a specific player or a specific domino
-    that must be played first (often [6|6]). After the game starts,
-    play proceeds clockwise.
+    hands onto the game board. The game board consists of a chain
+    of dominoes placed end to end such that the values on connected
+    ends always match.
+
+    Prior to distributing the dominoes, the 4 players will agree on
+    which player will play first, either by designating a specific
+    player or a specific domino that must be played first (often [6|6]).
+    After the game starts, play proceeds clockwise.
 
     If a player is able to place a domino on the board, he/she must.
     Only if they have no possible moves, can the pass on their turn.
