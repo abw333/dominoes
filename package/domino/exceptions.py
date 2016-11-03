@@ -18,3 +18,10 @@ class NoSuchDominoException(Exception):
     involving a specific missing domino.
     '''
     pass
+
+class NoSuchPlayerException(Exception):
+    '''
+    Exception to be raised for errors
+    involving a specific missing player.
+    '''
+    pass

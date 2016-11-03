@@ -82,8 +82,11 @@ class Game:
                                    with this domino in their hand
                                    will play first.
     :param int starting_player: the player that should play first.
-                                This value is ignored if a staring
-                                domino is provided.
+                                This value is ignored if a starting
+                                domino is provided. Players are
+                                referred to by their indexes: 0, 1,
+                                2, and 3. 0 and 2 are on one team,
+                                and 1 and 3 are on another team.
     '''
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
@@ -91,6 +94,7 @@ class Game:
         self.hands = randomized_hands()
 
         if starting_domino is None:
+            self._validate_player(starting_player)
             self.turn = starting_player
         else:
             self.turn = self._domino_hand(starting_domino)
@@ -100,6 +104,13 @@ class Game:
 
     def skinny_board(self):
         self.board = domino.SkinnyBoard.from_board(self.board)
+
+    def _validate_player(self, player):
+        valid_players = range(len(self.hands))
+        if player not in valid_players:
+            valid_players = ', '.join(str(p) for p in valid_players)
+            raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
+                                               ' are: {}'.format(player, valid_players))
 
     def _domino_hand(self, d):
         for i, hand in enumerate(self.hands):
