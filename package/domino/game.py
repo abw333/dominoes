@@ -3,11 +3,29 @@ import domino
 import random
 
 def randomized_hands():
+    '''
+    Returns 4 hands of 7 dominoes each by randomly shuffing the
+    28 dominoes used in this variation of the dominoes game.
+    '''
     dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
     return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
             domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
 
+'''
+namedtuple to represent the result of a dominoes game.
+
+The attributes are defined as follows:
+    player (int): the last player to make a move.
+    won (bool): True if the game ended due to an empty hand.
+                False if the game ended due to being stuck
+    points (int): the absolute value of this quantity indicates
+                  the amount of points earned by the winning team.
+                  This quantity is positive if the last player to
+                  make a move is part of the winning team, and
+                  negative otherwise. If it is 0, it means the
+                  game ended in a tie.
+'''
 Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
 class Game:
