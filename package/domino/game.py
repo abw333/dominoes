@@ -2,7 +2,7 @@ import collections
 import domino
 import random
 
-def randomized_hands():
+def _randomized_hands():
     '''
     :return: 4 hands, obtained by shuffling the 28 dominoes used in
              this variation of the game, and distributing them evenly
@@ -11,6 +11,33 @@ def randomized_hands():
     random.shuffle(dominoes)
     return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
             domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
+
+def _validate_player(player):
+    '''
+    Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
+
+    :param int player: player to be validated
+    :return: None
+    :raises NoSuchPlayerException: if the player is invalid
+    '''
+    valid_players = range(4)
+    if player not in valid_players:
+        valid_players = ', '.join(str(p) for p in valid_players)
+        raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
+                                           ' are: {}'.format(player, valid_players))
+
+def _domino_hand(d, hands):
+    '''
+    :param Domino d: domino to find within the hands
+    :param list hands: hands to find domino in
+    :return: index of the hand that contains the specified domino
+    :raises NoSuchDominoException: if no hand contains the specified domino
+    '''
+    for i, hand in enumerate(hands):
+        if d in hand:
+            return i
+
+    raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
 '''
 namedtuple to represent the result of a dominoes game.
@@ -95,13 +122,13 @@ class Game:
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
 
-        self.hands = randomized_hands()
+        self.hands = _randomized_hands()
 
         if starting_domino is None:
-            self._validate_player(starting_player)
+            _validate_player(starting_player)
             self.turn = starting_player
         else:
-            self.turn = self._domino_hand(starting_domino)
+            self.turn = _domino_hand(starting_domino, self.hands)
             self.make_move(starting_domino, True)
 
         self.result = None
@@ -114,32 +141,6 @@ class Game:
         :return: None
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
-
-    def _validate_player(self, player):
-        '''
-        Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
-
-        :param int player: player to be validated
-        :return: None
-        :raises NoSuchPlayerException: if the player is invalid
-        '''
-        valid_players = range(len(self.hands))
-        if player not in valid_players:
-            valid_players = ', '.join(str(p) for p in valid_players)
-            raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
-                                               ' are: {}'.format(player, valid_players))
-
-    def _domino_hand(self, d):
-        '''
-        :param Domino d: domino to find within the players' hands
-        :return: the player whose hand contains a specified domino
-        :raises NoSuchDominoException: if no hand contains the specified domino
-        '''
-        for i, hand in enumerate(self.hands):
-            if d in hand:
-                return i
-
-        raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
     def _remaining_points(self):
         '''
@@ -182,6 +183,8 @@ class Game:
         for d in self.hands[self.turn]:
             if self.board.left_end() in d:
                 moves.append((d, True))
+            # do not double count moves if both of the board's ends have
+            # the same value, and a domino can be placed on both of them
             if self.board.right_end() in d and \
                self.board.left_end() != self.board.right_end():
                 moves.append((d, False))
