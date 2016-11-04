@@ -2,7 +2,7 @@ import collections
 import domino
 import random
 
-def randomized_hands():
+def _randomized_hands():
     '''
     :return: 4 hands, obtained by shuffling the 28 dominoes used in
              this variation of the game, and distributing them evenly
@@ -95,7 +95,7 @@ class Game:
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
 
-        self.hands = randomized_hands()
+        self.hands = _randomized_hands()
 
         if starting_domino is None:
             self._validate_player(starting_player)
