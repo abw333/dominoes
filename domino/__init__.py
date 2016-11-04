@@ -6,7 +6,6 @@ from domino.exceptions import GameOverException
 from domino.exceptions import NoSuchDominoException
 from domino.exceptions import NoSuchPlayerException
 from domino.game import Game
-from domino.game_node import GameNode
 from domino.hand import Hand
 from domino.series import Series
 from domino.skinny_board import SkinnyBoard
