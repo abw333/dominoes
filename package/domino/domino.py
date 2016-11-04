@@ -30,8 +30,7 @@ class Domino:
 
     def inverted(self):
         '''
-        Returns a new Domino, with the same
-        values, but in inverted positions.
+        :return: a new Domino, with the same values, but in inverted positions
         '''
         return Domino(self.second, self.first)
 

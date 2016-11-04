@@ -4,8 +4,8 @@ import random
 
 def randomized_hands():
     '''
-    Returns 4 hands of 7 dominoes each by randomly shuffing the
-    28 dominoes used in this variation of the dominoes game.
+    :return: 4 hands, obtained by shuffling the 28 dominoes used in
+             this variation of the game, and distributing them evenly
     '''
     dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
@@ -106,6 +106,8 @@ class Game:
         '''
         Converts the board representation used by this game from a regular
         Board to a less descriptive but more memory efficient SkinnyBoard.
+
+        :return: None
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
 
@@ -114,6 +116,7 @@ class Game:
         Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
 
         :param int player: player to be validated
+        :return: None
         :raises NoSuchPlayerException: if the player is invalid
         '''
         valid_players = range(len(self.hands))
@@ -124,9 +127,8 @@ class Game:
 
     def _domino_hand(self, d):
         '''
-        Returns the player whose hand contains a specified domino.
-
         :param Domino d: domino to find within the players' hands
+        :return: the player whose hand contains a specified domino
         :raises NoSuchDominoException: if no hand contains the specified domino
         '''
         for i, hand in enumerate(self.hands):
@@ -137,7 +139,8 @@ class Game:
 
     def _remaining_points(self):
         '''
-        Returns the amount of points left in the hands of each of the 4 players.
+        :return: a list indicating the amount of points
+                 left in the hands of each of the 4 players
         '''
         points = []
         for hand in self.hands:
@@ -147,8 +150,8 @@ class Game:
 
     def _has_valid_move(self):
         '''
-        Returns a boolean indicating whether the
-        player whose turn it is has any valid moves.
+        :return: a boolean indicating whether the player
+                 whose turn it is has any valid moves
         '''
         if not self.board:
             return True
@@ -162,10 +165,11 @@ class Game:
 
     def valid_moves(self):
         '''
-        Returns a list of valid moves for the player whose turn it is. Moves
-        are represented by a tuple of Domino and bool. The Domino indicates
-        the domino that can be played, and the bool indicates on what end of
-        the board the domino can be played (True for left, False for right).
+        :return: a list of valid moves for the player whose turn it is.
+                 Moves are represented by a tuple of Domino and bool. The
+                 Domino indicates the domino that can be played, and the
+                 bool indicates on what end of the board the domino can be
+                 played (True for left, False for right).
         '''
         if not self.board:
             return [(d, True) for d in self.hands[self.turn]]
@@ -183,13 +187,13 @@ class Game:
     def make_move(self, d, left):
         '''
         Plays a domino from the hand of the player whose turn it is onto one
-        end of the game board. If the game ends, a Result object is returned.
-        Otherwise, None is returned and the turn is advanced to the next player
-        who has a valid move.
+        end of the game board. If the game does not end, the turn is advanced
+        to the next player who has a valid move.
 
         :param Domino d: domino to be played
         :param bool left: end of the board on which to play the
                           domino (True for left, False for right)
+        :return: a Result object if the game ends; None otherwise
         :raises GameOverException: if the game has already ended
         :raises NoSuchDominoException: if the domino to be played is not in
                                        the hand of the player whose turn it is

@@ -33,6 +33,7 @@ class Hand(collections.abc.Sequence):
         Removes a domino from the hand.
 
         :param Domino d: domino to remove from the hand
+        :return: None
         :raises NoSuchDominoException: if the domino is not in the hand
         '''
         try:
@@ -46,6 +47,7 @@ class Hand(collections.abc.Sequence):
         Adds a domino to the hand.
 
         :param Domino d: domino to add to the hand
+        :return: None
         '''
         self._dominoes.append(d)
 

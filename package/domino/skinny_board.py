@@ -42,10 +42,8 @@ class SkinnyBoard:
     @classmethod
     def from_board(cls, board):
         '''
-        Initializes a SkinnyBoard instance
-        to represent a given Board instance.
-
         :param Board board: board to represent
+        :return: SkinnyBoard to represent the given Board
         '''
         if len(board):
             left = board.left_end()
@@ -58,8 +56,7 @@ class SkinnyBoard:
 
     def left_end(self):
         '''
-        Returns the outward-facing value on the left end of the board.
-
+        :return: the outward-facing value on the left end of the board
         :raises EmptyBoardException: if the board is empty
         '''
         if not self:
@@ -70,9 +67,8 @@ class SkinnyBoard:
 
     def right_end(self):
         '''
-        Returns the outward-facing value on the right end of the board.
-
-        :raises EmptyBoardException: if the board is empty.
+        :return: the outward-facing value on the right end of the board
+        :raises EmptyBoardException: if the board is empty
         '''
         if not self:
             raise domino.EmptyBoardException('Cannot retrieve the right end of'
@@ -85,6 +81,7 @@ class SkinnyBoard:
         Adds the provided domino to the left end of the board.
 
         :param Domino d: domino to add
+        :return: None
         :raises EndsMismatchException: if the values do not match
         '''
         if not self:
@@ -107,6 +104,7 @@ class SkinnyBoard:
         Adds the provided domino to the right end of the board.
 
         :param Domino d: domino to add
+        :return: None
         :raises EndsMismatchException: if the values do not match
         '''
         if not self:
