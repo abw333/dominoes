@@ -182,6 +182,8 @@ class Game:
         for d in self.hands[self.turn]:
             if self.board.left_end() in d:
                 moves.append((d, True))
+            # do not double count moves if both of the board's ends have
+            # the same value, and a domino can be placed on both of them
             if self.board.right_end() in d and \
                self.board.left_end() != self.board.right_end():
                 moves.append((d, False))
