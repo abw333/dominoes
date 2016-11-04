@@ -23,6 +23,15 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(all_dominoes), 28)
 
+    def test_validate_player(self):
+        g = domino.Game()
+
+        for i in range(4):
+            self.assertIsNone(g._validate_player(i))
+
+        self.assertRaises(domino.NoSuchPlayerException, g._validate_player, -1)
+        self.assertRaises(domino.NoSuchPlayerException, g._validate_player, 4)
+
     def test_init(self):
         g = domino.Game()
 
