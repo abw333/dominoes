@@ -7,6 +7,8 @@ class Board:
     A domino board consists of a series of dominoes placed
     end to end such that the values on connected ends match.
 
+    :var board: deque representing the game board
+
     Usage::
         >>> import domino
         >>> d1 = domino.Domino(1, 2)
