@@ -12,6 +12,20 @@ def _randomized_hands():
     return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
             domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
 
+def _validate_player(player):
+    '''
+    Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
+
+    :param int player: player to be validated
+    :return: None
+    :raises NoSuchPlayerException: if the player is invalid
+    '''
+    valid_players = range(4)
+    if player not in valid_players:
+        valid_players = ', '.join(str(p) for p in valid_players)
+        raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
+                                           ' are: {}'.format(player, valid_players))
+
 '''
 namedtuple to represent the result of a dominoes game.
 
@@ -98,7 +112,7 @@ class Game:
         self.hands = _randomized_hands()
 
         if starting_domino is None:
-            self._validate_player(starting_player)
+            _validate_player(starting_player)
             self.turn = starting_player
         else:
             self.turn = self._domino_hand(starting_domino)
@@ -114,20 +128,6 @@ class Game:
         :return: None
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
-
-    def _validate_player(self, player):
-        '''
-        Checks that a player is a valid player. Valid players are: 0, 1, 2, and 3.
-
-        :param int player: player to be validated
-        :return: None
-        :raises NoSuchPlayerException: if the player is invalid
-        '''
-        valid_players = range(len(self.hands))
-        if player not in valid_players:
-            valid_players = ', '.join(str(p) for p in valid_players)
-            raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
-                                               ' are: {}'.format(player, valid_players))
 
     def _domino_hand(self, d):
         '''
