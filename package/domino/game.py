@@ -26,6 +26,19 @@ def _validate_player(player):
         raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
                                            ' are: {}'.format(player, valid_players))
 
+def _domino_hand(d, hands):
+    '''
+    :param Domino d: domino to find within the hands
+    :param list hands: hands to find domino in
+    :return: index of the hand that contains the specified domino
+    :raises NoSuchDominoException: if no hand contains the specified domino
+    '''
+    for i, hand in enumerate(hands):
+        if d in hand:
+            return i
+
+    raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
+
 '''
 namedtuple to represent the result of a dominoes game.
 
@@ -115,7 +128,7 @@ class Game:
             _validate_player(starting_player)
             self.turn = starting_player
         else:
-            self.turn = self._domino_hand(starting_domino)
+            self.turn = _domino_hand(starting_domino, self.hands)
             self.make_move(starting_domino, True)
 
         self.result = None
@@ -128,18 +141,6 @@ class Game:
         :return: None
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
-
-    def _domino_hand(self, d):
-        '''
-        :param Domino d: domino to find within the players' hands
-        :return: the player whose hand contains a specified domino
-        :raises NoSuchDominoException: if no hand contains the specified domino
-        '''
-        for i, hand in enumerate(self.hands):
-            if d in hand:
-                return i
-
-        raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
     def _remaining_points(self):
         '''

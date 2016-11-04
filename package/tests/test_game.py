@@ -3,8 +3,6 @@ import unittest
 
 class TestGame(unittest.TestCase):
     def test_randomized_hands(self):
-        import domino.game
-
         hands = domino.game._randomized_hands()
 
         self.assertEqual(len(hands), 4)
@@ -24,8 +22,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(all_dominoes), 28)
 
     def test_validate_player(self):
-        import domino.game
-
         for i in range(4):
             self.assertIsNone(domino.game._validate_player(i))
 
@@ -33,6 +29,23 @@ class TestGame(unittest.TestCase):
                           domino.game._validate_player, -1)
         self.assertRaises(domino.NoSuchPlayerException,
                           domino.game._validate_player, 4)
+
+    def test_domino_hand(self):
+        d1 = domino.Domino(1, 1)
+        d2 = domino.Domino(1, 2)
+        d3 = domino.Domino(1, 3)
+        d4 = domino.Domino(1, 4)
+        d5 = domino.Domino(1, 5)
+
+        h1 = domino.Hand([d1, d2])
+        h2 = domino.Hand([d3, d4])
+        hands = [h1, h2]
+
+        self.assertEqual(domino.game._domino_hand(d1, hands), 0)
+        self.assertEqual(domino.game._domino_hand(d4, hands), 1)
+
+        self.assertRaises(domino.NoSuchDominoException,
+                          domino.game._domino_hand, d5, hands)
 
     def test_init(self):
         g = domino.Game()
