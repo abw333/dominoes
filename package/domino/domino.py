@@ -7,6 +7,8 @@ class Domino:
 
     :param int first: value on one end
     :param int second: value on the other end
+    :var first: value on one end
+    :var second: value on the other end
 
     Usage::
         >>> import domino

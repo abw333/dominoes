@@ -15,16 +15,15 @@ def randomized_hands():
 '''
 namedtuple to represent the result of a dominoes game.
 
-The attributes are defined as follows:
-    player (int): the last player to make a move.
-    won (bool): True if the game ended due to an empty hand.
-                False if the game ended due to being stuck
-    points (int): the absolute value of this quantity indicates
-                  the amount of points earned by the winning team.
-                  This quantity is positive if the last player to
-                  make a move is part of the winning team, and
-                  negative otherwise. If it is 0, it means the
-                  game ended in a tie.
+:var player: the last player to make a move
+:var won: True if the game ended due to an empty hand;
+          False if the game ended due to being stuck
+:var points: the absolute value of this quantity indicates
+             the amount of points earned by the winning team.
+             This quantity is positive if the last player to
+             make a move is part of the winning team, and
+             negative otherwise. If it is 0, it means the
+             game ended in a tie
 '''
 Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
@@ -87,6 +86,11 @@ class Game:
                                 referred to by their indexes: 0, 1,
                                 2, and 3. 0 and 2 are on one team,
                                 and 1 and 3 are on another team.
+    :var board: the game board
+    :var hands: a list containing each player's hand
+    :var turn: the player whose turn it is
+    :var result: None if the game is in progress; otherwise a
+                 Result object indicating the outcome of the game
     '''
     def __init__(self, starting_domino=None, starting_player=0):
         self.board = domino.Board()
