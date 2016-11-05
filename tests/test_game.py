@@ -99,6 +99,16 @@ class TestGame(unittest.TestCase):
         # no valid moves
         self.assertFalse(domino.game._has_valid_move(h5, b))
 
+    def test_result(self):
+        p = 0
+        w = True
+        pts = 100
+        r = domino.game.Result(p, w, pts)
+
+        self.assertEqual(r.player, p)
+        self.assertEqual(r.won, True)
+        self.assertEqual(r.points, pts)
+
     def test_init(self):
         g1 = domino.Game()
 
