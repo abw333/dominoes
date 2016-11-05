@@ -41,7 +41,7 @@ def _domino_hand(d, hands):
 
 def _remaining_points(hands):
     '''
-    :param list hands: hands to count the remaining points in
+    :param list hands: hands for which to compute the remaining points
     :return: a list indicating the amount of points
              remaining in each of the input hands
     '''
