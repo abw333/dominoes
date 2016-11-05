@@ -48,6 +48,18 @@ class TestGame(unittest.TestCase):
         self.assertRaises(domino.NoSuchDominoException,
                           domino.game._domino_hand, d5, hands)
 
+    def test_remaining_points(self):
+        h1 = []
+
+        self.assertEqual(domino.game._remaining_points(h1), [])
+
+        d1 = domino.Domino(0, 1)
+        d2 = domino.Domino(1, 3)
+        d3 = domino.Domino(3, 6)
+        h2 = [domino.Hand([]), domino.Hand([d1]), domino.Hand([d2, d3])]
+
+        self.assertEqual(domino.game._remaining_points(h2), [0, 1, 13])
+
     def test_init(self):
         g1 = domino.Game()
 

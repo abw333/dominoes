@@ -39,6 +39,18 @@ def _domino_hand(d, hands):
 
     raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
 
+def _remaining_points(hands):
+    '''
+    :param list hands: hands for which to compute the remaining points
+    :return: a list indicating the amount of points
+             remaining in each of the input hands
+    '''
+    points = []
+    for hand in hands:
+        points.append(sum(d.first + d.second for d in hand))
+
+    return points
+
 '''
 namedtuple to represent the result of a dominoes game.
 
@@ -142,17 +154,6 @@ class Game:
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
 
-    def _remaining_points(self):
-        '''
-        :return: a list indicating the amount of points
-                 left in the hands of each of the 4 players
-        '''
-        points = []
-        for hand in self.hands:
-            points.append(sum(d.first + d.second for d in hand))
-
-        return points
-
     def _has_valid_move(self):
         '''
         :return: a boolean indicating whether the player
@@ -225,7 +226,7 @@ class Game:
 
         # check if the game ended due to a player running out of dominoes
         if not self.hands[self.turn]:
-            self.result = Result(self.turn, True, sum(self._remaining_points()))
+            self.result = Result(self.turn, True, sum(_remaining_points(self.hands)))
             return self.result
 
         # advance the turn to the next player with a valid move.
@@ -239,7 +240,7 @@ class Game:
                 break
 
         if stuck:
-            player_points = self._remaining_points()
+            player_points = _remaining_points(self.hands)
             team_points = [player_points[0] + player_points[2],
                            player_points[1] + player_points[3]]
 
