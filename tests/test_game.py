@@ -56,8 +56,8 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g1.turn, 0)
         self.assertIsNone(g1.result)
 
-        p = 3
-        g2 = domino.Game(starting_player=p)
+        p1 = 3
+        g2 = domino.Game(starting_player=p1)
 
         self.assertEqual(len(g2.board), 0)
         self.assertEqual(len(g2.hands), 4)
@@ -75,7 +75,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue(g3.turn in range(4))
         self.assertIsNone(g3.result)
 
-        g4 = domino.Game(starting_domino=d1, starting_player=p)
+        g4 = domino.Game(starting_domino=d1, starting_player=p1)
 
         self.assertEqual(len(g4.board), 1)
         self.assertEqual(len(g4.hands), 4)
@@ -85,8 +85,9 @@ class TestGame(unittest.TestCase):
         self.assertTrue(g4.turn in range(4))
         self.assertIsNone(g4.result)
 
+        p2 = 4
         self.assertRaises(domino.NoSuchPlayerException,
-                          domino.Game, starting_player=4)
+                          domino.Game, starting_player=p2)
 
         d2 = domino.Domino(7, 7)
         self.assertRaises(domino.NoSuchDominoException,
