@@ -51,6 +51,25 @@ def _remaining_points(hands):
 
     return points
 
+def _has_valid_move(hand, board):
+    '''
+    :param Hand hand: hand to check for valid moves
+    :param Board board: board on which moves would be made
+    :return: boolean indicating whether there are any
+             valid moves from the hand onto the board
+    '''
+    if not hand:
+        return False
+
+    if not board:
+        return True
+
+    for d in hand:
+        if board.left_end() in d or board.right_end() in d:
+            return True
+
+    return False
+
 '''
 namedtuple to represent the result of a dominoes game.
 
@@ -154,21 +173,6 @@ class Game:
         '''
         self.board = domino.SkinnyBoard.from_board(self.board)
 
-    def _has_valid_move(self):
-        '''
-        :return: a boolean indicating whether the player
-                 whose turn it is has any valid moves
-        '''
-        if not self.board:
-            return True
-
-        for d in self.hands[self.turn]:
-            if self.board.left_end() in d or \
-               self.board.right_end() in d:
-                return True
-
-        return False
-
     def valid_moves(self):
         '''
         :return: a list of valid moves for the player whose turn it is.
@@ -235,7 +239,7 @@ class Game:
         stuck = True
         for _ in range(num_players):
             self.turn = (self.turn + 1) % num_players
-            if self._has_valid_move():
+            if _has_valid_move(self.hands[self.turn], self.board):
                 stuck = False
                 break
 
