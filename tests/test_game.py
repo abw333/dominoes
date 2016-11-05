@@ -1,3 +1,4 @@
+import collections
 import domino
 import unittest
 
@@ -48,17 +49,37 @@ class TestGame(unittest.TestCase):
                           domino.game._domino_hand, d5, hands)
 
     def test_init(self):
-        g = domino.Game()
+        g1 = domino.Game()
 
-        self.assertEqual(len(g.board), 0)
+        self.assertEqual(len(g1.board), 0)
+        self.assertEqual(len(g1.hands), 4)
+        self.assertEqual(g1.turn, 0)
+        self.assertIsNone(g1.result)
 
-        self.assertEqual(len(g.hands), 4)
-        for hand in g.hands:
-            self.assertEqual(len(hand), 7)
+        g2 = domino.Game(starting_player=3)
 
-        self.assertEqual(g.turn, 0)
+        self.assertEqual(len(g2.board), 0)
+        self.assertEqual(len(g2.hands), 4)
+        self.assertEqual(g2.turn, 3)
+        self.assertIsNone(g2.result)
 
-        self.assertIsNone(g.result)
+        d1 = domino.Domino(6, 6)
+        g3 = domino.Game(starting_domino=d1)
+
+        self.assertEqual(len(g3.board), 1)
+        self.assertEqual(len(g3.hands), 4)
+        hand_lengths = collections.Counter(len(h) for h in g3.hands)
+        self.assertEqual(hand_lengths[6], 1)
+        self.assertEqual(hand_lengths[7], 3)
+        self.assertTrue(g3.turn in range(4))
+        self.assertIsNone(g3.result)
+
+        self.assertRaises(domino.NoSuchPlayerException,
+                          domino.Game, starting_player=4)
+
+        d2 = domino.Domino(7, 7)
+        self.assertRaises(domino.NoSuchDominoException,
+                          domino.Game, starting_domino=d2)
 
 if __name__ == '__main__':
     unittest.main()
