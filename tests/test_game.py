@@ -62,42 +62,42 @@ class TestGame(unittest.TestCase):
 
     def test_has_valid_move(self):
         h1 = domino.Hand([])
-        b1 = domino.Board()
+        b = domino.Board()
 
         # empty hand, empty board
-        self.assertFalse(domino.game._has_valid_move(h1, b1))
+        self.assertFalse(domino.game._has_valid_move(h1, b))
 
         d1 = domino.Domino(1, 2)
         h2 = domino.Hand([d1])
 
         # non-empty hand, empty board
-        self.assertTrue(domino.game._has_valid_move(h2, b1))
+        self.assertTrue(domino.game._has_valid_move(h2, b))
 
-        b1.add_left(d1)
+        b.add_left(d1)
 
         # empty hand, non-empty board
-        self.assertFalse(domino.game._has_valid_move(h1, b1))
+        self.assertFalse(domino.game._has_valid_move(h1, b))
 
         # non-empty hand, non-empty board
-        self.assertTrue(domino.game._has_valid_move(h2, b1))
+        self.assertTrue(domino.game._has_valid_move(h2, b))
 
         d2 = domino.Domino(1, 3)
         h3 = domino.Hand([d2])
 
         # valid move on the left end of the board
-        self.assertTrue(domino.game._has_valid_move(h3, b1))
+        self.assertTrue(domino.game._has_valid_move(h3, b))
 
         d3 = domino.Domino(2, 3)
         h4 = domino.Hand([d3])
 
         # valid move on the right end of the board
-        self.assertTrue(domino.game._has_valid_move(h4, b1))
+        self.assertTrue(domino.game._has_valid_move(h4, b))
 
         d4 = domino.Domino(3, 3)
         h5 = domino.Hand([d4])
 
         # no valid moves
-        self.assertFalse(domino.game._has_valid_move(h5, b1))
+        self.assertFalse(domino.game._has_valid_move(h5, b))
 
     def test_init(self):
         g1 = domino.Game()
