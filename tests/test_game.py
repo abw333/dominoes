@@ -1,3 +1,4 @@
+import collections
 import domino
 import unittest
 
@@ -48,17 +49,49 @@ class TestGame(unittest.TestCase):
                           domino.game._domino_hand, d5, hands)
 
     def test_init(self):
-        g = domino.Game()
+        g1 = domino.Game()
 
-        self.assertEqual(len(g.board), 0)
+        self.assertEqual(len(g1.board), 0)
+        self.assertEqual(len(g1.hands), 4)
+        self.assertEqual(g1.turn, 0)
+        self.assertIsNone(g1.result)
 
-        self.assertEqual(len(g.hands), 4)
-        for hand in g.hands:
-            self.assertEqual(len(hand), 7)
+        p1 = 3
+        g2 = domino.Game(starting_player=p1)
 
-        self.assertEqual(g.turn, 0)
+        self.assertEqual(len(g2.board), 0)
+        self.assertEqual(len(g2.hands), 4)
+        self.assertEqual(g2.turn, 3)
+        self.assertIsNone(g2.result)
 
-        self.assertIsNone(g.result)
+        d1 = domino.Domino(6, 6)
+        g3 = domino.Game(starting_domino=d1)
+
+        self.assertEqual(len(g3.board), 1)
+        self.assertEqual(len(g3.hands), 4)
+        hand_lengths1 = collections.Counter(len(h) for h in g3.hands)
+        self.assertEqual(hand_lengths1[6], 1)
+        self.assertEqual(hand_lengths1[7], 3)
+        self.assertTrue(g3.turn in range(4))
+        self.assertIsNone(g3.result)
+
+        g4 = domino.Game(starting_domino=d1, starting_player=p1)
+
+        self.assertEqual(len(g4.board), 1)
+        self.assertEqual(len(g4.hands), 4)
+        hand_lengths2 = collections.Counter(len(h) for h in g4.hands)
+        self.assertEqual(hand_lengths2[6], 1)
+        self.assertEqual(hand_lengths2[7], 3)
+        self.assertTrue(g4.turn in range(4))
+        self.assertIsNone(g4.result)
+
+        p2 = 4
+        self.assertRaises(domino.NoSuchPlayerException,
+                          domino.Game, starting_player=p2)
+
+        d2 = domino.Domino(7, 7)
+        self.assertRaises(domino.NoSuchDominoException,
+                          domino.Game, starting_domino=d2)
 
 if __name__ == '__main__':
     unittest.main()

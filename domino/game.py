@@ -124,14 +124,14 @@ class Game:
 
         self.hands = _randomized_hands()
 
+        self.result = None
+
         if starting_domino is None:
             _validate_player(starting_player)
             self.turn = starting_player
         else:
             self.turn = _domino_hand(starting_domino, self.hands)
             self.make_move(starting_domino, True)
-
-        self.result = None
 
     def skinny_board(self):
         '''
