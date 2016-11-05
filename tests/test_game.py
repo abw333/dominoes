@@ -144,5 +144,17 @@ class TestGame(unittest.TestCase):
         self.assertRaises(domino.NoSuchDominoException,
                           domino.Game, starting_domino=d2)
 
+    def test_skinny_board(self):
+        d = domino.Domino(1, 2)
+        g = domino.Game(starting_domino=d)
+
+        g.skinny_board()
+
+        ends = [g.board.left_end(), g.board.right_end()]
+        self.assertTrue(d.first in ends)
+        self.assertTrue(d.second in ends)
+
+        self.assertEqual(len(g.board), 1)
+
 if __name__ == '__main__':
     unittest.main()
