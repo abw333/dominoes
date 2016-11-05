@@ -60,6 +60,45 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(domino.game._remaining_points(h2), [0, 1, 13])
 
+    def test_has_valid_move(self):
+        h1 = domino.Hand([])
+        b1 = domino.Board()
+
+        # empty hand, empty board
+        self.assertFalse(domino.game._has_valid_move(h1, b1))
+
+        d1 = domino.Domino(1, 2)
+        h2 = domino.Hand([d1])
+
+        # non-empty hand, empty board
+        self.assertTrue(domino.game._has_valid_move(h2, b1))
+
+        b1.add_left(d1)
+
+        # empty hand, non-empty board
+        self.assertFalse(domino.game._has_valid_move(h1, b1))
+
+        # non-empty hand, non-empty board
+        self.assertTrue(domino.game._has_valid_move(h2, b1))
+
+        d2 = domino.Domino(1, 3)
+        h3 = domino.Hand([d2])
+
+        # valid move on the left end of the board
+        self.assertTrue(domino.game._has_valid_move(h3, b1))
+
+        d3 = domino.Domino(2, 3)
+        h4 = domino.Hand([d3])
+
+        # valid move on the right end of the board
+        self.assertTrue(domino.game._has_valid_move(h4, b1))
+
+        d4 = domino.Domino(3, 3)
+        h5 = domino.Hand([d4])
+
+        # no valid moves
+        self.assertFalse(domino.game._has_valid_move(h5, b1))
+
     def test_init(self):
         g1 = domino.Game()
 
