@@ -1,8 +1,11 @@
 import domino
 
 class Series:
-    def __init__(self, target_score=200):
-        self.games = [domino.Game(starting_domino=domino.Domino(6, 6))]
+    def __init__(self, target_score=200, starting_domino=None):
+        if starting_domino is None:
+            starting_domino = domino.Domino(6, 6)
+
+        self.games = [domino.Game(starting_domino=starting_domino)]
         self.scores = [0, 0]
         self.target_score = target_score
 
