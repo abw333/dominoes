@@ -52,3 +52,6 @@ class Series:
             string_list.extend(['Game {}'.format(i), str(game)])
 
         return '\n'.join(string_list)
+
+    def __repr__(self):
+        return str(self)
