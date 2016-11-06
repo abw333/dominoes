@@ -211,5 +211,171 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d1, True) in m5)
         self.assertTrue((d2, True) in m5)
 
+    def test_make_move(self):
+        g = domino.Game()
+
+        d1 = domino.Domino(7, 7)
+        g.board.add_left(d1)
+
+        d2 = domino.Domino(7, 6)
+        p1 = g.turn
+        len_hand1 = len(g.hands[p1])
+        g.hands[p1].draw(d2)
+
+        # make a move on the left end of the board
+        g.make_move(d2, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d1.second)
+        self.assertEqual(len(g.board), 2)
+        self.assertEqual(len(g.hands[p1]), len_hand1)
+        self.assertFalse(d2 in g.hands[p1])
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+        d3 = domino.Domino(7, 5)
+        p2 = g.turn
+        len_hand2 = len(g.hands[p2])
+        g.hands[p2].draw(d3)
+
+        # make a move on the right end of the board
+        g.make_move(d3, False)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p2]), len_hand2)
+        self.assertFalse(d3 in g.hands[p2])
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+        d4 = domino.Domino(7, 7)
+        p3 = g.turn
+        len_hand3 = len(g.hands[p3])
+
+        # try to play a domino that is not in the player's hand
+        self.assertRaises(domino.NoSuchDominoException, g.make_move, d4, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p3]), len_hand3)
+        self.assertFalse(d4 in g.hands[p3])
+        self.assertEqual(g.turn, p3)
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+        g.hands[p3].draw(d4)
+
+        # try to play a domino that does not match the board
+        self.assertRaises(domino.EndsMismatchException, g.make_move, d4, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p3]), len_hand3 + 1)
+        self.assertTrue(d4 in g.hands[p3])
+        self.assertEqual(g.turn, p3)
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+    def test_make_move_endgame(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(2, 3)
+        d3 = domino.Domino(3, 4)
+        d4 = domino.Domino(4, 5)
+        h1 = domino.Hand([d1])
+        h2 = domino.Hand([d2])
+        h3 = domino.Hand([d3])
+        h4 = domino.Hand([d4])
+        g1 = domino.Game()
+        g1.hands = [h1, h2, h3, h4]
+
+        g1.make_move(d1, True)
+
+        self.assertEqual(g1.board.left_end(), d1.first)
+        self.assertEqual(g1.board.right_end(), d1.second)
+        self.assertEqual(len(g1.board), 1)
+        self.assertEqual(len(g1.hands[0]), 0)
+        self.assertEqual(len(g1.hands[1]), 1)
+        self.assertEqual(len(g1.hands[2]), 1)
+        self.assertEqual(len(g1.hands[3]), 1)
+        self.assertEqual(g1.result, domino.game.Result(0, True, 21))
+        self.assertEqual(g1.turn, 0)
+
+        d5 = domino.Domino(7, 7)
+        d6 = domino.Domino(1, 1)
+        d7 = domino.Domino(2, 2)
+        d8 = domino.Domino(3, 3)
+        d9 = domino.Domino(4, 4)
+        h5 = domino.Hand([d5, d6])
+        h6 = domino.Hand([d7])
+        h7 = domino.Hand([d8])
+        h8 = domino.Hand([d9])
+        g2 = domino.Game()
+        g2.hands = [h5, h6, h7, h8]
+
+        g2.make_move(d5, True)
+
+        self.assertEqual(g2.board.left_end(), d5.first)
+        self.assertEqual(g2.board.right_end(), d5.second)
+        self.assertEqual(len(g2.board), 1)
+        self.assertEqual(len(g2.hands[0]), 1)
+        self.assertEqual(len(g2.hands[1]), 1)
+        self.assertEqual(len(g2.hands[2]), 1)
+        self.assertEqual(len(g2.hands[3]), 1)
+        self.assertEqual(g2.result, domino.game.Result(0, False, 20))
+        self.assertEqual(g2.turn, 0)
+
+        h9 = domino.Hand([d5, d6])
+        h10 = domino.Hand([d7])
+        h11 = domino.Hand([d9])
+        h12 = domino.Hand([d8])
+        g3 = domino.Game()
+        g3.hands = [h9, h10, h11, h12]
+
+        g3.make_move(d5, True)
+
+        self.assertEqual(g3.board.left_end(), d5.first)
+        self.assertEqual(g3.board.right_end(), d5.second)
+        self.assertEqual(len(g3.board), 1)
+        self.assertEqual(len(g3.hands[0]), 1)
+        self.assertEqual(len(g3.hands[1]), 1)
+        self.assertEqual(len(g3.hands[2]), 1)
+        self.assertEqual(len(g3.hands[3]), 1)
+        self.assertEqual(g3.result, domino.game.Result(0, False, 0))
+        self.assertEqual(g3.turn, 0)
+
+        h13 = domino.Hand([d5, d7])
+        h14 = domino.Hand([d6])
+        h15 = domino.Hand([d9])
+        h16 = domino.Hand([d8])
+        g4 = domino.Game()
+        g4.hands = [h13, h14, h15, h16]
+
+        g4.make_move(d5, True)
+
+        self.assertEqual(g4.board.left_end(), d5.first)
+        self.assertEqual(g4.board.right_end(), d5.second)
+        self.assertEqual(len(g4.board), 1)
+        self.assertEqual(len(g4.hands[0]), 1)
+        self.assertEqual(len(g4.hands[1]), 1)
+        self.assertEqual(len(g4.hands[2]), 1)
+        self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.result, domino.game.Result(0, False, -20))
+        self.assertEqual(g4.turn, 0)
+
+        self.assertRaises(domino.GameOverException, g4.make_move, d7, True)
+
+        self.assertEqual(g4.board.left_end(), d5.first)
+        self.assertEqual(g4.board.right_end(), d5.second)
+        self.assertEqual(len(g4.board), 1)
+        self.assertEqual(len(g4.hands[0]), 1)
+        self.assertEqual(len(g4.hands[1]), 1)
+        self.assertEqual(len(g4.hands[2]), 1)
+        self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.result, domino.game.Result(0, False, -20))
+        self.assertEqual(g4.turn, 0)
+
 if __name__ == '__main__':
     unittest.main()
