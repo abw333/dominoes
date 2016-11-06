@@ -32,5 +32,21 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s2.scores, [0, 0])
         self.assertEqual(s2.target_score, 100)
 
+        d = domino.Domino(1, 2)
+        s3 = domino.Series(starting_domino=d)
+
+        self.assertEqual(len(s3.games), 1)
+        self.assertEqual(len(s3.games[0].board), 1)
+        self.assertEqual(s3.games[0].board.left_end(), 1)
+        self.assertEqual(s3.games[0].board.right_end(), 2)
+        hand_lengths3 = collections.Counter(len(h) for h in s3.games[0].hands)
+        self.assertEqual(hand_lengths3[6], 1)
+        self.assertEqual(hand_lengths3[7], 3)
+        self.assertTrue(s3.games[0].turn in range(4))
+        self.assertIsNone(s3.games[0].result)
+        self.assertEqual(s3.scores, [0, 0])
+        self.assertEqual(s3.target_score, 200)
+
+
 if __name__ == '__main__':
     unittest.main()
