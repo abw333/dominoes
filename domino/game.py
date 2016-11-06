@@ -147,6 +147,7 @@ class Game:
     :var board: the game board
     :var hands: a list containing each player's hand
     :var turn: the player whose turn it is
+    :var starting_player: first player to make a move
     :var result: None if the game is in progress; otherwise a
                  Result object indicating the outcome of the game
 
@@ -202,8 +203,10 @@ class Game:
         if starting_domino is None:
             _validate_player(starting_player)
             self.turn = starting_player
+            self.starting_player = self.turn
         else:
             self.turn = _domino_hand(starting_domino, self.hands)
+            self.starting_player = self.turn
             self.make_move(starting_domino, True)
 
     def skinny_board(self):
