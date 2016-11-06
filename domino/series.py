@@ -14,8 +14,9 @@ class Series:
 
     def next_game(self):
         if self.is_over():
-            raise Exception('Cannot start a new game - series'
-                            ' ended with a score of {} to {}'.format(*self.scores))
+            raise domino.SeriesOverException(
+                'Cannot start a new game - series ended with a score of {} to {}'.format(*self.scores)
+            )
 
         result = self.games[-1].result
         if result is None:

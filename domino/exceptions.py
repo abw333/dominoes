@@ -32,3 +32,10 @@ class NoSuchPlayerException(Exception):
     involving a specific missing player.
     '''
     pass
+
+class SeriesOverException(Exception):
+    '''
+    Exception to be raised for errors
+    involving a series that has ended.
+    '''
+    pass

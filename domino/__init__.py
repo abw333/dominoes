@@ -5,6 +5,7 @@ from domino.exceptions import EndsMismatchException
 from domino.exceptions import GameOverException
 from domino.exceptions import NoSuchDominoException
 from domino.exceptions import NoSuchPlayerException
+from domino.exceptions import SeriesOverException
 from domino.game import Game
 from domino.hand import Hand
 from domino.series import Series
