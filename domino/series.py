@@ -1,9 +1,8 @@
-from domino.domino import Domino
-from domino.game import Game
+import domino
 
 class Series:
     def __init__(self, target_score=200):
-        self.games = [Game(starting_domino=Domino(6, 6))]
+        self.games = [domino.Game(starting_domino=domino.Domino(6, 6))]
         self.scores = [0, 0]
         self.target_score = target_score
 
@@ -28,12 +27,12 @@ class Series:
             return
 
         if result.won:
-            self.games.append(Game(starting_player=result.player))
+            self.games.append(domino.Game(starting_player=result.player))
         else:
             if result.points >= 0:
-                self.games.append(Game(starting_player=result.player))
+                self.games.append(domino.Game(starting_player=result.player))
             else:
-                self.games.append(Game(starting_player=(result.player + 1) % 4))
+                self.games.append(domino.Game(starting_player=(result.player + 1) % 4))
 
         return self.games[-1]
 
