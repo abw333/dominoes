@@ -166,5 +166,42 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g.board), 1)
 
+    def test_valid_moves(self):
+        h1 = domino.Hand([])
+        p = 3
+        g = domino.Game(starting_player=p)
+        g.hands[p] = h1
+
+        # empty hand, empty board
+        m1 = g.valid_moves()
+        self.assertEqual(m1, [])
+
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(2, 3)
+        h2 = domino.Hand([d1, d2])
+        g.hands[p] = h2
+
+        # non-empty hand, empty board
+        m2 = g.valid_moves()
+        self.assertEqual(len(m2), 2)
+        self.assertTrue((d1, True) in m2)
+        self.assertTrue((d2, True) in m2)
+
+        g.board.add_left(d1)
+        g.hands[p] = h1
+
+        # empty hand, non-empty board
+        m3 = g.valid_moves()
+        self.assertEqual(m3, [])
+
+        g.hands[p] = h2
+
+        # non-empty hand, non-empty board
+        m4 = g.valid_moves()
+        self.assertEqual(len(m4), 3)
+        self.assertTrue((d1, True) in m4)
+        self.assertTrue((d1, False) in m4)
+        self.assertTrue((d2, False) in m4)
+
 if __name__ == '__main__':
     unittest.main()
