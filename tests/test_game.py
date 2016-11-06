@@ -365,5 +365,17 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g4.result, domino.game.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
 
+        self.assertRaises(domino.GameOverException, g4.make_move, d7, True)
+
+        self.assertEqual(g4.board.left_end(), d5.first)
+        self.assertEqual(g4.board.right_end(), d5.second)
+        self.assertEqual(len(g4.board), 1)
+        self.assertEqual(len(g4.hands[0]), 1)
+        self.assertEqual(len(g4.hands[1]), 1)
+        self.assertEqual(len(g4.hands[2]), 1)
+        self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.result, domino.game.Result(0, False, -20))
+        self.assertEqual(g4.turn, 0)
+
 if __name__ == '__main__':
     unittest.main()
