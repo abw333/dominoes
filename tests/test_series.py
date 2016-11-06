@@ -4,19 +4,33 @@ import unittest
 
 class TestSeries(unittest.TestCase):
     def test_init(self):
-        s = domino.Series()
+        s1 = domino.Series()
 
-        self.assertEqual(len(s.games), 1)
-        self.assertEqual(len(s.games[0].board), 1)
-        self.assertEqual(s.games[0].board.left_end(), 6)
-        self.assertEqual(s.games[0].board.right_end(), 6)
-        hand_lengths = collections.Counter(len(h) for h in s.games[0].hands)
-        self.assertEqual(hand_lengths[6], 1)
-        self.assertEqual(hand_lengths[7], 3)
-        self.assertTrue(s.games[0].turn in range(4))
-        self.assertIsNone(s.games[0].result)
-        self.assertEqual(s.scores, [0, 0])
-        self.assertEqual(s.target_score, 200)
+        self.assertEqual(len(s1.games), 1)
+        self.assertEqual(len(s1.games[0].board), 1)
+        self.assertEqual(s1.games[0].board.left_end(), 6)
+        self.assertEqual(s1.games[0].board.right_end(), 6)
+        hand_lengths1 = collections.Counter(len(h) for h in s1.games[0].hands)
+        self.assertEqual(hand_lengths1[6], 1)
+        self.assertEqual(hand_lengths1[7], 3)
+        self.assertTrue(s1.games[0].turn in range(4))
+        self.assertIsNone(s1.games[0].result)
+        self.assertEqual(s1.scores, [0, 0])
+        self.assertEqual(s1.target_score, 200)
+
+        s2 = domino.Series(target_score=100)
+
+        self.assertEqual(len(s2.games), 1)
+        self.assertEqual(len(s2.games[0].board), 1)
+        self.assertEqual(s2.games[0].board.left_end(), 6)
+        self.assertEqual(s2.games[0].board.right_end(), 6)
+        hand_lengths2 = collections.Counter(len(h) for h in s2.games[0].hands)
+        self.assertEqual(hand_lengths2[6], 1)
+        self.assertEqual(hand_lengths2[7], 3)
+        self.assertTrue(s2.games[0].turn in range(4))
+        self.assertIsNone(s2.games[0].result)
+        self.assertEqual(s2.scores, [0, 0])
+        self.assertEqual(s2.target_score, 100)
 
 if __name__ == '__main__':
     unittest.main()
