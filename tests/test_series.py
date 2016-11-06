@@ -103,7 +103,7 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s.scores, [50, 0])
         self.assertEqual(s.target_score, 200)
 
-        s.games[1].result = domino.game.Result(1, True, 50)
+        s.games[1].result = domino.game.Result(1, False, 50)
         g2 = s.next_game()
 
         self.assertEqual(len(s.games), 3)
@@ -123,12 +123,12 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s.scores, [50, 100])
         self.assertEqual(s.target_score, 200)
 
-        s.games[3].result = domino.game.Result(3, True, -50)
+        s.games[3].result = domino.game.Result(3, False, -50)
         g4 = s.next_game()
 
         self.assertEqual(len(s.games), 5)
         self.assertEqual(len(g4.board), 0)
-        self.assertEqual(g4.turn, 3)
+        self.assertEqual(g4.turn, 0)
         self.assertIsNone(g4.result)
         self.assertEqual(s.scores, [100, 100])
         self.assertEqual(s.target_score, 200)
