@@ -240,6 +240,8 @@ class TestGame(unittest.TestCase):
 
         # make a move on the right end of the board
         g.make_move(d3, False)
+        str1 = str(g)
+        repr1 = repr(g)
 
         self.assertEqual(g.board.left_end(), d2.second)
         self.assertEqual(g.board.right_end(), d3.second)
@@ -248,6 +250,15 @@ class TestGame(unittest.TestCase):
         self.assertFalse(d3 in g.hands[p2])
         self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
         self.assertIsNone(g.result)
+        self.assertTrue('Board: {}'.format(g.board) in str1)
+        self.assertTrue("Player 0's hand: {}".format(g.hands[0]) in str1)
+        self.assertTrue("Player 1's hand: {}".format(g.hands[1]) in str1)
+        self.assertTrue("Player 2's hand: {}".format(g.hands[2]) in str1)
+        self.assertTrue("Player 3's hand: {}".format(g.hands[3]) in str1)
+        self.assertTrue("Player {}'s turn".format(g.turn) in str1)
+        self.assertFalse('Player {} won'.format(p2) in str1)
+        self.assertFalse('Player {} stuck'.format(p2) in str1)
+        self.assertEqual(str1, repr1)
 
         d4 = domino.Domino(7, 7)
         p3 = g.turn
