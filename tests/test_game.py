@@ -236,7 +236,7 @@ class TestGame(unittest.TestCase):
         d3 = domino.Domino(7, 5)
         p2 = g.turn
         len_hand2 = len(g.hands[p2])
-        g.hands[g.turn].draw(d3)
+        g.hands[p2].draw(d3)
 
         # make a move on the right end of the board
         g.make_move(d3, False)
