@@ -14,8 +14,10 @@ class Series:
     first. The starting player for subsequent games is determined as follows:
         * If a player wins by playing their last domino, that player will start
           the following game.
-        * If a player makes the game stuck, and his/her team either wins or ties,
-          that player will start the following game.
+        * If a player makes the game stuck, and his/her team wins, that player
+          will start the following game.
+        * If a player makes the game stuck, and there is a tie, the player who
+          started that game will start the following game.
         * If a player makes the game stuck, and his/her team loses, then the
           following player (from the other team) will start the following game.
 
@@ -75,9 +77,11 @@ class Series:
             return
 
         # determine the starting player for the next game
-        if result.won or result.points >= 0:
+        if result.won or result.points > 0:
             starting_player = result.player
-        else:
+        elif not result.points:
+            raise NotImplementedError() # TODO
+        else: # result.points < 0
             starting_player = (result.player + 1) % 4
 
         # start the next game
