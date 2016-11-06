@@ -327,5 +327,43 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g2.result, domino.game.Result(0, False, 20))
         self.assertEqual(g2.turn, 0)
 
+        h9 = domino.Hand([d5, d6])
+        h10 = domino.Hand([d7])
+        h11 = domino.Hand([d9])
+        h12 = domino.Hand([d8])
+        g3 = domino.Game()
+        g3.hands = [h9, h10, h11, h12]
+
+        g3.make_move(d5, True)
+
+        self.assertEqual(g3.board.left_end(), d5.first)
+        self.assertEqual(g3.board.right_end(), d5.second)
+        self.assertEqual(len(g3.board), 1)
+        self.assertEqual(len(g3.hands[0]), 1)
+        self.assertEqual(len(g3.hands[1]), 1)
+        self.assertEqual(len(g3.hands[2]), 1)
+        self.assertEqual(len(g3.hands[3]), 1)
+        self.assertEqual(g3.result, domino.game.Result(0, False, 0))
+        self.assertEqual(g3.turn, 0)
+
+        h13 = domino.Hand([d5, d7])
+        h14 = domino.Hand([d6])
+        h15 = domino.Hand([d9])
+        h16 = domino.Hand([d8])
+        g4 = domino.Game()
+        g4.hands = [h13, h14, h15, h16]
+
+        g4.make_move(d5, True)
+
+        self.assertEqual(g4.board.left_end(), d5.first)
+        self.assertEqual(g4.board.right_end(), d5.second)
+        self.assertEqual(len(g4.board), 1)
+        self.assertEqual(len(g4.hands[0]), 1)
+        self.assertEqual(len(g4.hands[1]), 1)
+        self.assertEqual(len(g4.hands[2]), 1)
+        self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.result, domino.game.Result(0, False, -20))
+        self.assertEqual(g4.turn, 0)
+
 if __name__ == '__main__':
     unittest.main()
