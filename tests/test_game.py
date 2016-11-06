@@ -288,20 +288,44 @@ class TestGame(unittest.TestCase):
         h2 = domino.Hand([d2])
         h3 = domino.Hand([d3])
         h4 = domino.Hand([d4])
-        g = domino.Game()
-        g.hands = [h1, h2, h3, h4]
+        g1 = domino.Game()
+        g1.hands = [h1, h2, h3, h4]
 
-        g.make_move(d1, True)
+        g1.make_move(d1, True)
 
-        self.assertEqual(g.board.left_end(), d1.first)
-        self.assertEqual(g.board.right_end(), d1.second)
-        self.assertEqual(len(g.board), 1)
-        self.assertEqual(len(g.hands[0]), 0)
-        self.assertEqual(len(g.hands[1]), 1)
-        self.assertEqual(len(g.hands[2]), 1)
-        self.assertEqual(len(g.hands[3]), 1)
-        self.assertEqual(g.result, domino.game.Result(0, True, 21))
-        self.assertEqual(g.turn, 0)
+        self.assertEqual(g1.board.left_end(), d1.first)
+        self.assertEqual(g1.board.right_end(), d1.second)
+        self.assertEqual(len(g1.board), 1)
+        self.assertEqual(len(g1.hands[0]), 0)
+        self.assertEqual(len(g1.hands[1]), 1)
+        self.assertEqual(len(g1.hands[2]), 1)
+        self.assertEqual(len(g1.hands[3]), 1)
+        self.assertEqual(g1.result, domino.game.Result(0, True, 21))
+        self.assertEqual(g1.turn, 0)
+
+        d5 = domino.Domino(7, 7)
+        d6 = domino.Domino(1, 1)
+        d7 = domino.Domino(2, 2)
+        d8 = domino.Domino(3, 3)
+        d9 = domino.Domino(4, 4)
+        h5 = domino.Hand([d5, d6])
+        h6 = domino.Hand([d7])
+        h7 = domino.Hand([d8])
+        h8 = domino.Hand([d9])
+        g2 = domino.Game()
+        g2.hands = [h5, h6, h7, h8]
+
+        g2.make_move(d5, True)
+
+        self.assertEqual(g2.board.left_end(), d5.first)
+        self.assertEqual(g2.board.right_end(), d5.second)
+        self.assertEqual(len(g2.board), 1)
+        self.assertEqual(len(g2.hands[0]), 1)
+        self.assertEqual(len(g2.hands[1]), 1)
+        self.assertEqual(len(g2.hands[2]), 1)
+        self.assertEqual(len(g2.hands[3]), 1)
+        self.assertEqual(g2.result, domino.game.Result(0, False, 20))
+        self.assertEqual(g2.turn, 0)
 
 if __name__ == '__main__':
     unittest.main()
