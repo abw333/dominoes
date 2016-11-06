@@ -98,6 +98,7 @@ class TestSeries(unittest.TestCase):
 
         self.assertEqual(len(s.games), 2)
         self.assertEqual(len(g1.board), 0)
+        self.assertEqual(g1.turn, 0)
         self.assertIsNone(g1.result)
         self.assertEqual(s.scores, [50, 0])
         self.assertEqual(s.target_score, 200)
@@ -107,6 +108,7 @@ class TestSeries(unittest.TestCase):
 
         self.assertEqual(len(s.games), 3)
         self.assertEqual(len(g2.board), 0)
+        self.assertEqual(g2.turn, 1)
         self.assertIsNone(g2.result)
         self.assertEqual(s.scores, [50, 50])
         self.assertEqual(s.target_score, 200)
@@ -116,6 +118,7 @@ class TestSeries(unittest.TestCase):
 
         self.assertEqual(len(s.games), 4)
         self.assertEqual(len(g3.board), 0)
+        self.assertEqual(g3.turn, 2)
         self.assertIsNone(g3.result)
         self.assertEqual(s.scores, [50, 100])
         self.assertEqual(s.target_score, 200)
@@ -125,6 +128,7 @@ class TestSeries(unittest.TestCase):
 
         self.assertEqual(len(s.games), 5)
         self.assertEqual(len(g4.board), 0)
+        self.assertEqual(g4.turn, 3)
         self.assertIsNone(g4.result)
         self.assertEqual(s.scores, [100, 100])
         self.assertEqual(s.target_score, 200)
