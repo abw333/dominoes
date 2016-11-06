@@ -14,8 +14,8 @@ class Series:
 
     def next_game(self):
         if self.is_over():
-            raise Exception('Cannot start a new game - series '
-                            'ended with a score of {0} to {1}'.format(*self.scores))
+            raise Exception('Cannot start a new game - series'
+                            ' ended with a score of {} to {}'.format(*self.scores))
 
         result = self.games[-1].result
         if result is None:
@@ -40,12 +40,12 @@ class Series:
         return self.games[-1]
 
     def __str__(self):
-        string_list = ['Series to {0} points'.format(self.target_score)]
+        string_list = ['Series to {} points'.format(self.target_score)]
 
         for i, score in enumerate(self.scores):
-            string_list.append('Team {0} has {1} points'.format(i, score))
+            string_list.append('Team {} has {} points'.format(i, score))
 
         for i, game in enumerate(self.games):
-            string_list.extend(['Game {0}'.format(i), str(game)])
+            string_list.extend(['Game {}'.format(i), str(game)])
 
         return '\n'.join(string_list)
