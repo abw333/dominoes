@@ -76,10 +76,21 @@ class TestSeries(unittest.TestCase):
         s = domino.Series()
 
         self.assertRaises(domino.GameInProgressException, s.next_game)
+        self.assertEqual(len(s.games), 1)
+        self.assertEqual(len(s.games[0].board), 1)
+        self.assertIsNone(s.games[0].result)
+        self.assertEqual(s.scores, [0, 0])
+        self.assertEqual(s.target_score, 200)
 
-        s.scores = [200, 200]
+        scores = [200, 200]
+        s.scores = scores
 
         self.assertRaises(domino.SeriesOverException, s.next_game)
+        self.assertEqual(len(s.games), 1)
+        self.assertEqual(len(s.games[0].board), 1)
+        self.assertIsNone(s.games[0].result)
+        self.assertEqual(s.scores, scores)
+        self.assertEqual(s.target_score, 200)
 
 if __name__ == '__main__':
     unittest.main()
