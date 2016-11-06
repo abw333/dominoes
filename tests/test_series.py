@@ -47,6 +47,30 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s3.scores, [0, 0])
         self.assertEqual(s3.target_score, 200)
 
+    def test_is_over(self):
+        s = domino.Series()
+
+        self.assertFalse(s.is_over())
+
+        s.scores = [199, 199]
+
+        self.assertFalse(s.is_over())
+
+        s.scores = [200, 199]
+
+        self.assertTrue(s.is_over())
+
+        s.scores = [199, 200]
+
+        self.assertTrue(s.is_over())
+
+        s.scores = [200, 200]
+
+        self.assertTrue(s.is_over())
+
+        s.scores = [201, 201]
+
+        self.assertTrue(s.is_over())
 
 if __name__ == '__main__':
     unittest.main()
