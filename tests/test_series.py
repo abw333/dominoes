@@ -92,5 +92,42 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s.scores, scores)
         self.assertEqual(s.target_score, 200)
 
+        s.scores = [0, 0]
+        s.games[0].result = domino.game.Result(0, True, 50)
+        g1 = s.next_game()
+
+        self.assertEqual(len(s.games), 2)
+        self.assertEqual(len(g1.board), 0)
+        self.assertIsNone(g1.result)
+        self.assertEqual(s.scores, [50, 0])
+        self.assertEqual(s.target_score, 200)
+
+        s.games[1].result = domino.game.Result(1, True, 50)
+        g2 = s.next_game()
+
+        self.assertEqual(len(s.games), 3)
+        self.assertEqual(len(g2.board), 0)
+        self.assertIsNone(g2.result)
+        self.assertEqual(s.scores, [50, 50])
+        self.assertEqual(s.target_score, 200)
+
+        s.games[2].result = domino.game.Result(2, True, -50)
+        g3 = s.next_game()
+
+        self.assertEqual(len(s.games), 4)
+        self.assertEqual(len(g3.board), 0)
+        self.assertIsNone(g3.result)
+        self.assertEqual(s.scores, [50, 100])
+        self.assertEqual(s.target_score, 200)
+
+        s.games[3].result = domino.game.Result(3, True, -50)
+        g4 = s.next_game()
+
+        self.assertEqual(len(s.games), 5)
+        self.assertEqual(len(g4.board), 0)
+        self.assertIsNone(g4.result)
+        self.assertEqual(s.scores, [100, 100])
+        self.assertEqual(s.target_score, 200)
+
 if __name__ == '__main__':
     unittest.main()
