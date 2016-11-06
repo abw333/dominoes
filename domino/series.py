@@ -20,7 +20,9 @@ class Series:
 
         result = self.games[-1].result
         if result is None:
-            raise Exception('Cannot start a new game - the latest one has not finished!')
+            raise domino.GameInProgressException(
+                'Cannot start a new game - the latest one has not finished!'
+            )
 
         if result.points >= 0:
             self.scores[result.player % 2] += result.points

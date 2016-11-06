@@ -12,6 +12,13 @@ class EndsMismatchException(Exception):
     '''
     pass
 
+class GameInProgressException(Exception):
+    '''
+    Exception to be raised for errors
+    involving a game that is in progress.
+    '''
+    pass
+
 class GameOverException(Exception):
     '''
     Exception to be raised for errors
