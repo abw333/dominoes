@@ -129,5 +129,12 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s.scores, [100, 100])
         self.assertEqual(s.target_score, 200)
 
+        s.games[4].result = domino.game.Result(0, True, 100)
+
+        self.assertIsNone(s.next_game())
+        self.assertEqual(len(s.games), 5)
+        self.assertEqual(s.scores, [200, 100])
+        self.assertEqual(s.target_score, 200)
+
 if __name__ == '__main__':
     unittest.main()
