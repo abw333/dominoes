@@ -203,5 +203,13 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d1, False) in m4)
         self.assertTrue((d2, False) in m4)
 
+        g.board.add_left(d1)
+
+        # left end of board == right end of board
+        m5 = g.valid_moves()
+        self.assertEqual(len(m5), 2)
+        self.assertTrue((d1, True) in m5)
+        self.assertTrue((d2, True) in m5)
+
 if __name__ == '__main__':
     unittest.main()
