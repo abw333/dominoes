@@ -211,5 +211,43 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d1, True) in m5)
         self.assertTrue((d2, True) in m5)
 
+    def test_make_move(self):
+        g = domino.Game()
+
+        d1 = domino.Domino(7, 7)
+        g.board.add_left(d1)
+
+        d2 = domino.Domino(7, 6)
+        p1 = g.turn
+        len_hand1 = len(g.hands[p1])
+        g.hands[p1].draw(d2)
+
+        # make a move on the left end of the board
+        g.make_move(d2, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d1.second)
+        self.assertEqual(len(g.board), 2)
+        self.assertEqual(len(g.hands[p1]), len_hand1)
+        self.assertFalse(d2 in g.hands[p1])
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+        d3 = domino.Domino(7, 5)
+        p2 = g.turn
+        len_hand2 = len(g.hands[p2])
+        g.hands[g.turn].draw(d3)
+
+        # make a move on the right end of the board
+        g.make_move(d3, False)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p2]), len_hand2)
+        self.assertFalse(d3 in g.hands[p2])
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
 if __name__ == '__main__':
     unittest.main()
