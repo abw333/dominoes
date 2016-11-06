@@ -249,5 +249,35 @@ class TestGame(unittest.TestCase):
         self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
         self.assertIsNone(g.result)
 
+        d4 = domino.Domino(7, 7)
+        p3 = g.turn
+        len_hand3 = len(g.hands[p3])
+
+        # try to play a domino that is not in the player's hand
+        self.assertRaises(domino.NoSuchDominoException, g.make_move, d4, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p3]), len_hand3)
+        self.assertFalse(d4 in g.hands[p3])
+        self.assertEqual(g.turn, p3)
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
+        g.hands[p3].draw(d4)
+
+        # try to play a domino that does not match the board
+        self.assertRaises(domino.EndsMismatchException, g.make_move, d4, True)
+
+        self.assertEqual(g.board.left_end(), d2.second)
+        self.assertEqual(g.board.right_end(), d3.second)
+        self.assertEqual(len(g.board), 3)
+        self.assertEqual(len(g.hands[p3]), len_hand3 + 1)
+        self.assertTrue(d4 in g.hands[p3])
+        self.assertEqual(g.turn, p3)
+        self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertIsNone(g.result)
+
 if __name__ == '__main__':
     unittest.main()
