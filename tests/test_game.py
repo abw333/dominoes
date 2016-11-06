@@ -355,6 +355,8 @@ class TestGame(unittest.TestCase):
         g3.hands = [h9, h10, h11, h12]
 
         g3.make_move(d5, True)
+        str3 = str(g3)
+        repr3 = repr(g3)
 
         self.assertEqual(g3.board.left_end(), d5.first)
         self.assertEqual(g3.board.right_end(), d5.second)
@@ -365,6 +367,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g3.hands[3]), 1)
         self.assertEqual(g3.result, domino.game.Result(0, False, 0))
         self.assertEqual(g3.turn, 0)
+        self.assertTrue('Board: {}'.format(g3.board) in str3)
+        self.assertTrue("Player 0's hand: {}".format(g3.hands[0]) in str3)
+        self.assertTrue("Player 1's hand: {}".format(g3.hands[1]) in str3)
+        self.assertTrue("Player 2's hand: {}".format(g3.hands[2]) in str3)
+        self.assertTrue("Player 3's hand: {}".format(g3.hands[3]) in str3)
+        self.assertFalse("Player 0's turn" in str3)
+        self.assertTrue('Player 0 stuck the game and tied!' in str3)
+        self.assertEqual(str3, repr3)
 
         h13 = domino.Hand([d5, d7])
         h14 = domino.Hand([d6])
