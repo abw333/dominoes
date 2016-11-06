@@ -240,6 +240,8 @@ class TestGame(unittest.TestCase):
 
         # make a move on the right end of the board
         g.make_move(d3, False)
+        str1 = str(g)
+        repr1 = repr(g)
 
         self.assertEqual(g.board.left_end(), d2.second)
         self.assertEqual(g.board.right_end(), d3.second)
@@ -248,6 +250,15 @@ class TestGame(unittest.TestCase):
         self.assertFalse(d3 in g.hands[p2])
         self.assertTrue(domino.game._has_valid_move(g.hands[g.turn], g.board))
         self.assertIsNone(g.result)
+        self.assertTrue('Board: {}'.format(g.board) in str1)
+        self.assertTrue("Player 0's hand: {}".format(g.hands[0]) in str1)
+        self.assertTrue("Player 1's hand: {}".format(g.hands[1]) in str1)
+        self.assertTrue("Player 2's hand: {}".format(g.hands[2]) in str1)
+        self.assertTrue("Player 3's hand: {}".format(g.hands[3]) in str1)
+        self.assertTrue("Player {}'s turn".format(g.turn) in str1)
+        self.assertFalse('Player {} won'.format(p2) in str1)
+        self.assertFalse('Player {} stuck'.format(p2) in str1)
+        self.assertEqual(str1, repr1)
 
         d4 = domino.Domino(7, 7)
         p3 = g.turn
@@ -292,6 +303,8 @@ class TestGame(unittest.TestCase):
         g1.hands = [h1, h2, h3, h4]
 
         g1.make_move(d1, True)
+        str1 = str(g1)
+        repr1 = str(g1)
 
         self.assertEqual(g1.board.left_end(), d1.first)
         self.assertEqual(g1.board.right_end(), d1.second)
@@ -302,6 +315,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g1.hands[3]), 1)
         self.assertEqual(g1.result, domino.game.Result(0, True, 21))
         self.assertEqual(g1.turn, 0)
+        self.assertTrue('Board: {}'.format(g1.board) in str1)
+        self.assertTrue("Player 0's hand: {}".format(g1.hands[0]) in str1)
+        self.assertTrue("Player 1's hand: {}".format(g1.hands[1]) in str1)
+        self.assertTrue("Player 2's hand: {}".format(g1.hands[2]) in str1)
+        self.assertTrue("Player 3's hand: {}".format(g1.hands[3]) in str1)
+        self.assertFalse("Player 0's turn" in str1)
+        self.assertTrue('Player 0 won and scored 21 points!' in str1)
+        self.assertEqual(str1, repr1)
 
         d5 = domino.Domino(7, 7)
         d6 = domino.Domino(1, 1)
@@ -316,6 +337,8 @@ class TestGame(unittest.TestCase):
         g2.hands = [h5, h6, h7, h8]
 
         g2.make_move(d5, True)
+        str2 = str(g2)
+        repr2 = repr(g2)
 
         self.assertEqual(g2.board.left_end(), d5.first)
         self.assertEqual(g2.board.right_end(), d5.second)
@@ -326,6 +349,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g2.hands[3]), 1)
         self.assertEqual(g2.result, domino.game.Result(0, False, 20))
         self.assertEqual(g2.turn, 0)
+        self.assertTrue('Board: {}'.format(g2.board) in str2)
+        self.assertTrue("Player 0's hand: {}".format(g2.hands[0]) in str2)
+        self.assertTrue("Player 1's hand: {}".format(g2.hands[1]) in str2)
+        self.assertTrue("Player 2's hand: {}".format(g2.hands[2]) in str2)
+        self.assertTrue("Player 3's hand: {}".format(g2.hands[3]) in str2)
+        self.assertFalse("Player 0's turn" in str2)
+        self.assertTrue('Player 0 stuck the game and won 20 points!' in str2)
+        self.assertEqual(str2, repr2)
 
         h9 = domino.Hand([d5, d6])
         h10 = domino.Hand([d7])
@@ -335,6 +366,8 @@ class TestGame(unittest.TestCase):
         g3.hands = [h9, h10, h11, h12]
 
         g3.make_move(d5, True)
+        str3 = str(g3)
+        repr3 = repr(g3)
 
         self.assertEqual(g3.board.left_end(), d5.first)
         self.assertEqual(g3.board.right_end(), d5.second)
@@ -345,6 +378,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g3.hands[3]), 1)
         self.assertEqual(g3.result, domino.game.Result(0, False, 0))
         self.assertEqual(g3.turn, 0)
+        self.assertTrue('Board: {}'.format(g3.board) in str3)
+        self.assertTrue("Player 0's hand: {}".format(g3.hands[0]) in str3)
+        self.assertTrue("Player 1's hand: {}".format(g3.hands[1]) in str3)
+        self.assertTrue("Player 2's hand: {}".format(g3.hands[2]) in str3)
+        self.assertTrue("Player 3's hand: {}".format(g3.hands[3]) in str3)
+        self.assertFalse("Player 0's turn" in str3)
+        self.assertTrue('Player 0 stuck the game and tied!' in str3)
+        self.assertEqual(str3, repr3)
 
         h13 = domino.Hand([d5, d7])
         h14 = domino.Hand([d6])
@@ -354,6 +395,8 @@ class TestGame(unittest.TestCase):
         g4.hands = [h13, h14, h15, h16]
 
         g4.make_move(d5, True)
+        str4 = str(g4)
+        repr4 = repr(g4)
 
         self.assertEqual(g4.board.left_end(), d5.first)
         self.assertEqual(g4.board.right_end(), d5.second)
@@ -364,6 +407,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g4.hands[3]), 1)
         self.assertEqual(g4.result, domino.game.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
+        self.assertTrue('Board: {}'.format(g4.board) in str4)
+        self.assertTrue("Player 0's hand: {}".format(g4.hands[0]) in str4)
+        self.assertTrue("Player 1's hand: {}".format(g4.hands[1]) in str4)
+        self.assertTrue("Player 2's hand: {}".format(g4.hands[2]) in str4)
+        self.assertTrue("Player 3's hand: {}".format(g4.hands[3]) in str4)
+        self.assertFalse("Player 0's turn" in str4)
+        self.assertTrue('Player 0 stuck the game and won the opposing team 20 points!' in str4)
+        self.assertEqual(str4, repr4)
 
         self.assertRaises(domino.GameOverException, g4.make_move, d7, True)
 
