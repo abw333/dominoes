@@ -37,9 +37,22 @@ class Series:
         self.target_score = target_score
 
     def is_over(self):
+        '''
+        :return: boolean indicating whether either team has
+                 reached the target score, thus ending the series
+        '''
         return max(self.scores) >= self.target_score
 
     def next_game(self):
+        '''
+        Advances the series to the next game, if possible. Also updates
+        each team's score with points from the most recently completed game.
+
+        :return: the next game, if the previous game did not end the series;
+                 None otherwise
+        :raises SeriesOverException: if the series has already ended
+        :raises GameInProgressException: if the last game has not yet finished
+        '''
         if self.is_over():
             raise domino.SeriesOverException(
                 'Cannot start a new game - series ended with a score of {} to {}'.format(*self.scores)
@@ -51,21 +64,24 @@ class Series:
                 'Cannot start a new game - the latest one has not finished!'
             )
 
+        # update each team's score with the points from the previous game
         if result.points >= 0:
             self.scores[result.player % 2] += result.points
         else:
             self.scores[(result.player + 1) % 2] -= result.points
 
+        # return None if the series is now over
         if self.is_over():
             return
 
-        if result.won:
-            self.games.append(domino.Game(starting_player=result.player))
+        # determine the starting player for the next game
+        if result.won or result.points >= 0:
+            starting_player = result.player
         else:
-            if result.points >= 0:
-                self.games.append(domino.Game(starting_player=result.player))
-            else:
-                self.games.append(domino.Game(starting_player=(result.player + 1) % 4))
+            starting_player = (result.player + 1) % 4
+
+        # start the next game
+        self.games.append(domino.Game(starting_player=starting_player))
 
         return self.games[-1]
 
