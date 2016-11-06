@@ -72,5 +72,14 @@ class TestSeries(unittest.TestCase):
 
         self.assertTrue(s.is_over())
 
+    def test_next_game(self):
+        s = domino.Series()
+
+        self.assertRaises(domino.GameInProgressException, s.next_game)
+
+        s.scores = [200, 200]
+
+        self.assertRaises(domino.SeriesOverException, s.next_game)
+
 if __name__ == '__main__':
     unittest.main()
