@@ -115,6 +115,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g1.board), 0)
         self.assertEqual(len(g1.hands), 4)
         self.assertEqual(g1.turn, 0)
+        self.assertEqual(g1.starting_player, 0)
         self.assertIsNone(g1.result)
 
         p1 = 3
@@ -122,7 +123,8 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g2.board), 0)
         self.assertEqual(len(g2.hands), 4)
-        self.assertEqual(g2.turn, 3)
+        self.assertEqual(g2.turn, p1)
+        self.assertEqual(g2.starting_player, p1)
         self.assertIsNone(g2.result)
 
         d1 = domino.Domino(6, 6)
@@ -134,6 +136,10 @@ class TestGame(unittest.TestCase):
         self.assertEqual(hand_lengths1[6], 1)
         self.assertEqual(hand_lengths1[7], 3)
         self.assertTrue(g3.turn in range(4))
+        for i, h in enumerate(g3.hands):
+            if len(h) == 6:
+                self.assertEqual(g3.starting_player, i)
+                break
         self.assertIsNone(g3.result)
 
         g4 = domino.Game(starting_domino=d1, starting_player=p1)
@@ -144,6 +150,10 @@ class TestGame(unittest.TestCase):
         self.assertEqual(hand_lengths2[6], 1)
         self.assertEqual(hand_lengths2[7], 3)
         self.assertTrue(g4.turn in range(4))
+        for i, h in enumerate(g4.hands):
+            if len(h) == 6:
+                self.assertEqual(g4.starting_player, i)
+                break
         self.assertIsNone(g4.result)
 
         p2 = 4
