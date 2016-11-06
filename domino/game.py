@@ -274,18 +274,18 @@ class Game:
             else:
                 if self.result.points > 0:
                     string_list.append(
-                        'Player {} stuck the game and won {} points!'.format(self.result.player,
-                                                                             self.result.points)
+                        'Player {} stuck the game and scored {} points!'.format(self.result.player,
+                                                                                self.result.points)
                     )
                 elif not self.result.points:
                     string_list.append(
-                        'Player {} stuck the game and tied!'.format(self.result.player)
+                        'Player {} stuck the game and tied (0 points)!'.format(self.result.player)
                     )
                 else:
                     string_list.append(
-                        'Player {} stuck the game and won'
-                        ' the opposing team {} points!'.format(self.result.player,
-                                                               -1 * self.result.points)
+                        'Player {} stuck the game and scored'
+                        ' {} points for the opposing team!'.format(self.result.player,
+                                                                   -1 * self.result.points)
                     )
 
         return '\n'.join(string_list)
