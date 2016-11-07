@@ -80,7 +80,7 @@ class Series:
         if result.won or result.points > 0:
             starting_player = result.player
         elif not result.points:
-            raise NotImplementedError() # TODO
+            starting_player = self.games[-1].starting_player
         else: # result.points < 0
             starting_player = (result.player + 1) % 4
 
