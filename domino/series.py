@@ -90,13 +90,10 @@ class Series:
         return self.games[-1]
 
     def __str__(self):
-        string_list = ['Series to {} points'.format(self.target_score)]
+        string_list = ['Series to {} points:'.format(self.target_score)]
 
         for i, score in enumerate(self.scores):
-            string_list.append('Team {} has {} points'.format(i, score))
-
-        for i, game in enumerate(self.games):
-            string_list.extend(['Game {}'.format(i), str(game)])
+            string_list.append('Team {} has {} points.'.format(i, score))
 
         return '\n'.join(string_list)
 
