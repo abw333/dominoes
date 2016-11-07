@@ -8,5 +8,6 @@ setup(
     author='Alan Wagner',
     author_email='alanwagner333@gmail.com',
     packages=['domino'],
+    scripts=['bin/domino'],
     test_suite='tests'
 )

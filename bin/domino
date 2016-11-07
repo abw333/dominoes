@@ -1,0 +1,100 @@
+#! /usr/bin/env python
+
+import domino
+import subprocess
+
+def validated_input(prompt, validate_and_transform, error_message):
+    while True:
+        user_input = input(prompt)
+        validated_user_input = validate_and_transform(user_input)
+
+        if validated_user_input is not None:
+            return validated_user_input
+
+        print(error_message)
+
+def validate_and_transform_target_score(target_score):
+    try:
+        target_score = int(target_score)
+    except ValueError:
+        return None
+
+    if target_score <= 0:
+        return None
+
+    return target_score
+
+def validate_and_transform_domino(hand):
+    def _validate_and_transform_domino(i):
+        if i not in (str(j) for j in range(len(hand))):
+            return None
+
+        return hand[int(i)]
+
+    return _validate_and_transform_domino
+
+def validate_and_transform_side(side):
+    side = side.lower()
+    try:
+        return {'l': True, 'r': False}[side]
+    except KeyError:
+        return None
+
+target_score = validated_input('Up to how many points would you like to play: ',
+                               validate_and_transform_target_score,
+                               'Please enter a positive integer.')
+series = domino.Series(target_score=target_score)
+
+while True:
+    input('Press enter to begin game {}.'.format(len(series.games) - 1))
+    subprocess.call('clear')
+
+    game = series.games[-1]
+
+    if len(series.games) == 1:
+        print('Player {} had the [6|6] and made the first move.'.format(game.starting_player))
+
+    while game.result is None:
+        turn = game.turn
+
+        print("It is now player {}'s turn.".format(turn))
+        input("Press enter to see player {}'s hand.".format(turn))
+
+        print('Board:')
+        print(game.board)
+
+        print("Player {}'s hand:".format(turn))
+        hand = game.hands[turn]
+        for i, d in enumerate(hand):
+            print('{}) {}'.format(i, d))
+
+        while True:
+            validate_and_transform_domino_func = validate_and_transform_domino(hand)
+            d = validated_input('Choose which domino you would like to play: ',
+                                validate_and_transform_domino_func,
+                                'Please enter a value in: {}'.format(list(range(len(hand)))))
+
+            side = validated_input('Choose what side of the board you would like to play on (l or r): ',
+                                   validate_and_transform_side,
+                                   'Please enter a value in: [l, r]')
+
+            try:
+                game.make_move(d, side)
+                break
+            except domino.EndsMismatchException:
+                print('The selected domino cannot be played on the selected end of the board. Please try again.')
+
+        input("Press enter to end player {}'s turn.".format(turn))
+        subprocess.call('clear')
+
+    print('Game over!')
+    print(game)
+
+    next_game = series.next_game()
+    print('The current state of the series:')
+    print(series)
+
+    if next_game is None:
+        winning_team, _ = max(enumerate(series.scores), key=lambda i_score: i_score[1])
+        print('Team {} wins!'.format(winning_team))
+        break
