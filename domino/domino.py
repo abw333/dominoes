@@ -43,7 +43,7 @@ class Domino:
         return str(self)
 
     def __eq__(self, other):
-        if not isinstance(other, Domino):
+        if not isinstance(other, type(self)):
             return False
 
         # order of values does not matter
