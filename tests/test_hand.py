@@ -59,6 +59,18 @@ class TestHand(unittest.TestCase):
         self.assertNotEqual(h5, h6)
         self.assertNotEqual(h6, h8)
 
+        class PseudoHand:
+            def __init__(self, _dominoes):
+                self._dominoes = _dominoes
+
+        ph1 = PseudoHand([])
+        ph2 = PseudoHand([d1])
+        ph3 = PseudoHand([d1, d2])
+
+        self.assertNotEqual(h1, ph1)
+        self.assertNotEqual(h3, ph2)
+        self.assertNotEqual(h6, ph3)
+
     def test_len(self):
         h1 = domino.Hand([])
 
