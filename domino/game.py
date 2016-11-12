@@ -260,7 +260,7 @@ class Game:
         if self.result is not None:
             raise domino.GameOverException('Cannot make a move - the game is over!')
 
-        self.hands[self.turn].play(d)
+        i = self.hands[self.turn].play(d)
 
         try:
             if left:
@@ -269,7 +269,7 @@ class Game:
                 self.board.add_right(d)
         except domino.EndsMismatchException as error:
             # return the domino to the hand if it cannot be placed on the board
-            self.hands[self.turn].draw(d)
+            self.hands[self.turn].draw(d, i)
 
             raise error
 
