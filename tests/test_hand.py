@@ -37,6 +37,28 @@ class TestHand(unittest.TestCase):
         self.assertIsInstance(h, collections.Iterable)
         self.assertIsNotNone(iter(h))
 
+    def test_eq(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(1, 3)
+
+        h1 = domino.Hand([])
+        h2 = domino.Hand([])
+        h3 = domino.Hand([d1])
+        h4 = domino.Hand([d1])
+        h5 = domino.Hand([d2])
+        h6 = domino.Hand([d1, d2])
+        h7 = domino.Hand([d1, d2])
+        h8 = domino.Hand([d2, d1])
+
+        self.assertEqual(h1, h2)
+        self.assertEqual(h3, h4)
+        self.assertEqual(h6, h7)
+
+        self.assertNotEqual(h1, h3)
+        self.assertNotEqual(h3, h5)
+        self.assertNotEqual(h5, h6)
+        self.assertNotEqual(h6, h8)
+
     def test_len(self):
         h1 = domino.Hand([])
 
