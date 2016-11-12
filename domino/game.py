@@ -247,6 +247,9 @@ class Game:
         end of the game board. If the game does not end, the turn is advanced
         to the next player who has a valid move.
 
+        Making a move is transactional - if the operation fails at any point,
+        the game will return to its state before the operation began.
+
         :param Domino d: domino to be played
         :param bool left: end of the board on which to play the
                           domino (True for left, False for right)
