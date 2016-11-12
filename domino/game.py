@@ -302,6 +302,15 @@ class Game:
 
             return self.result
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
     def __str__(self):
         string_list = ['Board: {}'.format(self.board)]
 

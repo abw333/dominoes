@@ -122,6 +122,15 @@ class SkinnyBoard:
 
         self._length += 1
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
     def __len__(self):
         return self._length
 
