@@ -80,30 +80,42 @@ class TestHand(unittest.TestCase):
     def test_play(self):
         d1 = domino.Domino(1, 2)
         d2 = domino.Domino(1, 3)
+        d3 = domino.Domino(1, 4)
 
-        h = domino.Hand([d1, d2])
+        h = domino.Hand([d1, d2, d3])
+
+        self.assertEqual(len(h), 3)
+        self.assertTrue(d1 in h)
+        self.assertTrue(d2 in h)
+        self.assertTrue(d3 in h)
+
+        self.assertEqual(h.play(d3), 2)
 
         self.assertEqual(len(h), 2)
         self.assertTrue(d1 in h)
         self.assertTrue(d2 in h)
+        self.assertFalse(d3 in h)
 
-        h.play(d1)
+        self.assertRaises(domino.NoSuchDominoException, h.play, d3)
+
+        self.assertEqual(len(h), 2)
+        self.assertTrue(d1 in h)
+        self.assertTrue(d2 in h)
+        self.assertFalse(d3 in h)
+
+        self.assertEqual(h.play(d1), 0)
 
         self.assertEqual(len(h), 1)
         self.assertFalse(d1 in h)
         self.assertTrue(d2 in h)
+        self.assertFalse(d3 in h)
 
-        self.assertRaises(domino.NoSuchDominoException, h.play, d1)
-
-        self.assertEqual(len(h), 1)
-        self.assertFalse(d1 in h)
-        self.assertTrue(d2 in h)
-
-        h.play(d2)
+        self.assertEqual(h.play(d2), 0)
 
         self.assertEqual(len(h), 0)
         self.assertFalse(d1 in h)
         self.assertFalse(d2 in h)
+        self.assertFalse(d3 in h)
 
     def test_draw(self):
         d1 = domino.Domino(1, 2)
