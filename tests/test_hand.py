@@ -120,24 +120,58 @@ class TestHand(unittest.TestCase):
     def test_draw(self):
         d1 = domino.Domino(1, 2)
         d2 = domino.Domino(1, 3)
+        d3 = domino.Domino(1, 4)
+        d4 = domino.Domino(1, 5)
 
         h = domino.Hand([])
 
         self.assertEqual(len(h), 0)
         self.assertFalse(d1 in h)
         self.assertFalse(d2 in h)
+        self.assertFalse(d3 in h)
+        self.assertFalse(d4 in h)
 
-        h.draw(d2)
+        self.assertIsNone(h.draw(d1))
 
         self.assertEqual(len(h), 1)
-        self.assertFalse(d1 in h)
-        self.assertTrue(d2 in h)
+        self.assertEqual(h[0], d1)
+        self.assertTrue(d1 in h)
+        self.assertFalse(d2 in h)
+        self.assertFalse(d3 in h)
+        self.assertFalse(d4 in h)
 
-        h.draw(d1)
+        self.assertIsNone(h.draw(d2, 0))
 
         self.assertEqual(len(h), 2)
+        self.assertEqual(h[0], d2)
+        self.assertEqual(h[1], d1)
         self.assertTrue(d1 in h)
         self.assertTrue(d2 in h)
+        self.assertFalse(d3 in h)
+        self.assertFalse(d4 in h)
+
+        self.assertIsNone(h.draw(d3, 1))
+
+        self.assertEqual(len(h), 3)
+        self.assertEqual(h[0], d2)
+        self.assertEqual(h[1], d3)
+        self.assertEqual(h[2], d1)
+        self.assertTrue(d1 in h)
+        self.assertTrue(d2 in h)
+        self.assertTrue(d3 in h)
+        self.assertFalse(d4 in h)
+
+        self.assertIsNone(h.draw(d4))
+
+        self.assertEqual(len(h), 4)
+        self.assertEqual(h[0], d2)
+        self.assertEqual(h[1], d3)
+        self.assertEqual(h[2], d1)
+        self.assertEqual(h[3], d4)
+        self.assertTrue(d1 in h)
+        self.assertTrue(d2 in h)
+        self.assertTrue(d3 in h)
+        self.assertTrue(d4 in h)
 
 if __name__ == '__main__':
     unittest.main()
