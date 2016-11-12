@@ -33,23 +33,31 @@ class Hand(collections.abc.Sequence):
         Removes a domino from the hand.
 
         :param Domino d: domino to remove from the hand
-        :return: None
+        :return: the index within the hand of the played domino
         :raises NoSuchDominoException: if the domino is not in the hand
         '''
         try:
-            self._dominoes.remove(d)
+            i = self._dominoes.index(d)
         except ValueError:
             raise domino.NoSuchDominoException('Cannot make move -'
                                                ' {} is not in hand!'.format(d))
 
-    def draw(self, d):
+        self._dominoes.pop(i)
+        return i
+
+    def draw(self, d, i=None):
         '''
         Adds a domino to the hand.
 
         :param Domino d: domino to add to the hand
+        :param int i: index at which to add the domino;
+                      by default adds to the end of the hand
         :return: None
         '''
-        self._dominoes.append(d)
+        if i is None:
+            self._dominoes.append(d)
+        else:
+            self._dominoes.insert(i, d)
 
     def __getitem__(self, i):
         return self._dominoes[i]
