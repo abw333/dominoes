@@ -109,20 +109,25 @@ while True:
 
     # game.result will be filled in once the game ends
     while game.result is None:
-        turn = game.turn
-
-        print("It is now player {}'s turn.".format(turn))
-        input("Press enter to see player {}'s hand.".format(turn))
+        print("It is now player {}'s turn.".format(game.turn))
+        input("Press enter to see player {}'s hand.".format(game.turn))
 
         # print the board so that the player can decide what to play
         print('Board:')
         print(game.board)
 
-        print("Player {}'s hand:".format(turn))
-        hand = game.hands[turn]
+        # present the player's hand in multiple-choice format
+        print("Player {}'s hand:".format(game.turn))
+        hand = game.hands[game.turn]
         for i, d in enumerate(hand):
             print('{}) {}'.format(i, d))
 
+        # remember whose turn it currently is.
+        # we'll need it after we move on to the next player.
+        turn = game.turn
+
+        # ask the player what move they'd like to play,
+        # until they select a valid move
         while True:
             validate_and_transform_domino_func = validate_and_transform_domino(hand)
             d = validated_input('Choose which domino you would like to play: ',
