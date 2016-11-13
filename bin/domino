@@ -102,15 +102,19 @@ while True:
 
     game = series.games[-1]
 
+    # the player holding the [6|6] plays first, in the first game. in all other
+    # games, the outcome of the previous game determines the starting player.
     if len(series.games) == 1:
         print('Player {} had the [6|6] and made the first move.'.format(game.starting_player))
 
+    # game.result will be filled in once the game ends
     while game.result is None:
         turn = game.turn
 
         print("It is now player {}'s turn.".format(turn))
         input("Press enter to see player {}'s hand.".format(turn))
 
+        # print the board so that the player can decide what to play
         print('Board:')
         print(game.board)
 
@@ -134,11 +138,17 @@ while True:
                 game.make_move(d, end)
                 break
             except domino.EndsMismatchException:
-                print('The selected domino cannot be played on the selected end of the board. Please try again.')
+                # `game.make_move` is transactional - if it fails, the game
+                # state is exactly as it was when the operation started
+                print('The selected domino cannot be played on the'
+                      ' selected end of the board. Please try again.')
 
+        # clear the terminal upon moving to the next
+        # turn - no looking at the previous player's hand!
         input("Press enter to end player {}'s turn.".format(turn))
         subprocess.call('clear')
 
+    # game over - move on to the next game
     print('Game over!')
     print(game)
 
