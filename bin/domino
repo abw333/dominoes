@@ -4,8 +4,23 @@ import domino
 import subprocess
 
 def validated_input(prompt, validate_and_transform, error_message):
+    '''
+    Convenience wrapper around `input` that prompts the user until valid
+    input is provided. Strips leading and trailing spaces from the input
+    before applying any further processing.
+
+    :param str prompt: prompt for input displayed to the user
+    :param function validate_and_transform: function that takes as input the
+                                            input provided by the user; returns
+                                            None if the input is invalid;
+                                            otherwise, returns the input,
+                                            potentially after applying some
+                                            processing to it
+    :param str error_message: error message to display on invalid input
+    :return: the user input, after `validate_and_transform` transforms it
+    '''
     while True:
-        user_input = input(prompt)
+        user_input = input(prompt).strip()
         validated_user_input = validate_and_transform(user_input)
 
         if validated_user_input is not None:
