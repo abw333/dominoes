@@ -1,0 +1,167 @@
+#! /usr/bin/env python
+
+import domino
+import subprocess
+
+def validated_input(prompt, validate_and_transform, error_message):
+    '''
+    Convenience wrapper around `input` that prompts the user until valid
+    input is provided. Strips leading and trailing spaces from the input
+    before applying any further processing.
+
+    :param str prompt: prompt for input displayed to the user
+    :param function validate_and_transform: function that takes as input the
+                                            input provided by the user; returns
+                                            None if the input is invalid;
+                                            otherwise, returns the input,
+                                            potentially after applying some
+                                            processing to it
+    :param str error_message: error message to display on invalid input
+    :return: the user input, after `validate_and_transform` transforms it
+    '''
+    while True:
+        user_input = input(prompt).strip()
+        validated_user_input = validate_and_transform(user_input)
+
+        if validated_user_input is not None:
+            return validated_user_input
+
+        print(error_message)
+
+def validate_and_transform_target_score(target_score):
+    '''
+    To be used as a `validate_and_transform` function with `validated_input`.
+
+    Requires that the input be a positive integer.
+
+    :param str target_score: user input representing the target score
+    :return: positive int representing the target score, if it is valid;
+             None otherwise
+    '''
+    try:
+        target_score = int(target_score)
+    except ValueError:
+        return None
+
+    if target_score <= 0:
+        return None
+
+    return target_score
+
+def validate_and_transform_domino(hand):
+    '''
+    Returns a function to be used as a `validate_and_transform`
+    function with `validated_input`.
+    '''
+    def _validate_and_transform_domino(i):
+        '''
+        To be used as a `validate_and_transform` function with `validated_input`.
+
+        Requires that the input be a valid nonnegative index into `hand`.
+
+        :param str i: user input representing an index into `hand`
+        :return: Domino represented by the input index, if it is valid;
+                 None otherwise
+        '''
+        if i not in (str(j) for j in range(len(hand))):
+            return None
+
+        return hand[int(i)]
+
+    return _validate_and_transform_domino
+
+def validate_and_transform_end(end):
+    '''
+    To be used as a `validate_and_transform` function with `validated_input`.
+
+    Requires that the input be a valid end of the domino board - i.e. 'l' or 'r'.
+
+    :param str end: user input representing an end of the domino board
+    :return: True for the left end, False for the right end, None for invalid input
+    '''
+    end = end.lower()
+    try:
+        return {'l': True, 'r': False}[end]
+    except KeyError:
+        return None
+
+# clear the terminal before starting the series
+input('Welcome! Proceeding will clear all text from this terminal session.'
+      ' If you are OK with this, press enter to continue.')
+subprocess.call(['tput', 'reset'])
+
+# start a series up to `target_score`
+target_score = validated_input('Up to how many points would you like to play: ',
+                               validate_and_transform_target_score,
+                               'Please enter a positive integer.')
+series = domino.Series(target_score=target_score)
+game = series.games[0]
+
+# the game will be None once the series has ended
+while game is not None:
+    # clear the terminal upon starting a new game
+    input('Press enter to begin game {}.'.format(len(series.games) - 1))
+    subprocess.call(['tput', 'reset'])
+
+    # the player holding the [6|6] plays first, in the first game. in all other
+    # games, the outcome of the previous game determines the starting player.
+    if len(series.games) == 1:
+        print('Player {} had the [6|6] and made the first move.'.format(game.starting_player))
+
+    # game.result will be filled in once the game ends
+    while game.result is None:
+        input("It is now player {0}'s turn. Press enter"
+              " to see player {0}'s hand.".format(game.turn))
+
+        # print the board so that the player can decide what to play
+        print('Board:')
+        print(game.board)
+
+        # present the player's hand in multiple-choice format
+        print("Player {}'s hand:".format(game.turn))
+        hand = game.hands[game.turn]
+        for i, d in enumerate(hand):
+            print('{}) {}'.format(i, d))
+
+        # remember whose turn it currently is.
+        # we'll need it after we move on to the next player.
+        turn = game.turn
+
+        # ask the player what move they'd like to play,
+        # until they select a valid move
+        while True:
+            valid_inputs = list(range(len(hand)))
+            d = validated_input('Choose which domino you would like to play: ',
+                                validate_and_transform_domino(hand),
+                                'Please enter a value in: {}'.format(valid_inputs))
+
+            end = validated_input('Choose what end of the board you'
+                                  ' would like to play on (l or r): ',
+                                  validate_and_transform_end,
+                                  'Please enter a value in: [l, r]')
+
+            try:
+                game.make_move(d, end)
+                break
+            except domino.EndsMismatchException:
+                # `game.make_move` is transactional - if it fails, the game
+                # state is exactly as it was when the operation started
+                print('The selected domino cannot be played on the'
+                      ' selected end of the board. Please try again.')
+
+        # clear the terminal upon moving to the next
+        # turn - no looking at the previous player's hand!
+        input("Press enter to end player {}'s turn.".format(turn))
+        subprocess.call(['tput', 'reset'])
+
+    # game over - move on to the next game
+    print('Game over!')
+    print(game)
+
+    game = series.next_game()
+    print('The current state of the series:')
+    print(series)
+
+# once the series has ended, print out the winning team
+winning_team, _ = max(enumerate(series.scores), key=lambda i_score: i_score[1])
+print('Team {} wins!'.format(winning_team))
