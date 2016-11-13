@@ -95,12 +95,13 @@ target_score = validated_input('Up to how many points would you like to play: ',
                                validate_and_transform_target_score,
                                'Please enter a positive integer.')
 series = domino.Series(target_score=target_score)
+game = series.games[0]
 
-while True:
+# the game will be None once the series has ended
+while game is not None:
+    # clear the terminal upon starting a new game
     input('Press enter to begin game {}.'.format(len(series.games) - 1))
-    subprocess.call('clear')
-
-    game = series.games[-1]
+    subprocess.call(['tput', 'reset'])
 
     # the player holding the [6|6] plays first, in the first game. in all other
     # games, the outcome of the previous game determines the starting player.
@@ -151,17 +152,16 @@ while True:
         # clear the terminal upon moving to the next
         # turn - no looking at the previous player's hand!
         input("Press enter to end player {}'s turn.".format(turn))
-        subprocess.call('clear')
+        subprocess.call(['tput', 'reset'])
 
     # game over - move on to the next game
     print('Game over!')
     print(game)
 
-    next_game = series.next_game()
+    game = series.next_game()
     print('The current state of the series:')
     print(series)
 
-    if next_game is None:
-        winning_team, _ = max(enumerate(series.scores), key=lambda i_score: i_score[1])
-        print('Team {} wins!'.format(winning_team))
-        break
+# once the series has ended, print out the winning team
+winning_team, _ = max(enumerate(series.scores), key=lambda i_score: i_score[1])
+print('Team {} wins!'.format(winning_team))
