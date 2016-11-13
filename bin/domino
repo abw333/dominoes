@@ -29,6 +29,15 @@ def validated_input(prompt, validate_and_transform, error_message):
         print(error_message)
 
 def validate_and_transform_target_score(target_score):
+    '''
+    To be used as a `validate_and_transform` function with `validated_input`.
+
+    Requires that the input be a positive integer.
+
+    :param str target_score: user input representing the target score
+    :return: positive int representing the target score, if it is valid;
+             None otherwise
+    '''
     try:
         target_score = int(target_score)
     except ValueError:
