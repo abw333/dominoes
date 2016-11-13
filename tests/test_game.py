@@ -164,6 +164,47 @@ class TestGame(unittest.TestCase):
         self.assertRaises(domino.NoSuchDominoException,
                           domino.Game, starting_domino=d2)
 
+    def test_eq(self):
+        g1 = domino.Game()
+        g2 = domino.Game()
+        g3 = domino.Game()
+        g4 = domino.Game()
+        g5 = domino.Game()
+        g6 = domino.Game()
+        g7 = domino.Game()
+
+        PseudoGame = collections.namedtuple('PseudoGame',
+                                            ['board', 'hands', 'result',
+                                             'turn', 'starting_player'])
+
+        pg = PseudoGame(g1.board, g1.hands, g1.result, g1.turn, g1.starting_player)
+
+        g2.hands = g1.hands
+        g3.hands = g1.hands
+        g4.hands = g1.hands
+        g5.hands = g1.hands
+        g6.hands = g1.hands
+        g7.hands = g1.hands
+
+        self.assertEqual(g1, g2)
+
+        self.assertNotEqual(g1, pg)
+
+        g3.skinny_board()
+        self.assertNotEqual(g1, g3)
+
+        g4.hands = g4.hands[1:] + g4.hands[:1]
+        self.assertNotEqual(g1, g4)
+
+        g5.result = True
+        self.assertNotEqual(g1, g5)
+
+        g6.turn = 1
+        self.assertNotEqual(g1, g6)
+
+        g7.starting_player = 1
+        self.assertNotEqual(g1, g7)
+
     def test_skinny_board(self):
         d = domino.Domino(1, 2)
         g = domino.Game(starting_domino=d)
