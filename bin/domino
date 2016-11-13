@@ -70,10 +70,18 @@ def validate_and_transform_domino(hand):
 
     return _validate_and_transform_domino
 
-def validate_and_transform_side(side):
-    side = side.lower()
+def validate_and_transform_end(end):
+    '''
+    To be used as a `validate_and_transform` function with `validated_input`.
+
+    Requires that the input be a valid end of the domino board - i.e. 'l' or 'r'.
+
+    :param str end: user input representing an end of the domino board
+    :return: True for the left end, False for the right end, None for invalid input
+    '''
+    end = end.lower()
     try:
-        return {'l': True, 'r': False}[side]
+        return {'l': True, 'r': False}[end]
     except KeyError:
         return None
 
@@ -111,12 +119,13 @@ while True:
                                 validate_and_transform_domino_func,
                                 'Please enter a value in: {}'.format(list(range(len(hand)))))
 
-            side = validated_input('Choose what side of the board you would like to play on (l or r): ',
-                                   validate_and_transform_side,
-                                   'Please enter a value in: [l, r]')
+            end = validated_input('Choose what end of the board you'
+                                  ' would like to play on (l or r): ',
+                                  validate_and_transform_end,
+                                  'Please enter a value in: [l, r]')
 
             try:
-                game.make_move(d, side)
+                game.make_move(d, end)
                 break
             except domino.EndsMismatchException:
                 print('The selected domino cannot be played on the selected end of the board. Please try again.')
