@@ -34,6 +34,27 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(sb2), '[1|2]')
         self.assertEqual(repr(sb2), '[1|2]')
 
+    def test_eq(self):
+        b1 = domino.SkinnyBoard(1, 2, 3)
+        b2 = domino.SkinnyBoard(1, 2, 3)
+        b3 = domino.SkinnyBoard(4, 2, 3)
+        b4 = domino.SkinnyBoard(1, 4, 3)
+        b5 = domino.SkinnyBoard(1, 2, 4)
+
+        class PseudoSkinnyBoard:
+            def __init__(self, _left, _right, _length):
+                self._left = _left
+                self._right = _right
+                self._length = _length
+
+        pb = PseudoSkinnyBoard(1, 2, 3)
+
+        self.assertEqual(b1, b2)
+        self.assertNotEqual(b1, b3)
+        self.assertNotEqual(b1, b4)
+        self.assertNotEqual(b1, b5)
+        self.assertNotEqual(b1, pb)
+
     def test_add_left(self):
         b = domino.SkinnyBoard()
 

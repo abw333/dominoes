@@ -62,6 +62,15 @@ class Hand(collections.abc.Sequence):
     def __getitem__(self, i):
         return self._dominoes[i]
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
     def __len__(self):
         return len(self._dominoes)
 

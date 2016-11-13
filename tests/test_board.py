@@ -1,3 +1,4 @@
+import collections
 import domino
 import unittest
 
@@ -11,6 +12,45 @@ class TestBoard(unittest.TestCase):
         self.assertRaises(domino.EmptyBoardException, b.right_end)
         self.assertEqual(str(b), '')
         self.assertEqual(repr(b), '')
+
+    def test_eq(self):
+        d1 = domino.Domino(1, 2)
+        d2 = domino.Domino(1, 3)
+        d3 = domino.Domino(2, 3)
+
+        b1 = domino.Board()
+        b2 = domino.Board()
+
+        PseudoBoard = collections.namedtuple('PseudoBoard', ['board'])
+
+        pb = PseudoBoard(collections.deque())
+
+        self.assertEqual(b1, b2)
+        self.assertNotEqual(b1, pb)
+
+        b1.add_left(d1)
+
+        self.assertNotEqual(b1, b2)
+
+        b2.add_left(d1)
+
+        self.assertEqual(b1, b2)
+
+        b1.add_left(d2)
+
+        self.assertNotEqual(b1, b2)
+
+        b2.add_left(d2)
+
+        self.assertEqual(b1, b2)
+
+        b1.add_right(d3)
+
+        self.assertNotEqual(b1, b2)
+
+        b2.add_right(d3)
+
+        self.assertEqual(b1, b2)
 
     def test_add_left(self):
         b = domino.Board()
