@@ -247,6 +247,9 @@ class Game:
         end of the game board. If the game does not end, the turn is advanced
         to the next player who has a valid move.
 
+        Making a move is transactional - if the operation fails at any point,
+        the game will return to its state before the operation began.
+
         :param Domino d: domino to be played
         :param bool left: end of the board on which to play the
                           domino (True for left, False for right)
@@ -260,7 +263,7 @@ class Game:
         if self.result is not None:
             raise domino.GameOverException('Cannot make a move - the game is over!')
 
-        self.hands[self.turn].play(d)
+        i = self.hands[self.turn].play(d)
 
         try:
             if left:
@@ -269,7 +272,7 @@ class Game:
                 self.board.add_right(d)
         except domino.EndsMismatchException as error:
             # return the domino to the hand if it cannot be placed on the board
-            self.hands[self.turn].draw(d)
+            self.hands[self.turn].draw(d, i)
 
             raise error
 
