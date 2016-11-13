@@ -57,7 +57,7 @@ def validate_and_transform_domino(hand):
         '''
         To be used as a `validate_and_transform` function with `validated_input`.
 
-        Requires that the input be a valid positive index into `hand`.
+        Requires that the input be a valid nonnegative index into `hand`.
 
         :param str i: user input representing an index into `hand`
         :return: Domino represented by the input index, if it is valid;
