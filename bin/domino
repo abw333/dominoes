@@ -85,6 +85,12 @@ def validate_and_transform_end(end):
     except KeyError:
         return None
 
+# clear the terminal before starting the series
+input('Welcome! Proceeding will clear all text from this terminal session.'
+      ' If you are OK with this, press enter to continue.')
+subprocess.call(['tput', 'reset'])
+
+# start a series up to `target_score`
 target_score = validated_input('Up to how many points would you like to play: ',
                                validate_and_transform_target_score,
                                'Please enter a positive integer.')
