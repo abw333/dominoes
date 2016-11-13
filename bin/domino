@@ -110,8 +110,8 @@ while game is not None:
 
     # game.result will be filled in once the game ends
     while game.result is None:
-        print("It is now player {}'s turn.".format(game.turn))
-        input("Press enter to see player {}'s hand.".format(game.turn))
+        input("It is now player {0}'s turn. Press enter"
+              " to see player {0}'s hand.".format(game.turn))
 
         # print the board so that the player can decide what to play
         print('Board:')
