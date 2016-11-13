@@ -8,6 +8,5 @@ setup(
     author='Alan Wagner',
     author_email='alanwagner333@gmail.com',
     packages=['domino'],
-    install_requires=['numpy>=1.11.2'],
     test_suite='tests'
 )
