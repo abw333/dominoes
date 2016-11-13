@@ -1,4 +1,5 @@
 import collections
+import copy
 import domino
 import unittest
 
@@ -314,10 +315,12 @@ class TestGame(unittest.TestCase):
         d4 = domino.Domino(7, 7)
         p3 = g.turn
         len_hand3 = len(g.hands[p3])
+        before = copy.deepcopy(g)
 
         # try to play a domino that is not in the player's hand
         self.assertRaises(domino.NoSuchDominoException, g.make_move, d4, True)
 
+        self.assertEqual(before, g)
         self.assertEqual(g.board.left_end(), d2.second)
         self.assertEqual(g.board.right_end(), d3.second)
         self.assertEqual(len(g.board), 3)
@@ -328,10 +331,12 @@ class TestGame(unittest.TestCase):
         self.assertIsNone(g.result)
 
         g.hands[p3].draw(d4)
+        before = copy.deepcopy(g)
 
         # try to play a domino that does not match the board
         self.assertRaises(domino.EndsMismatchException, g.make_move, d4, True)
 
+        self.assertEqual(before, g)
         self.assertEqual(g.board.left_end(), d2.second)
         self.assertEqual(g.board.right_end(), d3.second)
         self.assertEqual(len(g.board), 3)
@@ -467,8 +472,11 @@ class TestGame(unittest.TestCase):
         self.assertTrue('Player 0 stuck the game and scored 20 points for the opposing team!' in str4)
         self.assertEqual(str4, repr4)
 
+        before = copy.deepcopy(g4)
+
         self.assertRaises(domino.GameOverException, g4.make_move, d7, True)
 
+        self.assertEqual(before, g4)
         self.assertEqual(g4.board.left_end(), d5.first)
         self.assertEqual(g4.board.right_end(), d5.second)
         self.assertEqual(len(g4.board), 1)
