@@ -1,5 +1,5 @@
 import collections
-import domino
+import dominoes
 import random
 
 def _randomized_hands():
@@ -7,10 +7,10 @@ def _randomized_hands():
     :return: 4 hands, obtained by shuffling the 28 dominoes used in
              this variation of the game, and distributing them evenly
     '''
-    dominoes = [domino.Domino(i, j) for i in range(7) for j in range(i, 7)]
+    dominoes = [dominoes.Domino(i, j) for i in range(7) for j in range(i, 7)]
     random.shuffle(dominoes)
-    return [domino.Hand(dominoes[0:7]), domino.Hand(dominoes[7:14]),
-            domino.Hand(dominoes[14:21]), domino.Hand(dominoes[21:28])]
+    return [dominoes.Hand(dominoes[0:7]), dominoes.Hand(dominoes[7:14]),
+            dominoes.Hand(dominoes[14:21]), dominoes.Hand(dominoes[21:28])]
 
 def _validate_player(player):
     '''
@@ -23,8 +23,8 @@ def _validate_player(player):
     valid_players = range(4)
     if player not in valid_players:
         valid_players = ', '.join(str(p) for p in valid_players)
-        raise domino.NoSuchPlayerException('{} is not a valid player. Valid players'
-                                           ' are: {}'.format(player, valid_players))
+        raise dominoes.NoSuchPlayerException('{} is not a valid player. Valid players'
+                                             ' are: {}'.format(player, valid_players))
 
 def _domino_hand(d, hands):
     '''
@@ -37,7 +37,7 @@ def _domino_hand(d, hands):
         if d in hand:
             return i
 
-    raise domino.NoSuchDominoException('{} is not in any hand!'.format(d))
+    raise dominoes.NoSuchDominoException('{} is not in any hand!'.format(d))
 
 def _remaining_points(hands):
     '''
@@ -153,8 +153,8 @@ class Game:
 
     Usage::
         >>> import domino
-        >>> d = domino.Domino(6, 6)
-        >>> g = domino.Game(starting_domino=d)
+        >>> d = dominoes.Domino(6, 6)
+        >>> g = dominoes.Game(starting_domino=d)
         >>> g
         Board: [6|6]
         Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
@@ -194,7 +194,7 @@ class Game:
         Player 1 won and scored 32 points!
     '''
     def __init__(self, starting_domino=None, starting_player=0):
-        self.board = domino.Board()
+        self.board = dominoes.Board()
 
         self.hands = _randomized_hands()
 
@@ -216,7 +216,7 @@ class Game:
 
         :return: None
         '''
-        self.board = domino.SkinnyBoard.from_board(self.board)
+        self.board = dominoes.SkinnyBoard.from_board(self.board)
 
     def valid_moves(self):
         '''
@@ -261,7 +261,7 @@ class Game:
                                        the specified position in the board
         '''
         if self.result is not None:
-            raise domino.GameOverException('Cannot make a move - the game is over!')
+            raise dominoes.GameOverException('Cannot make a move - the game is over!')
 
         i = self.hands[self.turn].play(d)
 
@@ -270,7 +270,7 @@ class Game:
                 self.board.add_left(d)
             else:
                 self.board.add_right(d)
-        except domino.EndsMismatchException as error:
+        except dominoes.EndsMismatchException as error:
             # return the domino to the hand if it cannot be placed on the board
             self.hands[self.turn].draw(d, i)
 
