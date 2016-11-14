@@ -143,8 +143,8 @@ class SkinnyBoard:
             left_domino = dominoes.Domino(self._left, '?')
             right_domino = dominoes.Domino('?', self._right)
             middle_dominoes = [dominoes.Domino('?', '?')] * (self._length - 2)
-            dominoes = [left_domino] + middle_dominoes + [right_domino]
-            return ''.join(str(d) for d in dominoes)
+            all_dominoes = [left_domino] + middle_dominoes + [right_domino]
+            return ''.join(str(d) for d in all_dominoes)
 
     def __repr__(self):
         return str(self)
