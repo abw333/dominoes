@@ -1,5 +1,5 @@
 import collections
-import domino
+import dominoes
 
 class Board:
     '''
@@ -11,9 +11,9 @@ class Board:
 
     Usage::
         >>> import domino
-        >>> d1 = domino.Domino(1, 2)
-        >>> d2 = domino.Domino(1, 3)
-        >>> b = domino.Board()
+        >>> d1 = dominoes.Domino(1, 2)
+        >>> d2 = dominoes.Domino(1, 3)
+        >>> b = dominoes.Board()
         >>> b
 
         >>> b.add_left(d1)
@@ -42,8 +42,8 @@ class Board:
         try:
             return self.board[0].first
         except IndexError:
-            raise domino.EmptyBoardException('Cannot retrieve the left end of'
-                                             ' the board because it is empty!')
+            raise dominoes.EmptyBoardException('Cannot retrieve the left end of'
+                                               ' the board because it is empty!')
 
     def right_end(self):
         '''
@@ -53,8 +53,8 @@ class Board:
         try:
             return self.board[-1].second
         except IndexError:
-            raise domino.EmptyBoardException('Cannot retrieve the right end of'
-                                             ' the board because it is empty!')
+            raise dominoes.EmptyBoardException('Cannot retrieve the right end of'
+                                               ' the board because it is empty!')
 
     def add_left(self, d):
         '''
@@ -71,7 +71,7 @@ class Board:
         elif d.second == self.left_end():
             self.board.appendleft(d)
         else:
-            raise domino.EndsMismatchException(
+            raise dominoes.EndsMismatchException(
                 '{} cannot be added to the left of'
                 ' the board - values do not match!'.format(d)
             )
@@ -91,7 +91,7 @@ class Board:
         elif d.second == self.right_end():
             self.board.append(d.inverted())
         else:
-            raise domino.EndsMismatchException(
+            raise dominoes.EndsMismatchException(
                 '{} cannot be added to the right of'
                 ' the board - values do not match!'.format(d)
             )
