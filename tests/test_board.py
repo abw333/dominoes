@@ -1,25 +1,25 @@
 import collections
-import domino
+import dominoes
 import unittest
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
-        b = domino.Board()
+        b = dominoes.Board()
 
         self.assertIsNotNone(b.board)
         self.assertEqual(len(b), 0)
-        self.assertRaises(domino.EmptyBoardException, b.left_end)
-        self.assertRaises(domino.EmptyBoardException, b.right_end)
+        self.assertRaises(dominoes.EmptyBoardException, b.left_end)
+        self.assertRaises(dominoes.EmptyBoardException, b.right_end)
         self.assertEqual(str(b), '')
         self.assertEqual(repr(b), '')
 
     def test_eq(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
-        d3 = domino.Domino(2, 3)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
+        d3 = dominoes.Domino(2, 3)
 
-        b1 = domino.Board()
-        b2 = domino.Board()
+        b1 = dominoes.Board()
+        b2 = dominoes.Board()
 
         PseudoBoard = collections.namedtuple('PseudoBoard', ['board'])
 
@@ -53,12 +53,12 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(b1, b2)
 
     def test_add_left(self):
-        b = domino.Board()
+        b = dominoes.Board()
 
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
-        d3 = domino.Domino(2, 3)
-        d4 = domino.Domino(4, 4)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
+        d3 = dominoes.Domino(2, 3)
+        d4 = dominoes.Domino(4, 4)
 
         b.add_left(d1)
 
@@ -84,7 +84,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|3][3|1][1|2]')
         self.assertEqual(repr(b), '[2|3][3|1][1|2]')
 
-        self.assertRaises(domino.EndsMismatchException, b.add_left, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add_left, d4)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -93,12 +93,12 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(repr(b), '[2|3][3|1][1|2]')
 
     def test_add_right(self):
-        b = domino.Board()
+        b = dominoes.Board()
 
-        d1 = domino.Domino(2, 1)
-        d2 = domino.Domino(3, 1)
-        d3 = domino.Domino(3, 2)
-        d4 = domino.Domino(4, 4)
+        d1 = dominoes.Domino(2, 1)
+        d2 = dominoes.Domino(3, 1)
+        d3 = dominoes.Domino(3, 2)
+        d4 = dominoes.Domino(4, 4)
 
         b.add_right(d1)
 
@@ -124,7 +124,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1][1|3][3|2]')
         self.assertEqual(repr(b), '[2|1][1|3][3|2]')
 
-        self.assertRaises(domino.EndsMismatchException, b.add_right, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add_right, d4)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
