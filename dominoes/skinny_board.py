@@ -1,4 +1,4 @@
-import domino
+import dominoes
 
 class SkinnyBoard:
     '''
@@ -14,9 +14,9 @@ class SkinnyBoard:
 
     Usage::
         >>> import domino
-        >>> d1 = domino.Domino(1, 2)
-        >>> d2 = domino.Domino(1, 3)
-        >>> b = domino.SkinnyBoard()
+        >>> d1 = dominoes.Domino(1, 2)
+        >>> d2 = dominoes.Domino(1, 3)
+        >>> b = dominoes.SkinnyBoard()
         >>> b
 
         >>> b.add_left(d1)
@@ -60,8 +60,8 @@ class SkinnyBoard:
         :raises EmptyBoardException: if the board is empty
         '''
         if not self:
-            raise domino.EmptyBoardException('Cannot retrieve the left end of'
-                                             ' the board because it is empty!')
+            raise dominoes.EmptyBoardException('Cannot retrieve the left end of'
+                                               ' the board because it is empty!')
 
         return self._left
 
@@ -71,8 +71,8 @@ class SkinnyBoard:
         :raises EmptyBoardException: if the board is empty
         '''
         if not self:
-            raise domino.EmptyBoardException('Cannot retrieve the right end of'
-                                             ' the board because it is empty!')
+            raise dominoes.EmptyBoardException('Cannot retrieve the right end of'
+                                               ' the board because it is empty!')
 
         return self._right
 
@@ -92,7 +92,7 @@ class SkinnyBoard:
         elif d.first == self.left_end():
             self._left = d.second
         else:
-            raise domino.EndsMismatchException(
+            raise dominoes.EndsMismatchException(
                 '{} cannot be added to the left of'
                 ' the board - values do not match!'.format(d)
             )
@@ -115,7 +115,7 @@ class SkinnyBoard:
         elif d.second == self.right_end():
             self._right = d.first
         else:
-            raise domino.EndsMismatchException(
+            raise dominoes.EndsMismatchException(
                 '{} cannot be added to the right of'
                 ' the board - values do not match!'.format(d)
             )
@@ -138,13 +138,13 @@ class SkinnyBoard:
         if not self:
             return ''
         elif self._length == 1:
-            return str(domino.Domino(self._left, self._right))
+            return str(dominoes.Domino(self._left, self._right))
         else:
-            left_domino = domino.Domino(self._left, '?')
-            right_domino = domino.Domino('?', self._right)
-            middle_dominoes = [domino.Domino('?', '?')] * (self._length - 2)
-            dominoes = [left_domino] + middle_dominoes + [right_domino]
-            return ''.join(str(d) for d in dominoes)
+            left_domino = dominoes.Domino(self._left, '?')
+            right_domino = dominoes.Domino('?', self._right)
+            middle_dominoes = [dominoes.Domino('?', '?')] * (self._length - 2)
+            all_dominoes = [left_domino] + middle_dominoes + [right_domino]
+            return ''.join(str(d) for d in all_dominoes)
 
     def __repr__(self):
         return str(self)

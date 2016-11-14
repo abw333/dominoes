@@ -12,7 +12,7 @@ class Domino:
 
     Usage::
         >>> import domino
-        >>> d = domino.Domino(1, 2)
+        >>> d = dominoes.Domino(1, 2)
         >>> d
         [1|2]
         >>> d_inv = d.inverted()
@@ -20,7 +20,7 @@ class Domino:
         [2|1]
         >>> d == d_inv
         True
-        >>> other_d = domino.Domino(1, 3)
+        >>> other_d = dominoes.Domino(1, 3)
         >>> d == other_d
         False
         >>> 2 in d

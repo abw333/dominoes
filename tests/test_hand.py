@@ -1,54 +1,54 @@
 import collections
-import domino
+import dominoes
 import unittest
 
 class TestHand(unittest.TestCase):
     def test_init(self):
-        h1 = domino.Hand([])
+        h1 = dominoes.Hand([])
 
         self.assertIsNotNone(h1)
 
-        d = domino.Domino(1, 2)
-        h2 = domino.Hand([d])
+        d = dominoes.Domino(1, 2)
+        h2 = dominoes.Hand([d])
 
         self.assertIsNotNone(h2)
 
     def test_contains(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
 
-        h = domino.Hand([d1])
+        h = dominoes.Hand([d1])
 
         self.assertTrue(d1 in h)
         self.assertFalse(d2 in h)
 
     def test_getitem(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
 
-        h = domino.Hand([d1, d2])
+        h = dominoes.Hand([d1, d2])
 
         self.assertEqual(h[0], d1)
         self.assertEqual(h[1], d2)
 
     def test_iter(self):
-        h = domino.Hand([])
+        h = dominoes.Hand([])
 
         self.assertIsInstance(h, collections.Iterable)
         self.assertIsNotNone(iter(h))
 
     def test_eq(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
 
-        h1 = domino.Hand([])
-        h2 = domino.Hand([])
-        h3 = domino.Hand([d1])
-        h4 = domino.Hand([d1])
-        h5 = domino.Hand([d2])
-        h6 = domino.Hand([d1, d2])
-        h7 = domino.Hand([d1, d2])
-        h8 = domino.Hand([d2, d1])
+        h1 = dominoes.Hand([])
+        h2 = dominoes.Hand([])
+        h3 = dominoes.Hand([d1])
+        h4 = dominoes.Hand([d1])
+        h5 = dominoes.Hand([d2])
+        h6 = dominoes.Hand([d1, d2])
+        h7 = dominoes.Hand([d1, d2])
+        h8 = dominoes.Hand([d2, d1])
 
         self.assertEqual(h1, h2)
         self.assertEqual(h3, h4)
@@ -72,51 +72,51 @@ class TestHand(unittest.TestCase):
         self.assertNotEqual(h6, ph3)
 
     def test_len(self):
-        h1 = domino.Hand([])
+        h1 = dominoes.Hand([])
 
         self.assertEqual(len(h1), 0)
 
-        d = domino.Domino(1, 2)
-        h2 = domino.Hand([d])
+        d = dominoes.Domino(1, 2)
+        h2 = dominoes.Hand([d])
 
         self.assertEqual(len(h2), 1)
 
     def test_str(self):
-        h1 = domino.Hand([])
+        h1 = dominoes.Hand([])
 
         self.assertEqual(str(h1), '')
 
-        d1 = domino.Domino(1, 2)
-        h2 = domino.Hand([d1])
+        d1 = dominoes.Domino(1, 2)
+        h2 = dominoes.Hand([d1])
 
         self.assertEqual(str(h2), '[1|2]')
 
-        d2 = domino.Domino(1, 3)
-        h3 = domino.Hand([d1, d2])
+        d2 = dominoes.Domino(1, 3)
+        h3 = dominoes.Hand([d1, d2])
 
         self.assertEqual(str(h3), '[1|2][1|3]')
 
     def	test_repr(self):
-        h1 = domino.Hand([])
+        h1 = dominoes.Hand([])
 
         self.assertEqual(repr(h1), '')
 
-        d1 = domino.Domino(1, 2)
-        h2 = domino.Hand([d1])
+        d1 = dominoes.Domino(1, 2)
+        h2 = dominoes.Hand([d1])
 
         self.assertEqual(repr(h2), '[1|2]')
 
-        d2 = domino.Domino(1, 3)
-        h3 = domino.Hand([d1, d2])
+        d2 = dominoes.Domino(1, 3)
+        h3 = dominoes.Hand([d1, d2])
 
         self.assertEqual(repr(h3), '[1|2][1|3]')
 
     def test_play(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
-        d3 = domino.Domino(1, 4)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
+        d3 = dominoes.Domino(1, 4)
 
-        h = domino.Hand([d1, d2, d3])
+        h = dominoes.Hand([d1, d2, d3])
 
         self.assertEqual(len(h), 3)
         self.assertTrue(d1 in h)
@@ -130,7 +130,7 @@ class TestHand(unittest.TestCase):
         self.assertTrue(d2 in h)
         self.assertFalse(d3 in h)
 
-        self.assertRaises(domino.NoSuchDominoException, h.play, d3)
+        self.assertRaises(dominoes.NoSuchDominoException, h.play, d3)
 
         self.assertEqual(len(h), 2)
         self.assertTrue(d1 in h)
@@ -152,12 +152,12 @@ class TestHand(unittest.TestCase):
         self.assertFalse(d3 in h)
 
     def test_draw(self):
-        d1 = domino.Domino(1, 2)
-        d2 = domino.Domino(1, 3)
-        d3 = domino.Domino(1, 4)
-        d4 = domino.Domino(1, 5)
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(1, 3)
+        d3 = dominoes.Domino(1, 4)
+        d4 = dominoes.Domino(1, 5)
 
-        h = domino.Hand([])
+        h = dominoes.Hand([])
 
         self.assertEqual(len(h), 0)
         self.assertFalse(d1 in h)
