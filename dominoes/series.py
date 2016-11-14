@@ -1,4 +1,4 @@
-import domino
+import dominoes
 
 class Series:
     '''
@@ -32,9 +32,9 @@ class Series:
     '''
     def __init__(self, target_score=200, starting_domino=None):
         if starting_domino is None:
-            starting_domino = domino.Domino(6, 6)
+            starting_domino = dominoes.Domino(6, 6)
 
-        self.games = [domino.Game(starting_domino=starting_domino)]
+        self.games = [dominoes.Game(starting_domino=starting_domino)]
         self.scores = [0, 0]
         self.target_score = target_score
 
@@ -56,13 +56,13 @@ class Series:
         :raises GameInProgressException: if the last game has not yet finished
         '''
         if self.is_over():
-            raise domino.SeriesOverException(
+            raise dominoes.SeriesOverException(
                 'Cannot start a new game - series ended with a score of {} to {}'.format(*self.scores)
             )
 
         result = self.games[-1].result
         if result is None:
-            raise domino.GameInProgressException(
+            raise dominoes.GameInProgressException(
                 'Cannot start a new game - the latest one has not finished!'
             )
 
@@ -85,7 +85,7 @@ class Series:
             starting_player = (result.player + 1) % 4
 
         # start the next game
-        self.games.append(domino.Game(starting_player=starting_player))
+        self.games.append(dominoes.Game(starting_player=starting_player))
 
         return self.games[-1]
 
