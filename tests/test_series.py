@@ -1,10 +1,10 @@
 import collections
-import domino
+import dominoes
 import unittest
 
 class TestSeries(unittest.TestCase):
     def test_init(self):
-        s1 = domino.Series()
+        s1 = dominoes.Series()
 
         self.assertEqual(len(s1.games), 1)
         self.assertEqual(len(s1.games[0].board), 1)
@@ -18,7 +18,7 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s1.scores, [0, 0])
         self.assertEqual(s1.target_score, 200)
 
-        s2 = domino.Series(target_score=100)
+        s2 = dominoes.Series(target_score=100)
 
         self.assertEqual(len(s2.games), 1)
         self.assertEqual(len(s2.games[0].board), 1)
@@ -32,8 +32,8 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s2.scores, [0, 0])
         self.assertEqual(s2.target_score, 100)
 
-        d = domino.Domino(1, 2)
-        s3 = domino.Series(starting_domino=d)
+        d = dominoes.Domino(1, 2)
+        s3 = dominoes.Series(starting_domino=d)
 
         self.assertEqual(len(s3.games), 1)
         self.assertEqual(len(s3.games[0].board), 1)
@@ -48,7 +48,7 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(s3.target_score, 200)
 
     def test_is_over(self):
-        s = domino.Series()
+        s = dominoes.Series()
 
         self.assertFalse(s.is_over())
 
@@ -73,11 +73,11 @@ class TestSeries(unittest.TestCase):
         self.assertTrue(s.is_over())
 
     def test_next_game(self):
-        s = domino.Series()
+        s = dominoes.Series()
         str1 = str(s)
         repr1 = repr(s)
 
-        self.assertRaises(domino.GameInProgressException, s.next_game)
+        self.assertRaises(dominoes.GameInProgressException, s.next_game)
         self.assertEqual(len(s.games), 1)
         self.assertEqual(len(s.games[0].board), 1)
         self.assertIsNone(s.games[0].result)
@@ -93,7 +93,7 @@ class TestSeries(unittest.TestCase):
         str2 = str(s)
         repr2 = repr(s)
 
-        self.assertRaises(domino.SeriesOverException, s.next_game)
+        self.assertRaises(dominoes.SeriesOverException, s.next_game)
         self.assertEqual(len(s.games), 1)
         self.assertEqual(len(s.games[0].board), 1)
         self.assertIsNone(s.games[0].result)
@@ -105,7 +105,7 @@ class TestSeries(unittest.TestCase):
         self.assertEqual(str2, repr2)
 
         s.scores = [0, 0]
-        s.games[0].result = domino.game.Result(0, True, 50)
+        s.games[0].result = dominoes.game.Result(0, True, 50)
         g1 = s.next_game()
         str3 = str(s)
         repr3 = repr(s)
@@ -121,7 +121,7 @@ class TestSeries(unittest.TestCase):
         self.assertTrue('Team 1 has 0 points.' in str3)
         self.assertEqual(str3, repr3)
 
-        s.games[1].result = domino.game.Result(1, False, 50)
+        s.games[1].result = dominoes.game.Result(1, False, 50)
         g2 = s.next_game()
         str4 = str(s)
         repr4 = repr(s)
@@ -137,7 +137,7 @@ class TestSeries(unittest.TestCase):
         self.assertTrue('Team 1 has 50 points.' in str4)
         self.assertEqual(str4, repr4)
 
-        s.games[2].result = domino.game.Result(2, True, -50)
+        s.games[2].result = dominoes.game.Result(2, True, -50)
         g3 = s.next_game()
         str5 = str(s)
         repr5 = repr(s)
@@ -153,7 +153,7 @@ class TestSeries(unittest.TestCase):
         self.assertTrue('Team 1 has 100 points.' in str5)
         self.assertEqual(str5, repr5)
 
-        s.games[3].result = domino.game.Result(3, False, -50)
+        s.games[3].result = dominoes.game.Result(3, False, -50)
         g4 = s.next_game()
         str6 = str(s)
         repr6 = repr(s)
@@ -169,7 +169,7 @@ class TestSeries(unittest.TestCase):
         self.assertTrue('Team 1 has 100 points.' in str6)
         self.assertEqual(str6, repr6)
 
-        s.games[4].result = domino.game.Result(2, False, 0)
+        s.games[4].result = dominoes.game.Result(2, False, 0)
         g5 = s.next_game()
         str7 = str(s)
         repr7 = repr(s)
@@ -185,7 +185,7 @@ class TestSeries(unittest.TestCase):
         self.assertTrue('Team 1 has 100 points.' in str7)
         self.assertEqual(str7, repr7)
 
-        s.games[5].result = domino.game.Result(0, True, 100)
+        s.games[5].result = dominoes.game.Result(0, True, 100)
 
         self.assertIsNone(s.next_game())
 
