@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import domino
+import dominoes
 import subprocess
 
 def validated_input(prompt, validate_and_transform, error_message):
@@ -94,7 +94,7 @@ subprocess.call(['tput', 'reset'])
 target_score = validated_input('Up to how many points would you like to play: ',
                                validate_and_transform_target_score,
                                'Please enter a positive integer.')
-series = domino.Series(target_score=target_score)
+series = dominoes.Series(target_score=target_score)
 game = series.games[0]
 
 # the game will be None once the series has ended
@@ -143,7 +143,7 @@ while game is not None:
             try:
                 game.make_move(d, end)
                 break
-            except domino.EndsMismatchException:
+            except dominoes.EndsMismatchException:
                 # `game.make_move` is transactional - if it fails, the game
                 # state is exactly as it was when the operation started
                 print('The selected domino cannot be played on the'
