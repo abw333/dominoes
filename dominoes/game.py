@@ -7,10 +7,10 @@ def _randomized_hands():
     :return: 4 hands, obtained by shuffling the 28 dominoes used in
              this variation of the game, and distributing them evenly
     '''
-    d = [dominoes.Domino(i, j) for i in range(7) for j in range(i, 7)]
-    random.shuffle(d)
-    return [dominoes.Hand(d[0:7]), dominoes.Hand(d[7:14]),
-            dominoes.Hand(d[14:21]), dominoes.Hand(d[21:28])]
+    all_dominoes = [dominoes.Domino(i, j) for i in range(7) for j in range(i, 7)]
+    random.shuffle(all_dominoes)
+    return [dominoes.Hand(all_dominoes[0:7]), dominoes.Hand(all_dominoes[7:14]),
+            dominoes.Hand(all_dominoes[14:21]), dominoes.Hand(all_dominoes[21:28])]
 
 def _validate_player(player):
     '''
