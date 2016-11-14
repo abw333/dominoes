@@ -1,5 +1,5 @@
 import collections
-import domino
+import dominoes
 
 class Hand(collections.abc.Sequence):
     '''
@@ -9,9 +9,9 @@ class Hand(collections.abc.Sequence):
 
     Usage::
         >>> import domino
-        >>> d1 = domino.Domino(1, 2)
-        >>> d2 = domino.Domino(1, 3)
-        >>> h = domino.Hand([d1, d2])
+        >>> d1 = dominoes.Domino(1, 2)
+        >>> d2 = dominoes.Domino(1, 3)
+        >>> h = dominoes.Hand([d1, d2])
         >>> h
         [1|2][1|3]
         >>> d1 in h
@@ -39,8 +39,8 @@ class Hand(collections.abc.Sequence):
         try:
             i = self._dominoes.index(d)
         except ValueError:
-            raise domino.NoSuchDominoException('Cannot make move -'
-                                               ' {} is not in hand!'.format(d))
+            raise dominoes.NoSuchDominoException('Cannot make move -'
+                                                 ' {} is not in hand!'.format(d))
 
         self._dominoes.pop(i)
         return i
