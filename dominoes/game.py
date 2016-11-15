@@ -152,7 +152,7 @@ class Game:
                  Result object indicating the outcome of the game
 
     Usage::
-        >>> import domino
+        >>> import dominoes
         >>> d = dominoes.Domino(6, 6)
         >>> g = dominoes.Game(starting_domino=d)
         >>> g

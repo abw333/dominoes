@@ -8,7 +8,7 @@ class Hand(collections.abc.Sequence):
     :param Sequence dominoes: sequence of dominoes in the hand
 
     Usage::
-        >>> import domino
+        >>> import dominoes
         >>> d1 = dominoes.Domino(1, 2)
         >>> d2 = dominoes.Domino(1, 3)
         >>> h = dominoes.Hand([d1, d2])
