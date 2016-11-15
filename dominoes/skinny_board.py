@@ -13,7 +13,7 @@ class SkinnyBoard:
     :param int length: amount of dominoes on the board
 
     Usage::
-        >>> import domino
+        >>> import dominoes
         >>> d1 = dominoes.Domino(1, 2)
         >>> d2 = dominoes.Domino(1, 3)
         >>> b = dominoes.SkinnyBoard()

@@ -11,7 +11,7 @@ class Domino:
     :var second: value on the other end
 
     Usage::
-        >>> import domino
+        >>> import dominoes
         >>> d = dominoes.Domino(1, 2)
         >>> d
         [1|2]
