@@ -29,6 +29,48 @@ class Series:
     :var scores: list containing the two teams' scores; team 0 has players 0
                  and 2, and team 1 has players 1 and 3
     :var target_score: score up to which the series will be played
+
+    Usage::
+        >>> import dominoes
+        >>> s = dominoes.Series(target_score=50)
+        >>> s
+        Series to 50 points:
+        Team 0 has 0 points.
+        Team 1 has 0 points.
+        >>> s.is_over()
+        False
+        >>> s.games[0]
+        Board: [6|6]
+        Player 0's hand: [0|3][4|4][1|5][0|2][3|4][2|3]
+        Player 1's hand: [4|6][5|5][2|4][2|5][0|5][3|6][1|4]
+        Player 2's hand: [3|3][1|3][0|6][5|6][2|2][3|5][2|6]
+        Player 3's hand: [0|0][0|4][0|1][1|1][4|5][1|6][1|2]
+        Player 1's turn
+        >>> s.scores
+        [0, 0]
+        >>> s.next_game()
+        GameInProgressException: Cannot start a new game - the latest one has not finished!
+        >>> s.games[0].make_move(*s.games[0].valid_moves()[0])
+        ...
+        >>> s.games[0].make_move(*s.games[0].valid_moves()[0])
+        Result(player=3, won=False, points=24)
+        >>> s.next_game()
+        Board:
+        Player 0's hand: [5|6][3|6][2|2][2|3][4|6][4|4][1|1]
+        Player 1's hand: [1|5][2|5][0|4][1|3][4|5][0|1][3|4]
+        Player 2's hand: [6|6][2|4][0|6][3|3][1|2][3|5][0|5]
+        Player 3's hand: [0|0][0|3][5|5][1|6][1|4][2|6][0|2]
+        Player 3's turn
+        >>> s
+        Series to 50 points:
+        Team 0 has 0 points.
+        Team 1 has 24 points.
+        >>> s.is_over()
+        False
+        >>> len(s.games)
+        2
+        >>> s.scores
+        [0, 24]
     '''
     def __init__(self, target_score=200, starting_domino=None):
         if starting_domino is None:
