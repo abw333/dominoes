@@ -113,4 +113,4 @@ Press enter to begin game 1.
 
 ## Questions, Comments, Ideas?
 
-Feel free to create an issue or a pull request.
+Feel free to create an [issue](https://github.com/abw333/dominoes/issues) or a [pull request](https://github.com/abw333/dominoes/pulls).
