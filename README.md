@@ -16,6 +16,51 @@ Lastly, this package provides a command line interface to a dominoes series. Not
 
 ## Install
 
-```bash
+```
 $ pip install dominoes
+```
+
+## Usage Example
+
+```
+>>> import dominoes
+>>> d = dominoes.Domino(6, 6)
+>>> g = dominoes.Game(starting_domino=d)
+>>> g
+Board: [6|6]
+Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
+Player 1's hand: [1|1][3|4][0|5][0|6][2|5][1|5][2|6]
+Player 2's hand: [0|4][0|3][4|4][3|6][0|2][4|5][1|4]
+Player 3's hand: [5|6][3|5][3|3][0|0][0|1][2|2][4|6]
+Player 1's turn
+>>> g.board
+[6|6]
+>>> g.hands
+[[2|4][5|5][2|3][1|3][1|6][1|2], [1|1][3|4][0|5][0|6][2|5][1|5][2|6], [0|4][0|3][4|4][3|6][0|2][4|5][1|4], [5|6][3|5][3|3][0|0][0|1][2|2][4|6]]
+>>> g.turn
+1
+>>> g.result
+>>> g.valid_moves() # True is for the left of the board, False is for the right
+[([0|6], True), ([2|6], True)]
+>>> g.make_move(*g.valid_moves()[0])
+>>> g
+Board: [0|6][6|6]
+Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
+Player 1's hand: [1|1][3|4][0|5][2|5][1|5][2|6]
+Player 2's hand: [0|4][0|3][4|4][3|6][0|2][4|5][1|4]
+Player 3's hand: [5|6][3|5][3|3][0|0][0|1][2|2][4|6]
+Player 2's turn
+>>> g.make_move(*g.valid_moves()[0])
+...
+>>> g.make_move(*g.valid_moves()[0])
+Result(player=1, won=True, points=32)
+>>> g.result
+Result(player=1, won=True, points=32)
+>>> g
+Board: [2|6][6|3][3|4][4|1][1|1][1|6][6|4][4|5][5|2][2|4][4|0][0|6][6|6][6|5][5|0][0|3][3|5][5|5][5|1][1|0]
+Player 0's hand: [2|3][1|3][1|2]
+Player 1's hand:
+Player 2's hand: [4|4][0|2]
+Player 3's hand: [3|3][0|0][2|2]
+Player 1 won and scored 32 points!
 ```
