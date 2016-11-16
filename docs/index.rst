@@ -108,6 +108,45 @@ Command Line Interface
     Team 1 has 0 points.
     Press enter to begin game 1.
 
+API Documentation
+^^^^^^^^^^^^^^^^^
+
+Board
+-----
+
+.. autoclass:: dominoes.Board
+    :members: left_end, right_end, add_left, add_right
+
+Domino
+------
+
+.. autoclass:: dominoes.Domino
+   :members: inverted
+
+Game
+----
+
+.. autoclass:: dominoes.Game
+    :members: skinny_board, valid_moves, make_move
+
+Hand
+----
+
+.. autoclass:: dominoes.Hand
+    :members: play, draw
+
+Series
+------
+
+.. autoclass:: dominoes.Series
+    :members: is_over, next_game
+
+SkinnyBoard
+-----------
+
+.. autoclass:: dominoes.SkinnyBoard
+    :members: from_board, left_end, right_end, add_left, add_right
+
 Questions, Comments, Ideas?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
