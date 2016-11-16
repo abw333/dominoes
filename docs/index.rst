@@ -121,7 +121,7 @@ Domino
 ------
 
 .. autoclass:: dominoes.Domino
-   :members: inverted
+    :members: inverted
 
 Game
 ----
