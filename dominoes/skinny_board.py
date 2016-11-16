@@ -17,8 +17,8 @@ class SkinnyBoard:
         >>> d1 = dominoes.Domino(1, 2)
         >>> d2 = dominoes.Domino(1, 3)
         >>> b = dominoes.SkinnyBoard()
-        >>> b
-
+        >>> repr(b)
+        ''
         >>> b.add_left(d1)
         >>> b
         [1|2]
