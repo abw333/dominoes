@@ -5,10 +5,12 @@ dominoes: a Python library for the game of dominoes
 [![Test Code Coverage](https://codecov.io/gh/abw333/dominoes/branch/master/graph/badge.svg)](https://codecov.io/gh/abw333/dominoes)
 [![PyPI version](https://badge.fury.io/py/dominoes.svg)](https://badge.fury.io/py/dominoes)
 [![Python version](https://img.shields.io/badge/python-3.5-brightgreen.svg)](https://www.python.org/)
+[![Documentation Status](https://readthedocs.org/projects/dominoes/badge/?version=latest)](https://dominoes.readthedocs.io/en/latest/?badge=latest)
+
 
 Dominoes have been around for hundreds of years, and many variations of the game have been played all over the world. This library is based on a popular variation commonly played in San Juan, Puerto Rico, and surrounding municipalities, such as Guaynabo.
 
-It is played with a double six set of dominoes. The 28 dominoes are shuffled and distributed evenly between the 4 players, who form 2 teams. The players then take turns placing dominoes in a single chain. The first player to play all their dominoes wins the points in the remaining hands for their team. If the game is stuck, the team with the fewest points remaining in its players' hands wins the points in all the remaining hands. For more details, see the [full documentation](https://dominoes.readthedocs.io/en/latest/).
+It is played with a double six set of dominoes. The 28 dominoes are shuffled and distributed evenly between the 4 players, who form 2 teams. The players then take turns placing dominoes in a single chain. The first player to play all their dominoes wins the points in the remaining hands for their team. If the game is stuck, the team with the fewest points remaining in its players' hands wins the points in all the remaining hands. For more details, see the [full documentation](https://dominoes.readthedocs.io/en/latest/#game).
 
 This library provides a	`Game` class to	represent a single dominoes game. It is built on top of `Domino`, `Hand`, and `Board` classes. Furthermore, you can string various games together and play up to a target score using the `Series` class.
 
@@ -111,4 +113,4 @@ Press enter to begin game 1.
 
 ## Questions, Comments, Ideas?
 
-Feel free to create an issue or a pull request.
+Feel free to create an [issue](https://github.com/abw333/dominoes/issues) or a [pull request](https://github.com/abw333/dominoes/pulls).
