@@ -64,3 +64,51 @@ Player 2's hand: [4|4][0|2]
 Player 3's hand: [3|3][0|0][2|2]
 Player 1 won and scored 32 points!
 ```
+
+## Command Line Interface
+
+```
+$ dominoes
+Welcome! Proceeding will clear all text from this terminal session. If you are OK with this, press enter to continue.
+```
+
+```
+Up to how many points would you like to play: 100
+```
+
+```
+Player 1 had the [6|6] and made the first move.
+It is now player 2's turn. Press enter to see player 2's hand.
+Board:
+[6|6]
+Player 2's hand:
+0) [4|5]
+1) [0|0]
+2) [1|2]
+3) [3|6]
+4) [3|5]
+5) [5|6]
+6) [4|6]
+Choose which domino you would like to play: 3
+Choose what end of the board you would like to play on (l or r): l
+Press enter to end player 2's turn.
+```
+
+```
+Game over!
+Board: [6|5][5|5][5|2][2|2][2|6][6|4][4|4][4|5][5|0][0|4][4|1][1|2][2|4][4|3][3|3][3|6][6|6][6|0][0|3][3|5][5|1][1|0][0|0][0|2]
+Player 0's hand: [2|3]
+Player 1's hand: [1|1][1|6]
+Player 2's hand:
+Player 3's hand: [1|3]
+Player 2 won and scored 18 points!
+The current state of the series:
+Series to 100 points:
+Team 0 has 18 points.
+Team 1 has 0 points.
+Press enter to begin game 1.
+```
+
+## Questions, Comments, Ideas?
+
+Feel free to create an issue or a pull request.
