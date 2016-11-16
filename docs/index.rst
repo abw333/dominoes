@@ -65,16 +65,16 @@ Usage Example
 Command Line Interface
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: bash
+.. code-block:: none
 
     $ dominoes
     Welcome! Proceeding will clear all text from this terminal session. If you are OK with this, press enter to continue.
 
-.. code-block:: bash
+.. code-block:: none
 
     Up to how many points would you like to play: 100
 
-.. code-block:: bash
+.. code-block:: none
 
     Player 1 had the [6|6] and made the first move.
     It is now player 2's turn. Press enter to see player 2's hand.
@@ -92,7 +92,7 @@ Command Line Interface
     Choose what end of the board you would like to play on (l or r): l
     Press enter to end player 2's turn.
 
-.. code-block:: bash
+.. code-block:: none
 
     Game over!
     Board: [6|5][5|5][5|2][2|2][2|6][6|4][4|4][4|5][5|0][0|4][4|1][1|2][2|4][4|3][3|3][3|6][6|6][6|0][0|3][3|5][5|1][1|0][0|0][0|2]
