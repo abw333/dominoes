@@ -169,7 +169,7 @@ class Game:
         >>> g.turn
         1
         >>> g.result
-        >>> g.valid_moves()
+        >>> g.valid_moves() # True is for the left of the board, False is for the right
         [([0|6], True), ([2|6], True)]
         >>> g.make_move(*g.valid_moves()[0])
         >>> g
