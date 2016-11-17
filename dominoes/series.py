@@ -12,14 +12,15 @@ class Series:
     Prior to starting the series, the teams agree to a starting domino (usually
     [6|6]). The player that draws this domino during the first game will play
     first. The starting player for subsequent games is determined as follows:
+
     * If a player wins by playing their last domino, that player will start the
-    following game.
+      following game.
     * If a player makes the game stuck, and his/her team wins, that player will
-    start the following game.
+      start the following game.
     * If a player makes the game stuck, and there is a tie, the player who
-    started that game will start the following game.
+      started that game will start the following game.
     * If a player makes the game stuck, and his/her team loses, then the
-    following player (from the other team) will start the following game.
+      following player (from the other team) will start the following game.
 
     :param int target_score: score up to which the series will be played;
                              defaults to 200
