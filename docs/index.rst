@@ -152,6 +152,3 @@ Questions, Comments, Ideas?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Feel free to create an `issue <https://github.com/abw333/dominoes/issues>`_ or a `pull request <https://github.com/abw333/dominoes/pulls>`_.
-
-.. toctree::
-    :maxdepth: 2
