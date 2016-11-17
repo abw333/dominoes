@@ -30,7 +30,8 @@ class Series:
                  and 2, and team 1 has players 1 and 3
     :var target_score: score up to which the series will be played
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> s = dominoes.Series(target_score=50)
         >>> s

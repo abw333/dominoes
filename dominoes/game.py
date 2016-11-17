@@ -151,7 +151,8 @@ class Game:
     :var result: None if the game is in progress; otherwise a
                  Result object indicating the outcome of the game
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> d = dominoes.Domino(6, 6)
         >>> g = dominoes.Game(starting_domino=d)

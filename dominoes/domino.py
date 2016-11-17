@@ -10,7 +10,8 @@ class Domino:
     :var first: value on one end
     :var second: value on the other end
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> d = dominoes.Domino(1, 2)
         >>> d
