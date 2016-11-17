@@ -91,13 +91,16 @@ class Game:
 
     This variation of the dominoes game is played
     using 28 dominoes, which use values from 0 to 6:
-    [0|0][0|1][0|2][0|3][0|4][0|5][0|6]
-    [1|1][1|2][1|3][1|4][1|5][1|6]
-    [2|2][2|3][2|4][2|5][2|6]
-    [3|3][3|4][3|5][3|6]
-    [4|4][4|5][4|6]
-    [5|5][5|6]
-    [6|6]
+
+    .. code-block:: none
+
+        [0|0][0|1][0|2][0|3][0|4][0|5][0|6]
+        [1|1][1|2][1|3][1|4][1|5][1|6]
+        [2|2][2|3][2|4][2|5][2|6]
+        [3|3][3|4][3|5][3|6]
+        [4|4][4|5][4|6]
+        [5|5][5|6]
+        [6|6]
 
     These dominoes are shuffled, and distributed evenly among
     4 players. These players then sit on the edges of a square.
@@ -151,7 +154,8 @@ class Game:
     :var result: None if the game is in progress; otherwise a
                  Result object indicating the outcome of the game
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> d = dominoes.Domino(6, 6)
         >>> g = dominoes.Game(starting_domino=d)

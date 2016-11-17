@@ -9,7 +9,8 @@ class Board:
 
     :var board: deque representing the game board
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> d1 = dominoes.Domino(1, 2)
         >>> d2 = dominoes.Domino(1, 3)

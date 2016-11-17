@@ -12,7 +12,8 @@ class SkinnyBoard:
     :param int right: value on the right end of the board
     :param int length: amount of dominoes on the board
 
-    Usage::
+    .. code-block:: python
+
         >>> import dominoes
         >>> d1 = dominoes.Domino(1, 2)
         >>> d2 = dominoes.Domino(1, 3)
