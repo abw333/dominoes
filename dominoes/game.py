@@ -230,6 +230,11 @@ class Game:
                  bool indicates on what end of the board the domino can be
                  played (True for left, False for right).
         '''
+        # game is over
+        if self.result is not None:
+            return []
+
+        # game has not started
         if not self.board:
             return [(d, True) for d in self.hands[self.turn]]
 

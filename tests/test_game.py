@@ -263,6 +263,12 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d1, True) in m5)
         self.assertTrue((d2, True) in m5)
 
+        g.result = True
+
+        # game over
+        m6 = g.valid_moves()
+        self.assertEqual(m6, [])
+
     def test_make_move(self):
         g = dominoes.Game()
 
