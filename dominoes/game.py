@@ -137,16 +137,6 @@ class Game:
     adding both teams' scores. If both teams have the same score,
     the game is declared a tie, and neither team earns any points.
 
-    :param Domino starting_domino: the domino that should be played
-                                   to start the game. The player
-                                   with this domino in their hand
-                                   will play first.
-    :param int starting_player: the player that should play first.
-                                This value is ignored if a starting
-                                domino is provided. Players are
-                                referred to by their indexes: 0, 1,
-                                2, and 3. 0 and 2 are on one team,
-                                and 1 and 3 are on another team.
     :var board: the game board
     :var hands: a list containing each player's hand
     :var turn: the player whose turn it is
@@ -158,7 +148,7 @@ class Game:
 
         >>> import dominoes
         >>> d = dominoes.Domino(6, 6)
-        >>> g = dominoes.Game(starting_domino=d)
+        >>> g = dominoes.Game.new(starting_domino=d)
         >>> g
         Board: [6|6]
         Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
@@ -197,21 +187,46 @@ class Game:
         Player 3's hand: [3|3][0|0][2|2]
         Player 1 won and scored 32 points!
     '''
-    def __init__(self, starting_domino=None, starting_player=0):
-        self.board = dominoes.Board()
+    def __init__(self, board, hands, turn, starting_player, result):
+        self.board = board
+        self.hands = hands
+        self.turn = turn
+        self.starting_player = starting_player
+        self.result = result
 
-        self.hands = _randomized_hands()
+    @classmethod
+    def new(cls, starting_domino=None, starting_player=0):
+        '''
+        :param Domino starting_domino: the domino that should be played
+                                       to start the game. The player
+                                       with this domino in their hand
+                                       will play first.
+        :param int starting_player: the player that should play first.
+                                    This value is ignored if a starting
+                                    domino is provided. Players are
+                                    referred to by their indexes: 0, 1,
+                                    2, and 3. 0 and 2 are on one team,
+                                    and 1 and 3 are on another team.
+        :return: a new game, initialized according to
+                 starting_domino and starting_player
+        :raises NoSuchDominoException: if starting_domino is invalid
+        :raises NoSuchPlayerException: if starting_player is invalid
+        '''
+        board = dominoes.Board()
 
-        self.result = None
+        hands = _randomized_hands()
+
+        result = None
 
         if starting_domino is None:
             _validate_player(starting_player)
-            self.turn = starting_player
-            self.starting_player = self.turn
+            game = cls(board, hands, starting_player, starting_player, result)
         else:
-            self.turn = _domino_hand(starting_domino, self.hands)
-            self.starting_player = self.turn
-            self.make_move(starting_domino, True)
+            starting_player = _domino_hand(starting_domino, hands)
+            game = cls(board, hands, starting_player, starting_player, result)
+            game.make_move(starting_domino, True)
+
+        return game
 
     def skinny_board(self):
         '''

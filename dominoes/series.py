@@ -78,7 +78,7 @@ class Series:
         if starting_domino is None:
             starting_domino = dominoes.Domino(6, 6)
 
-        self.games = [dominoes.Game(starting_domino=starting_domino)]
+        self.games = [dominoes.Game.new(starting_domino=starting_domino)]
         self.scores = [0, 0]
         self.target_score = target_score
 
@@ -129,7 +129,7 @@ class Series:
             starting_player = (result.player + 1) % 4
 
         # start the next game
-        self.games.append(dominoes.Game(starting_player=starting_player))
+        self.games.append(dominoes.Game.new(starting_player=starting_player))
 
         return self.games[-1]
 
