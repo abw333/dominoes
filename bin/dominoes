@@ -110,8 +110,16 @@ while game is not None:
 
     # game.result will be filled in once the game ends
     while game.result is None:
+        # print the game state so that all players can see it
+        print('Board:')
+        print(game.board)
+        for player, hand in enumerate(game.hands):
+            print('Player {} has {} dominoes in his/her hand.'.format(player, len(hand)))
+
+        # clear the terminal upon starting a new turn
         input("It is now player {0}'s turn. Press enter"
               " to see player {0}'s hand.".format(game.turn))
+        subprocess.call(['tput', 'reset'])
 
         # print the board so that the player can decide what to play
         print('Board:')
@@ -135,10 +143,14 @@ while game is not None:
                                 validate_and_transform_domino(hand),
                                 'Please enter a value in: {}'.format(valid_inputs))
 
-            end = validated_input('Choose what end of the board you'
-                                  ' would like to play on (l or r): ',
-                                  validate_and_transform_end,
-                                  'Please enter a value in: [l, r]')
+            if game.board:
+                end = validated_input('Choose what end of the board you'
+                                      ' would like to play on (l or r): ',
+                                      validate_and_transform_end,
+                                      'Please enter a value in: [l, r]')
+            else:
+                # if the board is empty, default to playing on the 'left'
+                end = True
 
             try:
                 game.make_move(d, end)
