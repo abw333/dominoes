@@ -110,8 +110,14 @@ while game is not None:
 
     # game.result will be filled in once the game ends
     while game.result is None:
+        # print the board so that all players can see it
+        print('Board:')
+        print(game.board)
+
+        # clear the terminal upon starting a new turn
         input("It is now player {0}'s turn. Press enter"
               " to see player {0}'s hand.".format(game.turn))
+        subprocess.call(['tput', 'reset'])
 
         # print the board so that the player can decide what to play
         print('Board:')
