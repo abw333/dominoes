@@ -27,7 +27,7 @@ $ pip install dominoes
 ```
 >>> import dominoes
 >>> d = dominoes.Domino(6, 6)
->>> g = dominoes.Game(starting_domino=d)
+>>> g = dominoes.Game.new(starting_domino=d)
 >>> g
 Board: [6|6]
 Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]

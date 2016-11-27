@@ -111,7 +111,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(r.points, pts)
 
     def test_init(self):
-        g1 = dominoes.Game()
+        g1 = dominoes.Game.new()
 
         self.assertEqual(len(g1.board), 0)
         self.assertEqual(len(g1.hands), 4)
@@ -120,7 +120,7 @@ class TestGame(unittest.TestCase):
         self.assertIsNone(g1.result)
 
         p1 = 3
-        g2 = dominoes.Game(starting_player=p1)
+        g2 = dominoes.Game.new(starting_player=p1)
 
         self.assertEqual(len(g2.board), 0)
         self.assertEqual(len(g2.hands), 4)
@@ -129,7 +129,7 @@ class TestGame(unittest.TestCase):
         self.assertIsNone(g2.result)
 
         d1 = dominoes.Domino(6, 6)
-        g3 = dominoes.Game(starting_domino=d1)
+        g3 = dominoes.Game.new(starting_domino=d1)
 
         self.assertEqual(len(g3.board), 1)
         self.assertEqual(len(g3.hands), 4)
@@ -143,7 +143,7 @@ class TestGame(unittest.TestCase):
                 break
         self.assertIsNone(g3.result)
 
-        g4 = dominoes.Game(starting_domino=d1, starting_player=p1)
+        g4 = dominoes.Game.new(starting_domino=d1, starting_player=p1)
 
         self.assertEqual(len(g4.board), 1)
         self.assertEqual(len(g4.hands), 4)
@@ -159,20 +159,20 @@ class TestGame(unittest.TestCase):
 
         p2 = 4
         self.assertRaises(dominoes.NoSuchPlayerException,
-                          dominoes.Game, starting_player=p2)
+                          dominoes.Game.new, starting_player=p2)
 
         d2 = dominoes.Domino(7, 7)
         self.assertRaises(dominoes.NoSuchDominoException,
-                          dominoes.Game, starting_domino=d2)
+                          dominoes.Game.new, starting_domino=d2)
 
     def test_eq(self):
-        g1 = dominoes.Game()
-        g2 = dominoes.Game()
-        g3 = dominoes.Game()
-        g4 = dominoes.Game()
-        g5 = dominoes.Game()
-        g6 = dominoes.Game()
-        g7 = dominoes.Game()
+        g1 = dominoes.Game.new()
+        g2 = dominoes.Game.new()
+        g3 = dominoes.Game.new()
+        g4 = dominoes.Game.new()
+        g5 = dominoes.Game.new()
+        g6 = dominoes.Game.new()
+        g7 = dominoes.Game.new()
 
         PseudoGame = collections.namedtuple('PseudoGame',
                                             ['board', 'hands', 'result',
@@ -208,7 +208,7 @@ class TestGame(unittest.TestCase):
 
     def test_skinny_board(self):
         d = dominoes.Domino(1, 2)
-        g = dominoes.Game(starting_domino=d)
+        g = dominoes.Game.new(starting_domino=d)
 
         g.skinny_board()
 
@@ -221,7 +221,7 @@ class TestGame(unittest.TestCase):
     def test_valid_moves(self):
         h1 = dominoes.Hand([])
         p = 3
-        g = dominoes.Game(starting_player=p)
+        g = dominoes.Game.new(starting_player=p)
         g.hands[p] = h1
 
         # empty hand, empty board
@@ -270,7 +270,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(m6, [])
 
     def test_make_move(self):
-        g = dominoes.Game()
+        g = dominoes.Game.new()
 
         d1 = dominoes.Domino(7, 7)
         g.board.add_left(d1)
@@ -361,7 +361,7 @@ class TestGame(unittest.TestCase):
         h2 = dominoes.Hand([d2])
         h3 = dominoes.Hand([d3])
         h4 = dominoes.Hand([d4])
-        g1 = dominoes.Game()
+        g1 = dominoes.Game.new()
         g1.hands = [h1, h2, h3, h4]
 
         g1.make_move(d1, True)
@@ -395,7 +395,7 @@ class TestGame(unittest.TestCase):
         h6 = dominoes.Hand([d7])
         h7 = dominoes.Hand([d8])
         h8 = dominoes.Hand([d9])
-        g2 = dominoes.Game()
+        g2 = dominoes.Game.new()
         g2.hands = [h5, h6, h7, h8]
 
         g2.make_move(d5, True)
@@ -424,7 +424,7 @@ class TestGame(unittest.TestCase):
         h10 = dominoes.Hand([d7])
         h11 = dominoes.Hand([d9])
         h12 = dominoes.Hand([d8])
-        g3 = dominoes.Game()
+        g3 = dominoes.Game.new()
         g3.hands = [h9, h10, h11, h12]
 
         g3.make_move(d5, True)
@@ -453,7 +453,7 @@ class TestGame(unittest.TestCase):
         h14 = dominoes.Hand([d6])
         h15 = dominoes.Hand([d9])
         h16 = dominoes.Hand([d8])
-        g4 = dominoes.Game()
+        g4 = dominoes.Game.new()
         g4.hands = [h13, h14, h15, h16]
 
         g4.make_move(d5, True)
