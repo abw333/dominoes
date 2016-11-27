@@ -9,6 +9,18 @@ class TestDomino(unittest.TestCase):
         self.assertEqual(d.first, 1)
         self.assertEqual(d.second, 2)
 
+    def test_immutability(self):
+        d = dominoes.Domino(1, 2)
+
+        def set_first(value):
+            d.first = value
+
+        def set_second(value):
+            d.second = value
+
+        self.assertRaises(AttributeError, set_first, 3)
+        self.assertRaises(AttributeError, set_second, 3)
+
     def test_inverted(self):
         d = dominoes.Domino(1, 2)
         d_inv = d.inverted()

@@ -1,4 +1,9 @@
-class Domino:
+import collections
+
+# for convenience, immutability, and performance
+DominoBase = collections.namedtuple('DominoBase', ['first', 'second'])
+
+class Domino(DominoBase):
     '''
     Python class for objects that represent a domino. Each
     domino is a rectangular tile with a line dividing its
@@ -27,10 +32,6 @@ class Domino:
         >>> 2 in d
         True
     '''
-    def __init__(self, first, second):
-        self.first = first
-        self.second = second
-
     def inverted(self):
         '''
         :return: a new Domino, with the same values, but in inverted positions
