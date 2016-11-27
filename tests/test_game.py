@@ -218,6 +218,28 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g.board), 1)
 
+    def test_deepcopy(self):
+        # Board
+        g1 = dominoes.Game.new()
+        g2 = copy.deepcopy(g1)
+
+        self.assertEqual(g1, g2)
+
+        # empty SkinnyBoard
+        g3 = dominoes.Game.new()
+        g3.skinny_board()
+        g4 = copy.deepcopy(g3)
+
+        self.assertEqual(g3, g4)
+
+        # non-empty SkinnyBoard
+        g5 = dominoes.Game.new()
+        g5.skinny_board()
+        g5.make_move(*g5.valid_moves()[0])
+        g6 = copy.deepcopy(g5)
+
+        self.assertEqual(g5, g6)
+
     def test_valid_moves(self):
         h1 = dominoes.Hand([])
         p = 3
