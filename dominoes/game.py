@@ -1,4 +1,5 @@
 import collections
+import copy
 import dominoes
 import random
 
@@ -337,6 +338,37 @@ class Game:
 
     def __ne__(self, other):
         return not self == other
+
+    def __deepcopy__(self, _):
+        if isinstance(self.board, dominoes.SkinnyBoard):
+            if self.board:
+                # SkinnyBoard attributes are ints; no need to deepcopy
+                board = dominoes.SkinnyBoard(self.board.left_end(),
+                                             self.board.right_end(),
+                                             len(self.board))
+            else:
+                # board is empty
+                board = dominoes.SkinnyBoard()
+        else:
+            # TODO: optimize for Board class
+            board = copy.deepcopy(self.board)
+
+        # only need to copy the Hand, because the Domino objects are
+        # immutable. note that using copy.copy does not work because
+        # the container of the Domino objects within the Hand also
+        # needs to be copied, which the Hand initializer takes care of.
+        hands = [dominoes.Hand(hand) for hand in self.hands]
+
+        # None or namedtuple of ints and bools; no need to deepcopy
+        result = self.result
+
+        # just an int; no need to deepcopy
+        turn = self.turn
+
+        # just an int; no need to deepcopy
+        starting_player = self.starting_player
+
+        return type(self)(board, hands, turn, starting_player, result)
 
     def __str__(self):
         string_list = ['Board: {}'.format(self.board)]

@@ -218,6 +218,64 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g.board), 1)
 
+    def test_deepcopy(self):
+        # Board
+        g1 = dominoes.Game.new()
+        g2 = copy.deepcopy(g1)
+
+        self.assertEqual(g1, g2)
+
+        p1 = g2.turn
+        g2.make_move(*g2.valid_moves()[0])
+
+        self.assertNotEqual(g1.board, g2.board)
+        for p in range(len(g1.hands)):
+            if p == p1:
+                self.assertNotEqual(g1.hands[p], g2.hands[p])
+            else:
+                self.assertEqual(g1.hands[p], g2.hands[p])
+        self.assertEqual(g1.starting_player, g2.starting_player)
+        self.assertEqual(g1.result, g2.result)
+
+        # empty SkinnyBoard
+        g3 = dominoes.Game.new()
+        g3.skinny_board()
+        g4 = copy.deepcopy(g3)
+
+        self.assertEqual(g3, g4)
+
+        p2 = g4.turn
+        g4.make_move(*g4.valid_moves()[0])
+
+        self.assertNotEqual(g3.board, g4.board)
+        for p in range(len(g3.hands)):
+            if p == p2:
+                self.assertNotEqual(g3.hands[p], g4.hands[p])
+            else:
+                self.assertEqual(g3.hands[p], g4.hands[p])
+        self.assertEqual(g3.starting_player, g4.starting_player)
+        self.assertEqual(g3.result, g4.result)
+
+        # non-empty SkinnyBoard
+        g5 = dominoes.Game.new()
+        g5.skinny_board()
+        g5.make_move(*g5.valid_moves()[0])
+        g6 = copy.deepcopy(g5)
+
+        self.assertEqual(g5, g6)
+
+        p3 = g6.turn
+        g6.make_move(*g6.valid_moves()[0])
+
+        self.assertNotEqual(g5.board, g6.board)
+        for p in range(len(g5.hands)):
+            if p == p3:
+                self.assertNotEqual(g5.hands[p], g6.hands[p])
+            else:
+                self.assertEqual(g5.hands[p], g6.hands[p])
+        self.assertEqual(g5.starting_player, g6.starting_player)
+        self.assertEqual(g5.result, g6.result)
+
     def test_valid_moves(self):
         h1 = dominoes.Hand([])
         p = 3
