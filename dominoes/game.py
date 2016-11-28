@@ -59,14 +59,15 @@ def _has_valid_move(hand, board):
     :return: boolean indicating whether there are any
              valid moves from the hand onto the board
     '''
-    if not hand:
-        return False
-
-    if not board:
-        return True
+    try:
+        left_end = board.left_end()
+        right_end = board.right_end()
+    except dominoes.EmptyBoardException:
+        # if the hand and board are empty, there are no valid moves.
+        return bool(hand)
 
     for d in hand:
-        if board.left_end() in d or board.right_end() in d:
+        if left_end in d or right_end in d:
             return True
 
     return False
