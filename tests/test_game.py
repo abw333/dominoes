@@ -370,7 +370,7 @@ class TestGame(unittest.TestCase):
 
         g1.make_move(d1, True)
         str1 = str(g1)
-        repr1 = str(g1)
+        repr1 = repr(g1)
 
         self.assertEqual(g1.board.left_end(), d1.first)
         self.assertEqual(g1.board.right_end(), d1.second)
