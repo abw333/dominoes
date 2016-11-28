@@ -61,45 +61,6 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(dominoes.game._remaining_points(h2), [0, 1, 13])
 
-    def test_has_valid_move(self):
-        h1 = dominoes.Hand([])
-        b = dominoes.Board()
-
-        # empty hand, empty board
-        self.assertFalse(dominoes.game._has_valid_move(h1, b))
-
-        d1 = dominoes.Domino(1, 2)
-        h2 = dominoes.Hand([d1])
-
-        # non-empty hand, empty board
-        self.assertTrue(dominoes.game._has_valid_move(h2, b))
-
-        b.add_left(d1)
-
-        # empty hand, non-empty board
-        self.assertFalse(dominoes.game._has_valid_move(h1, b))
-
-        # non-empty hand, non-empty board
-        self.assertTrue(dominoes.game._has_valid_move(h2, b))
-
-        d2 = dominoes.Domino(1, 3)
-        h3 = dominoes.Hand([d2])
-
-        # valid move on the left end of the board
-        self.assertTrue(dominoes.game._has_valid_move(h3, b))
-
-        d3 = dominoes.Domino(2, 3)
-        h4 = dominoes.Hand([d3])
-
-        # valid move on the right end of the board
-        self.assertTrue(dominoes.game._has_valid_move(h4, b))
-
-        d4 = dominoes.Domino(3, 3)
-        h5 = dominoes.Hand([d4])
-
-        # no valid moves
-        self.assertFalse(dominoes.game._has_valid_move(h5, b))
-
     def test_result(self):
         p = 0
         w = True
@@ -187,6 +148,13 @@ class TestGame(unittest.TestCase):
         g6.hands = g1.hands
         g7.hands = g1.hands
 
+        g2.valid_moves = g1.valid_moves
+        g3.valid_moves = g1.valid_moves
+        g4.valid_moves = g1.valid_moves
+        g5.valid_moves = g1.valid_moves
+        g6.valid_moves = g1.valid_moves
+        g7.valid_moves = g1.valid_moves
+
         self.assertEqual(g1, g2)
 
         self.assertNotEqual(g1, pg)
@@ -226,7 +194,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g1, g2)
 
         p1 = g2.turn
-        g2.make_move(*g2.valid_moves()[0])
+        g2.make_move(*g2.valid_moves[0])
 
         self.assertNotEqual(g1.board, g2.board)
         for p in range(len(g1.hands)):
@@ -245,7 +213,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g3, g4)
 
         p2 = g4.turn
-        g4.make_move(*g4.valid_moves()[0])
+        g4.make_move(*g4.valid_moves[0])
 
         self.assertNotEqual(g3.board, g4.board)
         for p in range(len(g3.hands)):
@@ -259,13 +227,13 @@ class TestGame(unittest.TestCase):
         # non-empty SkinnyBoard
         g5 = dominoes.Game.new()
         g5.skinny_board()
-        g5.make_move(*g5.valid_moves()[0])
+        g5.make_move(*g5.valid_moves[0])
         g6 = copy.deepcopy(g5)
 
         self.assertEqual(g5, g6)
 
         p3 = g6.turn
-        g6.make_move(*g6.valid_moves()[0])
+        g6.make_move(*g6.valid_moves[0])
 
         self.assertNotEqual(g5.board, g6.board)
         for p in range(len(g5.hands)):
@@ -276,56 +244,34 @@ class TestGame(unittest.TestCase):
         self.assertEqual(g5.starting_player, g6.starting_player)
         self.assertEqual(g5.result, g6.result)
 
-    def test_valid_moves(self):
-        h1 = dominoes.Hand([])
-        p = 3
-        g = dominoes.Game.new(starting_player=p)
-        g.hands[p] = h1
-
-        # empty hand, empty board
-        m1 = g.valid_moves()
-        self.assertEqual(m1, [])
-
+    def test_update_valid_moves(self):
         d1 = dominoes.Domino(1, 2)
         d2 = dominoes.Domino(2, 3)
-        h2 = dominoes.Hand([d1, d2])
-        g.hands[p] = h2
 
-        # non-empty hand, empty board
-        m2 = g.valid_moves()
-        self.assertEqual(len(m2), 2)
-        self.assertTrue((d1, True) in m2)
-        self.assertTrue((d2, True) in m2)
+        p = 3
+        g = dominoes.Game.new(starting_player=p)
 
         g.board.add_left(d1)
-        g.hands[p] = h1
 
-        # empty hand, non-empty board
-        m3 = g.valid_moves()
-        self.assertEqual(m3, [])
+        h = dominoes.Hand([d1, d2])
+        g.hands[p] = h
 
-        g.hands[p] = h2
+        g._update_valid_moves()
 
-        # non-empty hand, non-empty board
-        m4 = g.valid_moves()
-        self.assertEqual(len(m4), 3)
-        self.assertTrue((d1, True) in m4)
-        self.assertTrue((d1, False) in m4)
-        self.assertTrue((d2, False) in m4)
+        # left end of board != right end of board
+        self.assertEqual(len(g.valid_moves), 3)
+        self.assertTrue((d1, True) in g.valid_moves)
+        self.assertTrue((d1, False) in g.valid_moves)
+        self.assertTrue((d2, False) in g.valid_moves)
 
         g.board.add_left(d1)
+
+        g._update_valid_moves()
 
         # left end of board == right end of board
-        m5 = g.valid_moves()
-        self.assertEqual(len(m5), 2)
-        self.assertTrue((d1, True) in m5)
-        self.assertTrue((d2, True) in m5)
-
-        g.result = True
-
-        # game over
-        m6 = g.valid_moves()
-        self.assertEqual(m6, [])
+        self.assertEqual(len(g.valid_moves), 2)
+        self.assertTrue((d1, True) in g.valid_moves)
+        self.assertTrue((d2, True) in g.valid_moves)
 
     def test_make_move(self):
         g = dominoes.Game.new()
@@ -346,7 +292,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.board), 2)
         self.assertEqual(len(g.hands[p1]), len_hand1)
         self.assertFalse(d2 in g.hands[p1])
-        self.assertTrue(dominoes.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
         d3 = dominoes.Domino(7, 5)
@@ -364,7 +310,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.board), 3)
         self.assertEqual(len(g.hands[p2]), len_hand2)
         self.assertFalse(d3 in g.hands[p2])
-        self.assertTrue(dominoes.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
         self.assertTrue('Board: {}'.format(g.board) in str1)
         self.assertTrue("Player 0's hand: {}".format(g.hands[0]) in str1)
@@ -391,7 +337,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.hands[p3]), len_hand3)
         self.assertFalse(d4 in g.hands[p3])
         self.assertEqual(g.turn, p3)
-        self.assertTrue(dominoes.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
         g.hands[p3].draw(d4)
@@ -407,7 +353,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.hands[p3]), len_hand3 + 1)
         self.assertTrue(d4 in g.hands[p3])
         self.assertEqual(g.turn, p3)
-        self.assertTrue(dominoes.game._has_valid_move(g.hands[g.turn], g.board))
+        self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
     def test_make_move_endgame(self):
