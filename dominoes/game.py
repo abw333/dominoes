@@ -251,18 +251,20 @@ class Game:
         if self.result is not None:
             return []
 
-        # game has not started
-        if not self.board:
+        try:
+            left_end = self.board.left_end()
+            right_end = self.board.right_end()
+        except dominoes.EmptyBoardException:
+            # game has not started
             return [(d, True) for d in self.hands[self.turn]]
 
         moves = []
         for d in self.hands[self.turn]:
-            if self.board.left_end() in d:
+            if left_end in d:
                 moves.append((d, True))
             # do not double count moves if both of the board's ends have
             # the same value, and a domino can be placed on both of them
-            if self.board.right_end() in d and \
-               self.board.left_end() != self.board.right_end():
+            if right_end in d and left_end != right_end:
                 moves.append((d, False))
 
         return moves
