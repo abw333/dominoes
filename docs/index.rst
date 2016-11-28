@@ -38,9 +38,9 @@ Usage Example
     >>> g.turn
     1
     >>> g.result
-    >>> g.valid_moves() # True is for the left of the board, False is for the right
+    >>> g.valid_moves # True is for the left of the board, False is for the right
     [([0|6], True), ([2|6], True)]
-    >>> g.make_move(*g.valid_moves()[0])
+    >>> g.make_move(*g.valid_moves[0])
     >>> g
     Board: [0|6][6|6]
     Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
@@ -48,9 +48,9 @@ Usage Example
     Player 2's hand: [0|4][0|3][4|4][3|6][0|2][4|5][1|4]
     Player 3's hand: [5|6][3|5][3|3][0|0][0|1][2|2][4|6]
     Player 2's turn
-    >>> g.make_move(*g.valid_moves()[0])
+    >>> g.make_move(*g.valid_moves[0])
     ...
-    >>> g.make_move(*g.valid_moves()[0])
+    >>> g.make_move(*g.valid_moves[0])
     Result(player=1, won=True, points=32)
     >>> g.result
     Result(player=1, won=True, points=32)

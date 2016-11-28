@@ -52,9 +52,9 @@ class Series:
         [0, 0]
         >>> s.next_game()
         GameInProgressException: Cannot start a new game - the latest one has not finished!
-        >>> s.games[0].make_move(*s.games[0].valid_moves()[0])
+        >>> s.games[0].make_move(*s.games[0].valid_moves[0])
         ...
-        >>> s.games[0].make_move(*s.games[0].valid_moves()[0])
+        >>> s.games[0].make_move(*s.games[0].valid_moves[0])
         Result(player=3, won=False, points=24)
         >>> s.next_game()
         Board:
