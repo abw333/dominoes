@@ -76,6 +76,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g1.board), 0)
         self.assertEqual(len(g1.hands), 4)
+        self.assertEqual(g1.moves, [])
         self.assertEqual(g1.turn, 0)
         self.assertEqual(len(g1.valid_moves), 7)
         for d in g1.hands[g1.turn]:
@@ -88,6 +89,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g2.board), 0)
         self.assertEqual(len(g2.hands), 4)
+        self.assertEqual(g2.moves, [])
         self.assertEqual(g2.turn, p1)
         self.assertEqual(len(g2.valid_moves), 7)
         for d in g2.hands[g2.turn]:
@@ -100,6 +102,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g3.board), 1)
         self.assertEqual(len(g3.hands), 4)
+        self.assertEqual(g3.moves, [(d1, True)])
         hand_lengths1 = collections.Counter(len(h) for h in g3.hands)
         self.assertEqual(hand_lengths1[6], 1)
         self.assertEqual(hand_lengths1[7], 3)
@@ -115,6 +118,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g4.board), 1)
         self.assertEqual(len(g4.hands), 4)
+        self.assertEqual(g4.moves, [(d1, True)])
         hand_lengths2 = collections.Counter(len(h) for h in g4.hands)
         self.assertEqual(hand_lengths2[6], 1)
         self.assertEqual(hand_lengths2[7], 3)
