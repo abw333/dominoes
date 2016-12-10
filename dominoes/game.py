@@ -156,6 +156,8 @@ class Game:
         >>> g.valid_moves # True is for the left of the board, False is for the right
         [([0|6], True), ([2|6], True)]
         >>> g.make_move(*g.valid_moves[0])
+        >>> g.moves
+        [([6|6], True), ([0|6], True)]
         >>> g
         Board: [0|6][6|6]
         Player 0's hand: [2|4][5|5][2|3][1|3][1|6][1|2]
