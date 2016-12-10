@@ -327,12 +327,16 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.board), 2)
         self.assertEqual(len(g.hands[p1]), len_hand1)
         self.assertFalse(d2 in g.hands[p1])
+        self.assertEqual(g.moves[0], (d2, True))
+        for m in g.moves[1:]:
+            self.assertIsNone(m)
         self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
         d3 = dominoes.Domino(7, 5)
         p2 = g.turn
         len_hand2 = len(g.hands[p2])
+        len_moves1 = len(g.moves)
         g.hands[p2].draw(d3)
 
         # make a move on the right end of the board
@@ -345,6 +349,12 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.board), 3)
         self.assertEqual(len(g.hands[p2]), len_hand2)
         self.assertFalse(d3 in g.hands[p2])
+        self.assertEqual(g.moves[0], (d2, True))
+        for m in g.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g.moves[len_moves1], (d3, False))
+        for m in g.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
         self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
         self.assertTrue('Board: {}'.format(g.board) in str1)
@@ -372,6 +382,12 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.hands[p3]), len_hand3)
         self.assertFalse(d4 in g.hands[p3])
         self.assertEqual(g.turn, p3)
+        self.assertEqual(g.moves[0], (d2, True))
+        for m in g.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g.moves[len_moves1], (d3, False))
+        for m in g.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
         self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
@@ -388,6 +404,12 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g.hands[p3]), len_hand3 + 1)
         self.assertTrue(d4 in g.hands[p3])
         self.assertEqual(g.turn, p3)
+        self.assertEqual(g.moves[0], (d2, True))
+        for m in g.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g.moves[len_moves1], (d3, False))
+        for m in g.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
         self.assertTrue(bool(g.valid_moves))
         self.assertIsNone(g.result)
 
