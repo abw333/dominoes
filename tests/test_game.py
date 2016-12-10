@@ -76,6 +76,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g1.board), 0)
         self.assertEqual(len(g1.hands), 4)
+        self.assertEqual(g1.moves, [])
         self.assertEqual(g1.turn, 0)
         self.assertEqual(len(g1.valid_moves), 7)
         for d in g1.hands[g1.turn]:
@@ -88,6 +89,7 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g2.board), 0)
         self.assertEqual(len(g2.hands), 4)
+        self.assertEqual(g2.moves, [])
         self.assertEqual(g2.turn, p1)
         self.assertEqual(len(g2.valid_moves), 7)
         for d in g2.hands[g2.turn]:
@@ -100,6 +102,9 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g3.board), 1)
         self.assertEqual(len(g3.hands), 4)
+        self.assertEqual(g3.moves[0], (d1, True))
+        for m in g3.moves[1:]:
+            self.assertIsNone(m)
         hand_lengths1 = collections.Counter(len(h) for h in g3.hands)
         self.assertEqual(hand_lengths1[6], 1)
         self.assertEqual(hand_lengths1[7], 3)
@@ -115,6 +120,9 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(len(g4.board), 1)
         self.assertEqual(len(g4.hands), 4)
+        self.assertEqual(g4.moves[0], (d1, True))
+        for m in g4.moves[1:]:
+            self.assertIsNone(m)
         hand_lengths2 = collections.Counter(len(h) for h in g4.hands)
         self.assertEqual(hand_lengths2[6], 1)
         self.assertEqual(hand_lengths2[7], 3)
@@ -143,13 +151,14 @@ class TestGame(unittest.TestCase):
         g6 = dominoes.Game.new()
         g7 = dominoes.Game.new()
         g8 = dominoes.Game.new()
+        g9 = dominoes.Game.new()
 
         PseudoGame = collections.namedtuple('PseudoGame',
-                                            ['board', 'hands', 'result', 'turn',
-                                             'valid_moves', 'starting_player'])
+                                            ['board', 'hands', 'moves', 'result',
+                                             'turn', 'valid_moves', 'starting_player'])
 
-        pg = PseudoGame(g1.board, g1.hands, g1.result, g1.turn,
-                        g1.valid_moves, g1.starting_player)
+        pg = PseudoGame(g1.board, g1.hands, g1.moves, g1.result,
+                        g1.turn, g1.valid_moves, g1.starting_player)
 
         g2.hands = g1.hands
         g3.hands = g1.hands
@@ -158,6 +167,7 @@ class TestGame(unittest.TestCase):
         g6.hands = g1.hands
         g7.hands = g1.hands
         g8.hands = g1.hands
+        g9.hands = g1.hands
 
         g2.valid_moves = g1.valid_moves
         g3.valid_moves = g1.valid_moves
@@ -166,6 +176,7 @@ class TestGame(unittest.TestCase):
         g6.valid_moves = g1.valid_moves
         g7.valid_moves = g1.valid_moves
         g8.valid_moves = g1.valid_moves
+        g9.valid_moves = g1.valid_moves
 
         self.assertEqual(g1, g2)
 
@@ -188,6 +199,9 @@ class TestGame(unittest.TestCase):
 
         g8.valid_moves = ()
         self.assertNotEqual(g1, g8)
+
+        g9.moves = ()
+        self.assertNotEqual(g1, g9)
 
     def test_skinny_board(self):
         d = dominoes.Domino(1, 2)
@@ -217,6 +231,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g1.hands[p], g2.hands[p])
             else:
                 self.assertEqual(g1.hands[p], g2.hands[p])
+        self.assertTrue(len(g2.moves) > len(g1.moves))
         self.assertNotEqual(g1.valid_moves, g2.valid_moves)
         self.assertEqual(g1.starting_player, g2.starting_player)
         self.assertEqual(g1.result, g2.result)
@@ -237,6 +252,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g3.hands[p], g4.hands[p])
             else:
                 self.assertEqual(g3.hands[p], g4.hands[p])
+        self.assertTrue(len(g4.moves) > len(g3.moves))
         self.assertNotEqual(g3.valid_moves, g4.valid_moves)
         self.assertEqual(g3.starting_player, g4.starting_player)
         self.assertEqual(g3.result, g4.result)
@@ -258,6 +274,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g5.hands[p], g6.hands[p])
             else:
                 self.assertEqual(g5.hands[p], g6.hands[p])
+        self.assertTrue(len(g6.moves) > len(g5.moves))
         self.assertNotEqual(g5.valid_moves, g6.valid_moves)
         self.assertEqual(g5.starting_player, g6.starting_player)
         self.assertEqual(g5.result, g6.result)
@@ -292,87 +309,134 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d2, True) in g.valid_moves)
 
     def test_make_move(self):
-        g = dominoes.Game.new()
+        g1 = dominoes.Game.new()
 
         d1 = dominoes.Domino(7, 7)
-        g.board.add_left(d1)
+        g1.board.add_left(d1)
 
         d2 = dominoes.Domino(7, 6)
-        p1 = g.turn
-        len_hand1 = len(g.hands[p1])
-        g.hands[p1].draw(d2)
+        p1 = g1.turn
+        len_hand1 = len(g1.hands[p1])
+        g1.hands[p1].draw(d2)
 
         # make a move on the left end of the board
-        g.make_move(d2, True)
+        g1.make_move(d2, True)
 
-        self.assertEqual(g.board.left_end(), d2.second)
-        self.assertEqual(g.board.right_end(), d1.second)
-        self.assertEqual(len(g.board), 2)
-        self.assertEqual(len(g.hands[p1]), len_hand1)
-        self.assertFalse(d2 in g.hands[p1])
-        self.assertTrue(bool(g.valid_moves))
-        self.assertIsNone(g.result)
+        self.assertEqual(g1.board.left_end(), d2.second)
+        self.assertEqual(g1.board.right_end(), d1.second)
+        self.assertEqual(len(g1.board), 2)
+        self.assertEqual(len(g1.hands[p1]), len_hand1)
+        self.assertFalse(d2 in g1.hands[p1])
+        self.assertEqual(g1.moves[0], (d2, True))
+        for m in g1.moves[1:]:
+            self.assertIsNone(m)
+        self.assertTrue(bool(g1.valid_moves))
+        self.assertIsNone(g1.result)
 
         d3 = dominoes.Domino(7, 5)
-        p2 = g.turn
-        len_hand2 = len(g.hands[p2])
-        g.hands[p2].draw(d3)
+        p2 = g1.turn
+        len_hand2 = len(g1.hands[p2])
+        len_moves1 = len(g1.moves)
+        g1.hands[p2].draw(d3)
 
         # make a move on the right end of the board
-        g.make_move(d3, False)
-        str1 = str(g)
-        repr1 = repr(g)
+        g1.make_move(d3, False)
+        str1 = str(g1)
+        repr1 = repr(g1)
 
-        self.assertEqual(g.board.left_end(), d2.second)
-        self.assertEqual(g.board.right_end(), d3.second)
-        self.assertEqual(len(g.board), 3)
-        self.assertEqual(len(g.hands[p2]), len_hand2)
-        self.assertFalse(d3 in g.hands[p2])
-        self.assertTrue(bool(g.valid_moves))
-        self.assertIsNone(g.result)
-        self.assertTrue('Board: {}'.format(g.board) in str1)
-        self.assertTrue("Player 0's hand: {}".format(g.hands[0]) in str1)
-        self.assertTrue("Player 1's hand: {}".format(g.hands[1]) in str1)
-        self.assertTrue("Player 2's hand: {}".format(g.hands[2]) in str1)
-        self.assertTrue("Player 3's hand: {}".format(g.hands[3]) in str1)
-        self.assertTrue("Player {}'s turn".format(g.turn) in str1)
+        self.assertEqual(g1.board.left_end(), d2.second)
+        self.assertEqual(g1.board.right_end(), d3.second)
+        self.assertEqual(len(g1.board), 3)
+        self.assertEqual(len(g1.hands[p2]), len_hand2)
+        self.assertFalse(d3 in g1.hands[p2])
+        self.assertEqual(g1.moves[0], (d2, True))
+        for m in g1.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g1.moves[len_moves1], (d3, False))
+        for m in g1.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
+        self.assertTrue(bool(g1.valid_moves))
+        self.assertIsNone(g1.result)
+        self.assertTrue('Board: {}'.format(g1.board) in str1)
+        self.assertTrue("Player 0's hand: {}".format(g1.hands[0]) in str1)
+        self.assertTrue("Player 1's hand: {}".format(g1.hands[1]) in str1)
+        self.assertTrue("Player 2's hand: {}".format(g1.hands[2]) in str1)
+        self.assertTrue("Player 3's hand: {}".format(g1.hands[3]) in str1)
+        self.assertTrue("Player {}'s turn".format(g1.turn) in str1)
         self.assertFalse('Player {} won'.format(p2) in str1)
         self.assertFalse('Player {} stuck'.format(p2) in str1)
         self.assertEqual(str1, repr1)
 
         d4 = dominoes.Domino(7, 7)
-        p3 = g.turn
-        len_hand3 = len(g.hands[p3])
-        before = copy.deepcopy(g)
+        p3 = g1.turn
+        len_hand3 = len(g1.hands[p3])
+        before = copy.deepcopy(g1)
 
         # try to play a domino that is not in the player's hand
-        self.assertRaises(dominoes.NoSuchDominoException, g.make_move, d4, True)
+        self.assertRaises(dominoes.NoSuchDominoException, g1.make_move, d4, True)
 
-        self.assertEqual(before, g)
-        self.assertEqual(g.board.left_end(), d2.second)
-        self.assertEqual(g.board.right_end(), d3.second)
-        self.assertEqual(len(g.board), 3)
-        self.assertEqual(len(g.hands[p3]), len_hand3)
-        self.assertFalse(d4 in g.hands[p3])
-        self.assertEqual(g.turn, p3)
-        self.assertTrue(bool(g.valid_moves))
-        self.assertIsNone(g.result)
+        self.assertEqual(before, g1)
+        self.assertEqual(g1.board.left_end(), d2.second)
+        self.assertEqual(g1.board.right_end(), d3.second)
+        self.assertEqual(len(g1.board), 3)
+        self.assertEqual(len(g1.hands[p3]), len_hand3)
+        self.assertFalse(d4 in g1.hands[p3])
+        self.assertEqual(g1.turn, p3)
+        self.assertEqual(g1.moves[0], (d2, True))
+        for m in g1.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g1.moves[len_moves1], (d3, False))
+        for m in g1.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
+        self.assertTrue(bool(g1.valid_moves))
+        self.assertIsNone(g1.result)
 
-        g.hands[p3].draw(d4)
-        before = copy.deepcopy(g)
+        g1.hands[p3].draw(d4)
+        before = copy.deepcopy(g1)
 
         # try to play a domino that does not match the board
-        self.assertRaises(dominoes.EndsMismatchException, g.make_move, d4, True)
+        self.assertRaises(dominoes.EndsMismatchException, g1.make_move, d4, True)
 
-        self.assertEqual(before, g)
-        self.assertEqual(g.board.left_end(), d2.second)
-        self.assertEqual(g.board.right_end(), d3.second)
-        self.assertEqual(len(g.board), 3)
-        self.assertEqual(len(g.hands[p3]), len_hand3 + 1)
-        self.assertTrue(d4 in g.hands[p3])
-        self.assertEqual(g.turn, p3)
-        self.assertTrue(bool(g.valid_moves))
-        self.assertIsNone(g.result)
+        self.assertEqual(before, g1)
+        self.assertEqual(g1.board.left_end(), d2.second)
+        self.assertEqual(g1.board.right_end(), d3.second)
+        self.assertEqual(len(g1.board), 3)
+        self.assertEqual(len(g1.hands[p3]), len_hand3 + 1)
+        self.assertTrue(d4 in g1.hands[p3])
+        self.assertEqual(g1.turn, p3)
+        self.assertEqual(g1.moves[0], (d2, True))
+        for m in g1.moves[1:len_moves1]:
+            self.assertIsNone(m)
+        self.assertEqual(g1.moves[len_moves1], (d3, False))
+        for m in g1.moves[len_moves1 + 1:]:
+            self.assertIsNone(m)
+        self.assertTrue(bool(g1.valid_moves))
+        self.assertIsNone(g1.result)
+
+        # play a domino that forces a pass
+        d5 = dominoes.Domino(1, 1)
+        d6 = dominoes.Domino(2, 2)
+        d7 = dominoes.Domino(3, 3)
+        d8 = dominoes.Domino(4, 4)
+        d9 = dominoes.Domino(1, 2)
+        h1 = dominoes.Hand([d5, d6])
+        h2 = dominoes.Hand([d7])
+        h3 = dominoes.Hand([d8])
+        h4 = dominoes.Hand([d9])
+        g2 = dominoes.Game.new()
+        g2.hands = [h1, h2, h3, h4]
+
+        g2.make_move(d5, True)
+
+        self.assertEqual(g2.board.left_end(), d5.first)
+        self.assertEqual(g2.board.right_end(), d5.second)
+        self.assertEqual(len(g2.board), 1)
+        self.assertEqual(len(g2.hands[0]), 1)
+        self.assertFalse(d5 in g2.hands[0])
+        self.assertEqual(g2.moves, [(d5, True), None, None])
+        self.assertEqual(g2.turn, 3)
+        self.assertTrue(bool(g2.valid_moves))
+        self.assertIsNone(g2.result)
 
     def test_make_move_endgame(self):
         d1 = dominoes.Domino(1, 2)
@@ -397,6 +461,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g1.hands[1]), 1)
         self.assertEqual(len(g1.hands[2]), 1)
         self.assertEqual(len(g1.hands[3]), 1)
+        self.assertEqual(g1.moves, [(d1, True)])
         self.assertFalse(bool(g1.valid_moves))
         self.assertEqual(g1.result, dominoes.game.Result(0, True, 21))
         self.assertEqual(g1.turn, 0)
@@ -432,6 +497,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g2.hands[1]), 1)
         self.assertEqual(len(g2.hands[2]), 1)
         self.assertEqual(len(g2.hands[3]), 1)
+        self.assertEqual(g2.moves, [(d5, True)])
         self.assertFalse(bool(g2.valid_moves))
         self.assertEqual(g2.result, dominoes.game.Result(0, False, 20))
         self.assertEqual(g2.turn, 0)
@@ -462,6 +528,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g3.hands[1]), 1)
         self.assertEqual(len(g3.hands[2]), 1)
         self.assertEqual(len(g3.hands[3]), 1)
+        self.assertEqual(g3.moves, [(d5, True)])
         self.assertFalse(bool(g3.valid_moves))
         self.assertEqual(g3.result, dominoes.game.Result(0, False, 0))
         self.assertEqual(g3.turn, 0)
@@ -492,6 +559,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g4.hands[1]), 1)
         self.assertEqual(len(g4.hands[2]), 1)
         self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.moves, [(d5, True)])
         self.assertFalse(bool(g4.valid_moves))
         self.assertEqual(g4.result, dominoes.game.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
@@ -516,6 +584,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g4.hands[1]), 1)
         self.assertEqual(len(g4.hands[2]), 1)
         self.assertEqual(len(g4.hands[3]), 1)
+        self.assertEqual(g4.moves, [(d5, True)])
         self.assertFalse(bool(g4.valid_moves))
         self.assertEqual(g4.result, dominoes.game.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
