@@ -121,12 +121,15 @@ class Game:
 
     :var board: the game board
     :var hands: a list containing each player's hand
+    :var moves: a list of the moves that have been played. Moves are
+                represented by a tuple of Domino and bool. The domino
+                indicates the domino that was played, and the bool
+                indicates on what end of the board the domino was
+                played (True for left, False for right). If the player
+                passed, the move is None.
     :var turn: the player whose turn it is
     :var valid_moves: a tuple of valid moves for the player whose turn it is.
-                      Moves are represented by a tuple of Domino and bool. The
-                      Domino indicates the domino that can be played, and the
-                      bool indicates on what end of the board the domino can be
-                      played (True for left, False for right).
+                      Moves are represented in the same way as in the moves list.
     :var starting_player: first player to make a move
     :var result: None if the game is in progress; otherwise a
                  Result object indicating the outcome of the game
@@ -174,10 +177,11 @@ class Game:
         Player 3's hand: [3|3][0|0][2|2]
         Player 1 won and scored 32 points!
     '''
-    def __init__(self, board, hands, turn,
+    def __init__(self, board, hands, moves, turn,
                  valid_moves, starting_player, result):
         self.board = board
         self.hands = hands
+        self.moves = moves
         self.turn = turn
         self.valid_moves = valid_moves
         self.starting_player = starting_player
@@ -205,17 +209,19 @@ class Game:
 
         hands = _randomized_hands()
 
+        moves = []
+
         result = None
 
         if starting_domino is None:
             _validate_player(starting_player)
             valid_moves = tuple((d, True) for d in hands[starting_player])
-            game = cls(board, hands, starting_player,
+            game = cls(board, hands, moves, starting_player,
                        valid_moves, starting_player, result)
         else:
             starting_player = _domino_hand(starting_domino, hands)
             valid_moves = ((starting_domino, True),)
-            game = cls(board, hands, starting_player,
+            game = cls(board, hands, moves, starting_player,
                        valid_moves, starting_player, result)
             game.make_move(*valid_moves[0])
 
@@ -284,6 +290,9 @@ class Game:
 
             raise error
 
+        # record the move
+        self.moves.append((d, left))
+
         # check if the game ended due to a player running out of dominoes
         if not self.hands[self.turn]:
             self.valid_moves = ()
@@ -291,15 +300,20 @@ class Game:
             return self.result
 
         # advance the turn to the next player with a valid move.
-        # if no player has a valid move, the game is stuck.
+        # if no player has a valid move, the game is stuck. also,
+        # record all the passes.
         num_players = len(self.hands)
+        passes = []
         stuck = True
         for _ in range(num_players):
             self.turn = (self.turn + 1) % num_players
             self._update_valid_moves()
             if self.valid_moves:
+                self.moves.extend(passes)
                 stuck = False
                 break
+            else:
+                passes.append(None)
 
         if stuck:
             player_points = _remaining_points(self.hands)
@@ -344,6 +358,9 @@ class Game:
         # needs to be copied, which the Hand initializer takes care of.
         hands = [dominoes.Hand(hand) for hand in self.hands]
 
+        # list of tuples of Domino and bool; shallow copy is sufficient
+        moves = list(self.moves)
+
         # tuple of immutable Domino objects; no need to deepcopy
         valid_moves = self.valid_moves
 
@@ -356,8 +373,8 @@ class Game:
         # just an int; no need to deepcopy
         starting_player = self.starting_player
 
-        return type(self)(board, hands, turn, valid_moves,
-                          starting_player, result)
+        return type(self)(board, hands, moves, turn,
+                          valid_moves, starting_player, result)
 
     def __str__(self):
         string_list = ['Board: {}'.format(self.board)]
