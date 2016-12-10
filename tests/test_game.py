@@ -147,13 +147,14 @@ class TestGame(unittest.TestCase):
         g6 = dominoes.Game.new()
         g7 = dominoes.Game.new()
         g8 = dominoes.Game.new()
+        g9 = dominoes.Game.new()
 
         PseudoGame = collections.namedtuple('PseudoGame',
-                                            ['board', 'hands', 'result', 'turn',
-                                             'valid_moves', 'starting_player'])
+                                            ['board', 'hands', 'moves', 'result',
+                                             'turn', 'valid_moves', 'starting_player'])
 
-        pg = PseudoGame(g1.board, g1.hands, g1.result, g1.turn,
-                        g1.valid_moves, g1.starting_player)
+        pg = PseudoGame(g1.board, g1.hands, g1.moves, g1.result,
+                        g1.turn, g1.valid_moves, g1.starting_player)
 
         g2.hands = g1.hands
         g3.hands = g1.hands
@@ -162,6 +163,7 @@ class TestGame(unittest.TestCase):
         g6.hands = g1.hands
         g7.hands = g1.hands
         g8.hands = g1.hands
+        g9.hands = g1.hands
 
         g2.valid_moves = g1.valid_moves
         g3.valid_moves = g1.valid_moves
@@ -170,6 +172,7 @@ class TestGame(unittest.TestCase):
         g6.valid_moves = g1.valid_moves
         g7.valid_moves = g1.valid_moves
         g8.valid_moves = g1.valid_moves
+        g9.valid_moves = g1.valid_moves
 
         self.assertEqual(g1, g2)
 
@@ -192,6 +195,9 @@ class TestGame(unittest.TestCase):
 
         g8.valid_moves = ()
         self.assertNotEqual(g1, g8)
+
+        g9.moves = ()
+        self.assertNotEqual(g1, g9)
 
     def test_skinny_board(self):
         d = dominoes.Domino(1, 2)
