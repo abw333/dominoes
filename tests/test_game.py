@@ -227,6 +227,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g1.hands[p], g2.hands[p])
             else:
                 self.assertEqual(g1.hands[p], g2.hands[p])
+        self.assertTrue(len(g2.moves) > len(g1.moves))
         self.assertNotEqual(g1.valid_moves, g2.valid_moves)
         self.assertEqual(g1.starting_player, g2.starting_player)
         self.assertEqual(g1.result, g2.result)
@@ -247,6 +248,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g3.hands[p], g4.hands[p])
             else:
                 self.assertEqual(g3.hands[p], g4.hands[p])
+        self.assertTrue(len(g4.moves) > len(g3.moves))
         self.assertNotEqual(g3.valid_moves, g4.valid_moves)
         self.assertEqual(g3.starting_player, g4.starting_player)
         self.assertEqual(g3.result, g4.result)
@@ -268,6 +270,7 @@ class TestGame(unittest.TestCase):
                 self.assertNotEqual(g5.hands[p], g6.hands[p])
             else:
                 self.assertEqual(g5.hands[p], g6.hands[p])
+        self.assertTrue(len(g6.moves) > len(g5.moves))
         self.assertNotEqual(g5.valid_moves, g6.valid_moves)
         self.assertEqual(g5.starting_player, g6.starting_player)
         self.assertEqual(g5.result, g6.result)
