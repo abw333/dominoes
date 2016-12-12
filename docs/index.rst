@@ -138,6 +138,12 @@ Hand
 .. autoclass:: dominoes.Hand
     :members: play, draw
 
+Players
+-------
+
+.. automodule:: dominoes.players
+   :members: random
+
 Series
 ------
 
