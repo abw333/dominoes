@@ -1,3 +1,4 @@
+from dominoes import players
 from dominoes.board import Board
 from dominoes.domino import Domino
 from dominoes.exceptions import EmptyBoardException
