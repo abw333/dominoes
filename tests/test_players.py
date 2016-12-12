@@ -21,5 +21,14 @@ class TestPlayers(unittest.TestCase):
     def test_random(self):
         self._test_player_interface(dominoes.players.random)
 
+        gs = [dominoes.Game.new() for _ in range(3)]
+        valid_moves_before = tuple(g.valid_moves for g in gs)
+        for g in gs:
+            dominoes.players.random(g)
+        valid_moves_after = tuple(g.valid_moves for g in gs)
+
+        # this has a tiny, but nonzero, chance of failing
+        self.assertNotEqual(valid_moves_before, valid_moves_after)
+
 if __name__ == '__main__':
     unittest.main()
