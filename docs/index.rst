@@ -130,13 +130,19 @@ Game
 ----
 
 .. autoclass:: dominoes.Game
-    :members: new, skinny_board, valid_moves, make_move
+    :members: new, skinny_board, make_move
 
 Hand
 ----
 
 .. autoclass:: dominoes.Hand
     :members: play, draw
+
+Players
+-------
+
+.. automodule:: dominoes.players
+   :members: random
 
 Series
 ------
