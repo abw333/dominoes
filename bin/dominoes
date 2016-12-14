@@ -60,13 +60,12 @@ def validate_and_transform_nonnegative_index(sequence):
         Requires that the input be a valid nonnegative index into `sequence`.
 
         :param str i: user input representing an index into `sequence`
-        :return: element within `sequence` represented by the input index,
-                 if it is valid; None otherwise
+        :return: the index as an integer, if it is valid; None otherwise
         '''
         if i not in (str(j) for j in range(len(sequence))):
             return None
 
-        return sequence[int(i)]
+        return int(i)
 
     return _validate_and_transform_nonnegative_index
 
@@ -139,9 +138,9 @@ while game is not None:
         # until they select a valid move
         while True:
             valid_inputs = list(range(len(hand)))
-            d = validated_input('Choose which domino you would like to play: ',
-                                validate_and_transform_nonnegative_index(hand),
-                                'Please enter a value in: {}'.format(valid_inputs))
+            d = hand[validated_input('Choose which domino you would like to play: ',
+                                     validate_and_transform_nonnegative_index(hand),
+                                     'Please enter a value in: {}'.format(valid_inputs))]
 
             if game.board:
                 end = validated_input('Choose what end of the board you'
