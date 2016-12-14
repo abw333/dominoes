@@ -3,6 +3,12 @@
 import dominoes
 import subprocess
 
+# possible strategies for each of the players
+PLAYER_SETTINGS = [
+    ('Human', None),
+    ('AI: random', dominoes.players.random)
+]
+
 def validated_input(prompt, validate_and_transform, error_message):
     '''
     Convenience wrapper around `input` that prompts the user until valid
@@ -95,6 +101,21 @@ target_score = validated_input('Up to how many points would you like to play: ',
                                'Please enter a positive integer.')
 series = dominoes.Series(target_score=target_score)
 game = series.games[0]
+
+# print out the possible player settings
+print('Player settings:')
+for i, (name, _) in enumerate(PLAYER_SETTINGS):
+    print('{}) {}'.format(i, name))
+
+# ask the user(s) to select a setting for each player
+player_settings = []
+valid_inputs = list(range(len(PLAYER_SETTINGS)))
+for player in range(len(game.hands)):
+    player_settings.append(
+        validated_input('Select a setting for player {}: '.format(player),
+                        validate_and_transform_nonnegative_index(PLAYER_SETTINGS),
+                        'Please enter a value in: {}'.format(valid_inputs))
+    )
 
 # the game will be None once the series has ended
 while game is not None:
