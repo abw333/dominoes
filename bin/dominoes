@@ -112,9 +112,11 @@ player_settings = []
 valid_inputs = list(range(len(PLAYER_SETTINGS)))
 for player in range(len(game.hands)):
     player_settings.append(
-        validated_input('Select a setting for player {}: '.format(player),
-                        validate_and_transform_nonnegative_index(PLAYER_SETTINGS),
-                        'Please enter a value in: {}'.format(valid_inputs))
+        PLAYER_SETTINGS[
+            validated_input('Select a setting for player {}: '.format(player),
+                            validate_and_transform_nonnegative_index(PLAYER_SETTINGS),
+                            'Please enter a value in: {}'.format(valid_inputs))
+        ]
     )
 
 # the game will be None once the series has ended
@@ -155,31 +157,51 @@ while game is not None:
         # we'll need it after we move on to the next player.
         turn = game.turn
 
-        # ask the player what move they'd like to play,
-        # until they select a valid move
-        while True:
-            valid_inputs = list(range(len(hand)))
-            d = hand[validated_input('Choose which domino you would like to play: ',
-                                     validate_and_transform_nonnegative_index(hand),
-                                     'Please enter a value in: {}'.format(valid_inputs))]
+        # get the setting for the current player
+        player_setting_name, player_setting = player_settings[game.turn]
 
-            if game.board:
-                end = validated_input('Choose what end of the board you'
-                                      ' would like to play on (l or r): ',
-                                      validate_and_transform_end,
-                                      'Please enter a value in: [l, r]')
-            else:
-                # if the board is empty, default to playing on the 'left'
-                end = True
+        if player_setting is None:
+            # the current player is a human. ask what move they'd
+            # like to play, until they select a valid move.
+            while True:
+                valid_inputs = list(range(len(hand)))
+                d = hand[validated_input('Choose which domino you would like to play: ',
+                                         validate_and_transform_nonnegative_index(hand),
+                                         'Please enter a value in: {}'.format(valid_inputs))]
 
-            try:
-                game.make_move(d, end)
-                break
-            except dominoes.EndsMismatchException:
-                # `game.make_move` is transactional - if it fails, the game
-                # state is exactly as it was when the operation started
-                print('The selected domino cannot be played on the'
-                      ' selected end of the board. Please try again.')
+                if game.board:
+                    end = validated_input('Choose what end of the board you'
+                                          ' would like to play on (l or r): ',
+                                          validate_and_transform_end,
+                                          'Please enter a value in: [l, r]')
+                else:
+                    # if the board is empty, default to playing on the 'left'
+                    end = True
+
+                try:
+                    game.make_move(d, end)
+                    break
+                except dominoes.EndsMismatchException:
+                    # `game.make_move` is transactional - if it fails, the game
+                    # state is exactly as it was when the operation started
+                    print('The selected domino cannot be played on the'
+                          ' selected end of the board. Please try again.')
+        else:
+            # the current player is an AI. apply the player setting to select a
+            # move to play. the player setting is a callable that will sort the
+            # game's valid moves in decreasing order of preference.
+            player_setting(game)
+
+            # print out the selected move
+            print('Player {} ({}) chose to play {} on the {} end of the board.'.format(
+                game.turn,
+                player_setting_name,
+                game.valid_moves[0][0],
+                'left' if game.valid_moves[0][1] else 'right'
+            ))
+
+            # make the selected move
+            game.make_move(*game.valid_moves[0])
 
         # clear the terminal upon moving to the next
         # turn - no looking at the previous player's hand!
