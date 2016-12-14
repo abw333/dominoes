@@ -139,19 +139,13 @@ while game is not None:
             print('Player {} has {} dominoes in his/her hand.'.format(player, len(hand)))
 
         # clear the terminal upon starting a new turn
-        input("It is now player {0}'s turn. Press enter"
-              " to see player {0}'s hand.".format(game.turn))
+        input("It is now player {}'s turn. Press enter"
+              " to continue.".format(game.turn))
         subprocess.call(['tput', 'reset'])
 
         # print the board so that the player can decide what to play
         print('Board:')
         print(game.board)
-
-        # present the player's hand in multiple-choice format
-        print("Player {}'s hand:".format(game.turn))
-        hand = game.hands[game.turn]
-        for i, d in enumerate(hand):
-            print('{}) {}'.format(i, d))
 
         # remember whose turn it currently is.
         # we'll need it after we move on to the next player.
@@ -161,8 +155,15 @@ while game is not None:
         player_setting_name, player_setting = player_settings[game.turn]
 
         if player_setting is None:
-            # the current player is a human. ask what move they'd
-            # like to play, until they select a valid move.
+            # the current player is a human. present the
+            # player's hand in multiple-choice format.
+            print("Player {}'s hand:".format(game.turn))
+            hand = game.hands[game.turn]
+            for i, d in enumerate(hand):
+                print('{}) {}'.format(i, d))
+
+            # ask what move they'd like to play,
+            # until they select a valid move.
             while True:
                 valid_inputs = list(range(len(hand)))
                 d = hand[validated_input('Choose which domino you would like to play: ',
