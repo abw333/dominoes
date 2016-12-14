@@ -48,27 +48,27 @@ def validate_and_transform_target_score(target_score):
 
     return target_score
 
-def validate_and_transform_domino(hand):
+def validate_and_transform_nonnegative_index(sequence):
     '''
     Returns a function to be used as a `validate_and_transform`
     function with `validated_input`.
     '''
-    def _validate_and_transform_domino(i):
+    def _validate_and_transform_nonnegative_index(i):
         '''
         To be used as a `validate_and_transform` function with `validated_input`.
 
-        Requires that the input be a valid nonnegative index into `hand`.
+        Requires that the input be a valid nonnegative index into `sequence`.
 
-        :param str i: user input representing an index into `hand`
-        :return: Domino represented by the input index, if it is valid;
-                 None otherwise
+        :param str i: user input representing an index into `sequence`
+        :return: element within `sequence` represented by the input index,
+                 if it is valid; None otherwise
         '''
-        if i not in (str(j) for j in range(len(hand))):
+        if i not in (str(j) for j in range(len(sequence))):
             return None
 
-        return hand[int(i)]
+        return sequence[int(i)]
 
-    return _validate_and_transform_domino
+    return _validate_and_transform_nonnegative_index
 
 def validate_and_transform_end(end):
     '''
@@ -140,7 +140,7 @@ while game is not None:
         while True:
             valid_inputs = list(range(len(hand)))
             d = validated_input('Choose which domino you would like to play: ',
-                                validate_and_transform_domino(hand),
+                                validate_and_transform_nonnegative_index(hand),
                                 'Please enter a value in: {}'.format(valid_inputs))
 
             if game.board:
