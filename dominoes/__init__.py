@@ -10,5 +10,6 @@ from dominoes.exceptions import NoSuchPlayerException
 from dominoes.exceptions import SeriesOverException
 from dominoes.game import Game
 from dominoes.hand import Hand
+from dominoes.result import Result
 from dominoes.series import Series
 from dominoes.skinny_board import SkinnyBoard
