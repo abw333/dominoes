@@ -37,14 +37,21 @@ class TestPlayers(unittest.TestCase):
         d1 = dominoes.Domino(1, 1)
         d2 = dominoes.Domino(2, 2)
         d3 = dominoes.Domino(3, 3)
-        vm1 = ((d1, True),)
-        vm2 = ((d1, True), (d2, False))
-        vm3 = ((d1, True), (d2, False), (d3, False))
+        vms = [
+            ((d1, True),),
+            ((d1, True), (d2, False)),
+            ((d1, True), (d2, False), (d3, False))
+        ]
+        rvms = [
+            ((d1, True),),
+            ((d2, False), (d1, True)),
+            ((d3, False), (d2, False), (d1, True))
+        ]
 
-        for vm in [vm1, vm2, vm3]:
+        for vm, rvm in zip(vms, rvms):
             g.valid_moves = vm
             dominoes.players.reverse(g)
-            self.assertEqual(g.valid_moves, tuple(reversed(vm)))
+            self.assertEqual(g.valid_moves, rvm)
 
 if __name__ == '__main__':
     unittest.main()
