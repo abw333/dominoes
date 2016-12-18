@@ -14,4 +14,10 @@ namedtuple to represent the result of a dominoes game.
              make a move is part of the winning team, and
              negative otherwise. If it is 0, it means the
              game ended in a tie
+
+.. code-block:: python
+
+    >>> import dominoes
+    >>> dominoes.Result(1, True, 25)
+    Result(player=1, won=True, points=25)
 '''
