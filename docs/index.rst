@@ -75,39 +75,79 @@ Command Line Interface
 .. code-block:: none
 
     Up to how many points would you like to play: 100
+    Player settings:
+    0) Human
+    1) AI: random
+    Select a setting for player 0: 0
+    Select a setting for player 1: 1
+    Select a setting for player 2: 0
+    Select a setting for player 3: 1
+    Press enter to begin game 0.
 
 .. code-block:: none
 
-    Player 1 had the [6|6] and made the first move.
-    It is now player 2's turn. Press enter to see player 2's hand.
+    Player 3 had the [6|6] and made the first move.
     Board:
     [6|6]
-    Player 2's hand:
-    0) [4|5]
-    1) [0|0]
-    2) [1|2]
-    3) [3|6]
-    4) [3|5]
-    5) [5|6]
-    6) [4|6]
+    Player 0 has 7 dominoes in his/her hand.
+    Player 1 has 7 dominoes in his/her hand.
+    Player 2 has 7 dominoes in his/her hand.
+    Player 3 has 6 dominoes in his/her hand.
+    It is now player 0's turn. Press enter to continue.
+
+.. code-block:: none
+
+    Board:
+    [6|6]
+    Player 0's hand:
+    0) [3|6]
+    1) [4|4]
+    2) [0|1]
+    3) [2|6]
+    4) [1|1]
+    5) [2|5]
+    6) [3|3]
     Choose which domino you would like to play: 3
-    Choose what end of the board you would like to play on (l or r): l
-    Press enter to end player 2's turn.
+    Choose what end of the board you would like to play on (l or r): r
+    Press enter to end player 0's turn.
+
+.. code-block:: none
+
+    Board:
+    [6|6][6|2]
+    Player 1 (AI: random) chose to play [2|4] on the right end of the board.
+    Press enter to end player 1's turn.
 
 .. code-block:: none
 
     Game over!
-    Board: [6|5][5|5][5|2][2|2][2|6][6|4][4|4][4|5][5|0][0|4][4|1][1|2][2|4][4|3][3|3][3|6][6|6][6|0][0|3][3|5][5|1][1|0][0|0][0|2]
-    Player 0's hand: [2|3]
-    Player 1's hand: [1|1][1|6]
-    Player 2's hand:
-    Player 3's hand: [1|3]
-    Player 2 won and scored 18 points!
+    Board: [0|2][2|2][2|5][5|5][5|6][6|0][0|0][0|3][3|6][6|1][1|4][4|4][4|6][6|6][6|2][2|4][4|5][5|3][3|3][3|2][2|1][1|1][1|3][3|4]
+    Player 0's hand: [0|1]
+    Player 1's hand: [1|5][0|5]
+    Player 2's hand: [0|4]
+    Player 3's hand:
+    Player 3 won and scored 16 points!
     The current state of the series:
     Series to 100 points:
-    Team 0 has 18 points.
-    Team 1 has 0 points.
+    Team 0 has 0 points.
+    Team 1 has 16 points.
     Press enter to begin game 1.
+
+.. code-block:: none
+
+    Game over!
+    Board: [5|3][3|3][3|6][6|5][5|5][5|0][0|4][4|3][3|1][1|6][6|2][2|5][5|4][4|6][6|0][0|3][3|2][2|0][0|0][0|1][1|4][4|2][2|2][2|1][1|1]
+    Player 0's hand: [1|5]
+    Player 1's hand: [4|4]
+    Player 2's hand:
+    Player 3's hand: [6|6]
+    Player 2 won and scored 26 points!
+    The current state of the series:
+    Series to 100 points:
+    Team 0 has 107 points.
+    Team 1 has 95 points.
+    Team 0 wins!
+    $
 
 API Documentation
 ^^^^^^^^^^^^^^^^^
