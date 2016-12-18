@@ -1,5 +1,7 @@
 import collections
 
+Result = collections.namedtuple('Result', ['player', 'won', 'points'])
+Result.__doc__ = \
 '''
 namedtuple to represent the result of a dominoes game.
 
@@ -13,4 +15,3 @@ namedtuple to represent the result of a dominoes game.
              negative otherwise. If it is 0, it means the
              game ended in a tie
 '''
-Result = collections.namedtuple('Result', ['player', 'won', 'points'])

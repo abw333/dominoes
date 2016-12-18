@@ -184,6 +184,11 @@ Players
 .. automodule:: dominoes.players
    :members: random
 
+Result
+------
+
+.. autoclass:: dominoes.Result
+
 Series
 ------
 
