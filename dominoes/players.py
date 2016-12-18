@@ -26,3 +26,12 @@ def random(game):
     :return: None
     '''
     game.valid_moves = tuple(sorted(game.valid_moves, key=lambda _: rand.random()))
+
+def reverse(game):
+    '''
+    Reverses move preferences.
+
+    :param Game game: game to play
+    :return: None
+    '''
+    game.valid_moves = tuple(reversed(game.valid_moves))

@@ -30,5 +30,21 @@ class TestPlayers(unittest.TestCase):
         # this has a tiny, but nonzero, chance of failing
         self.assertNotEqual(valid_moves_before, valid_moves_after)
 
+    def test_reverse(self):
+        self._test_player_interface(dominoes.players.reverse)
+
+        g = dominoes.Game.new()
+        d1 = dominoes.Domino(1, 1)
+        d2 = dominoes.Domino(2, 2)
+        d3 = dominoes.Domino(3, 3)
+        vm1 = ((d1, True),)
+        vm2 = ((d1, True), (d2, False))
+        vm3 = ((d1, True), (d2, False), (d3, False))
+
+        for vm in [vm1, vm2, vm3]:
+            g.valid_moves = vm
+            dominoes.players.reverse(g)
+            self.assertEqual(g.valid_moves, tuple(reversed(vm)))
+
 if __name__ == '__main__':
     unittest.main()
