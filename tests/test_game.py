@@ -65,7 +65,7 @@ class TestGame(unittest.TestCase):
         p = 0
         w = True
         pts = 100
-        r = dominoes.game.Result(p, w, pts)
+        r = dominoes.Result(p, w, pts)
 
         self.assertEqual(r.player, p)
         self.assertEqual(r.won, True)
@@ -463,7 +463,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g1.hands[3]), 1)
         self.assertEqual(g1.moves, [(d1, True)])
         self.assertFalse(bool(g1.valid_moves))
-        self.assertEqual(g1.result, dominoes.game.Result(0, True, 21))
+        self.assertEqual(g1.result, dominoes.Result(0, True, 21))
         self.assertEqual(g1.turn, 0)
         self.assertTrue('Board: {}'.format(g1.board) in str1)
         self.assertTrue("Player 0's hand: {}".format(g1.hands[0]) in str1)
@@ -499,7 +499,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g2.hands[3]), 1)
         self.assertEqual(g2.moves, [(d5, True)])
         self.assertFalse(bool(g2.valid_moves))
-        self.assertEqual(g2.result, dominoes.game.Result(0, False, 20))
+        self.assertEqual(g2.result, dominoes.Result(0, False, 20))
         self.assertEqual(g2.turn, 0)
         self.assertTrue('Board: {}'.format(g2.board) in str2)
         self.assertTrue("Player 0's hand: {}".format(g2.hands[0]) in str2)
@@ -530,7 +530,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g3.hands[3]), 1)
         self.assertEqual(g3.moves, [(d5, True)])
         self.assertFalse(bool(g3.valid_moves))
-        self.assertEqual(g3.result, dominoes.game.Result(0, False, 0))
+        self.assertEqual(g3.result, dominoes.Result(0, False, 0))
         self.assertEqual(g3.turn, 0)
         self.assertTrue('Board: {}'.format(g3.board) in str3)
         self.assertTrue("Player 0's hand: {}".format(g3.hands[0]) in str3)
@@ -561,7 +561,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g4.hands[3]), 1)
         self.assertEqual(g4.moves, [(d5, True)])
         self.assertFalse(bool(g4.valid_moves))
-        self.assertEqual(g4.result, dominoes.game.Result(0, False, -20))
+        self.assertEqual(g4.result, dominoes.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
         self.assertTrue('Board: {}'.format(g4.board) in str4)
         self.assertTrue("Player 0's hand: {}".format(g4.hands[0]) in str4)
@@ -586,7 +586,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(len(g4.hands[3]), 1)
         self.assertEqual(g4.moves, [(d5, True)])
         self.assertFalse(bool(g4.valid_moves))
-        self.assertEqual(g4.result, dominoes.game.Result(0, False, -20))
+        self.assertEqual(g4.result, dominoes.Result(0, False, -20))
         self.assertEqual(g4.turn, 0)
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-import collections
 import copy
 import dominoes
 import random
@@ -51,21 +50,6 @@ def _remaining_points(hands):
         points.append(sum(d.first + d.second for d in hand))
 
     return points
-
-'''
-namedtuple to represent the result of a dominoes game.
-
-:var player: the last player to make a move
-:var won: True if the game ended due to an empty hand;
-          False if the game ended due to being stuck
-:var points: the absolute value of this quantity indicates
-             the amount of points earned by the winning team.
-             This quantity is positive if the last player to
-             make a move is part of the winning team, and
-             negative otherwise. If it is 0, it means the
-             game ended in a tie
-'''
-Result = collections.namedtuple('Result', ['player', 'won', 'points'])
 
 class Game:
     '''
@@ -298,7 +282,7 @@ class Game:
         # check if the game ended due to a player running out of dominoes
         if not self.hands[self.turn]:
             self.valid_moves = ()
-            self.result = Result(self.turn, True, sum(_remaining_points(self.hands)))
+            self.result = dominoes.Result(self.turn, True, sum(_remaining_points(self.hands)))
             return self.result
 
         # advance the turn to the next player with a valid move.
@@ -323,11 +307,11 @@ class Game:
                            player_points[1] + player_points[3]]
 
             if team_points[0] < team_points[1]:
-                self.result = Result(self.turn, False, pow(-1, self.turn) * sum(team_points))
+                self.result = dominoes.Result(self.turn, False, pow(-1, self.turn) * sum(team_points))
             elif team_points[0] == team_points[1]:
-                self.result = Result(self.turn, False, 0)
+                self.result = dominoes.Result(self.turn, False, 0)
             else:
-                self.result = Result(self.turn, False, pow(-1, self.turn + 1) * sum(team_points))
+                self.result = dominoes.Result(self.turn, False, pow(-1, self.turn + 1) * sum(team_points))
 
             return self.result
 
