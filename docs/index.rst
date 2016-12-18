@@ -182,7 +182,7 @@ Players
 -------
 
 .. automodule:: dominoes.players
-   :members: random
+   :members: random, reverse
 
 Result
 ------
