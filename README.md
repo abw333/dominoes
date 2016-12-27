@@ -11,7 +11,7 @@ Dominoes have been around for hundreds of years, and many variations of the game
 
 It is played with a double six set of dominoes. The 28 dominoes are shuffled and distributed evenly between the 4 players, who form 2 teams. The players then take turns placing dominoes in a single chain. The first player to play all their dominoes wins the points in the remaining hands for their team. If the game is stuck, the team with the fewest points remaining in its players' hands wins the points in all the remaining hands. For more details, see the [full documentation](https://dominoes.readthedocs.io/en/latest/#game).
 
-This library provides a	`Game` class to	represent a single dominoes game. It is built on top of `Domino`, `Hand`, and `Board` classes. Furthermore, you can string various games together and play up to a target score using the `Series` class.
+This library provides a	``Game`` class to represent a single dominoes game. It is built on top of ``Domino``, ``Hand``, and ``Board`` classes. Furthermore, you can string various games together and play up to a target score using the ``Series`` class.
 
 Additionally, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
 
