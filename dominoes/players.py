@@ -111,23 +111,26 @@ class omniscient:
     instance of this class must first be initialized before it can be
     called in the usual way.
 
-    :param int min_board_length: if the board length is less than this
-                                 parameter, this player has no effect.
-                                 This may be useful if performance is
-                                 important. The default is 0.
+    :param int start_move: move number at which to start applying this
+                           player. If this player is called before the
+                           specified move number, it will have no effect.
+                           Moves are 0-indexed. The default is 0.
     :param str name: the name of this player. The default is the name
                      of this class.
+    :var str __name__: the name of this player
     '''
-    def __init__(self, min_board_length=0, name=None):
-        self._min_board_length = min_board_length
+    def __init__(self, start_move=0, name=None):
+        self._start_move = start_move
         if name is None:
             self.__name__ = type(self).__name__
         else:
             self.__name__ = name
 
     def __call__(self, game):
-        if len(game.board) >= self._min_board_length and len(game.valid_moves) > 1:
-            game_copy = copy.deepcopy(game)
-            game_copy.skinny_board()
-            moves, _ = dominoes.search.alphabeta(game_copy)
-            game.valid_moves = (moves[0],) + tuple(m for m in game.valid_moves if m != moves[0])
+        if len(game.moves) < self._start_move or len(game.valid_moves) == 1:
+            continue
+
+        game_copy = copy.deepcopy(game)
+        game_copy.skinny_board()
+        moves, _ = dominoes.search.alphabeta(game_copy)
+        game.valid_moves = (moves[0],) + tuple(m for m in game.valid_moves if m != moves[0])
