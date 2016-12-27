@@ -2,12 +2,31 @@ import copy
 import operator
 
 def make_moves(game, player=lambda g: None):
+    '''
+    For each of a Game object's valid moves, yields
+    a tuple containing the move and the Game object
+    obtained by playing the move on the original Game
+    object. The original Game object will be modified.
+
+    :param Game game: the game to make moves on
+    :param callable player: a player to call on the
+                            game before making any
+                            moves, to determine the
+                            order in which they get
+                            made.
+    '''
+    # determine the order in which to make moves
     player(game)
+
+    # copy the original game before making all
+    # but the last move
     for move in game.valid_moves[:-1]:
         new_game = copy.deepcopy(game)
         new_game.make_move(*move)
         yield move, new_game
 
+    # don't copy the original game before making
+    # the last move
     move = game.valid_moves[-1]
     game.make_move(*move)
     yield move, game
