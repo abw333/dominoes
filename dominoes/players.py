@@ -127,10 +127,20 @@ class omniscient:
             self.__name__ = name
 
     def __call__(self, game):
+        # do not perform a potentially slow operation if it is
+        # too early in the game or if there is only one valid move
         if len(game.moves) < self._start_move or len(game.valid_moves) == 1:
-            continue
+            return
 
+        # so that we don't modify the original game
         game_copy = copy.deepcopy(game)
+
+        # for performance
         game_copy.skinny_board()
+
+        # perform an alphabeta search to find the optimal move sequence
         moves, _ = dominoes.search.alphabeta(game_copy)
+
+        # place the optimal move at the beginning of game.valid_moves,
+        # while leaving the rest of the ordering unchanged
         game.valid_moves = (moves[0],) + tuple(m for m in game.valid_moves if m != moves[0])
