@@ -4,7 +4,8 @@ to accept a Game instance as the sole argument. Players
 return None, and leave the input Game unmodified, except
 for its valid_moves attribute. This value may be replaced
 with another tuple containing the same moves, but sorted
-in decreasing order of preference.
+in decreasing order of preference. Players may be applied
+one after another for easy composability.
 
 .. code-block:: python
 
@@ -15,6 +16,17 @@ in decreasing order of preference.
     >>> dominoes.players.random(g)
     >>> g.valid_moves
     (([5|6], True), ([1|3], True), ([3|3], True), ([2|2], True), ([0|0], True), ([2|3], True), ([3|4], True))
+
+.. code-block:: python
+
+    def double(game):
+        \'\'\'
+        Prefers to play doubles.
+
+        :param Game game: game to play
+        :return: None
+        \'\'\'
+        game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
 '''
 import random as rand
 

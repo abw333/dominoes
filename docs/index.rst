@@ -1,5 +1,5 @@
-dominoes: a Python library for the game of dominoes
-===================================================
+dominoes: a Python library for the game of dominoes, with an accompanying CLI and AI players
+============================================================================================
 
 Dominoes have been around for hundreds of years, and many variations of the game have been played all over the world. This library is based on a popular variation commonly played in San Juan, Puerto Rico, and surrounding municipalities, such as Guaynabo.
 
@@ -7,7 +7,9 @@ It is played with a double six set of dominoes. The 28 dominoes are shuffled and
 
 This library provides a ``Game`` class to represent a single dominoes game. It is built on top of ``Domino``, ``Hand``, and ``Board`` classes. Furthermore, you can string various games together and play up to a target score using the ``Series`` class.
 
-Lastly, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+Additionally, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+
+The command line interface features various artificial intelligence players. For more information on how these work, see :ref:`players`.
 
 Install
 ^^^^^^^
@@ -149,6 +151,14 @@ Command Line Interface
     Team 0 wins!
     $
 
+.. _players:
+
+Artificial Intelligence Players
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: dominoes.players
+   :members: random, reverse, bota_gorda, double
+
 API Documentation
 ^^^^^^^^^^^^^^^^^
 
@@ -177,12 +187,6 @@ Hand
 
 .. autoclass:: dominoes.Hand
     :members: play, draw
-
-Players
--------
-
-.. automodule:: dominoes.players
-   :members: random, reverse
 
 Result
 ------

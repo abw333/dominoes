@@ -1,5 +1,5 @@
-dominoes: a Python library for the game of dominoes
-===================================================
+dominoes: a Python library for the game of dominoes, with an accompanying CLI and AI players
+============================================================================================
 
 [![Build Status](https://travis-ci.org/abw333/dominoes.svg?branch=master)](https://travis-ci.org/abw333/dominoes)
 [![Test Code Coverage](https://codecov.io/gh/abw333/dominoes/branch/master/graph/badge.svg)](https://codecov.io/gh/abw333/dominoes)
@@ -7,14 +7,15 @@ dominoes: a Python library for the game of dominoes
 [![Python version](https://img.shields.io/badge/python-3.6-brightgreen.svg)](https://www.python.org/)
 [![Documentation Status](https://readthedocs.org/projects/dominoes/badge/?version=latest)](https://dominoes.readthedocs.io/en/latest/?badge=latest)
 
-
 Dominoes have been around for hundreds of years, and many variations of the game have been played all over the world. This library is based on a popular variation commonly played in San Juan, Puerto Rico, and surrounding municipalities, such as Guaynabo.
 
 It is played with a double six set of dominoes. The 28 dominoes are shuffled and distributed evenly between the 4 players, who form 2 teams. The players then take turns placing dominoes in a single chain. The first player to play all their dominoes wins the points in the remaining hands for their team. If the game is stuck, the team with the fewest points remaining in its players' hands wins the points in all the remaining hands. For more details, see the [full documentation](https://dominoes.readthedocs.io/en/latest/#game).
 
 This library provides a	`Game` class to	represent a single dominoes game. It is built on top of `Domino`, `Hand`, and `Board` classes. Furthermore, you can string various games together and play up to a target score using the `Series` class.
 
-Lastly, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+Additionally, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+
+The command line interface features various artificial intelligence players. For more information on how these work, see the [full documentation](https://dominoes.readthedocs.io/en/latest/#players).
 
 ## Install
 
@@ -151,6 +152,31 @@ Team 0 has 107 points.
 Team 1 has 95 points.
 Team 0 wins!
 $
+```
+
+## Artificial Intelligence Players
+
+Players are Python objects with a __call__ method defined to accept a Game instance as the sole argument. Players return None, and leave the input Game unmodified, except for its valid_moves attribute. This value may be replaced with another tuple containing the same moves, but sorted in decreasing order of preference. Players may be applied one after another for easy composability.
+
+```
+>>> import dominoes
+>>> g = dominoes.Game.new()
+>>> g.valid_moves
+(([0|0], True), ([3|4], True), ([1|3], True), ([2|2], True), ([3|3], True), ([2|3], True), ([5|6], True))
+>>> dominoes.players.random(g)
+>>> g.valid_moves
+(([5|6], True), ([1|3], True), ([3|3], True), ([2|2], True), ([0|0], True), ([2|3], True), ([3|4], True))
+```
+
+```
+def double(game):
+    '''
+    Prefers to play doubles.
+
+    :param Game game: game to play
+    :return: None
+    '''
+    game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
 ```
 
 ## Questions, Comments, Ideas?
