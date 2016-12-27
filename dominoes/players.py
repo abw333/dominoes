@@ -114,11 +114,16 @@ class omniscient:
     :param int min_board_length: if the board length is less than this
                                  parameter, this player has no effect.
                                  This may be useful if performance is
-                                 important.
+                                 important. The default is 0.
+    :param str name: the name of this player. The default is the name
+                     of this class.
     '''
-    def __init__(self, min_board_length=0):
+    def __init__(self, min_board_length=0, name=None):
         self._min_board_length = min_board_length
-        self.__name__ = type(self).__name__
+        if name is None:
+            self.__name__ = type(self).__name__
+        else:
+            self.__name__ = name
 
     def __call__(self, game):
         if len(game.board) >= self._min_board_length and len(game.valid_moves) > 1:
