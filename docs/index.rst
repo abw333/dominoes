@@ -7,7 +7,9 @@ It is played with a double six set of dominoes. The 28 dominoes are shuffled and
 
 This library provides a ``Game`` class to represent a single dominoes game. It is built on top of ``Domino``, ``Hand``, and ``Board`` classes. Furthermore, you can string various games together and play up to a target score using the ``Series`` class.
 
-Lastly, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+Additionally, this package provides a command line interface to a dominoes series. Not only is it a great way to play a quick game, but it is also a comprehensive example of how to use this library's API.
+
+The command line interface features various artificial intelligence players. For more information on how these work, see :ref:`players`.
 
 Install
 ^^^^^^^
@@ -177,6 +179,8 @@ Hand
 
 .. autoclass:: dominoes.Hand
     :members: play, draw
+
+.. _players:
 
 Players
 -------
