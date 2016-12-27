@@ -157,7 +157,7 @@ Artificial Intelligence Players
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dominoes.players
-   :members: random, reverse
+   :members: random, reverse, bota_gorda, double
 
 API Documentation
 ^^^^^^^^^^^^^^^^^
