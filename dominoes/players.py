@@ -44,3 +44,12 @@ def bota_gorda(game):
     :return: None
     '''
     game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: -(m[0].first + m[0].second)))
+
+def double(game):
+    '''
+    Prefers to play doubles.
+
+    :param Game game: game to play
+    :return: None
+    '''
+    game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
