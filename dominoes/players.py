@@ -30,6 +30,15 @@ may be applied one after another for easy composability.
 '''
 import random as rand
 
+def identity(game):
+    '''
+    Leaves move preferences unchanged.
+
+    :param Game game: game to play
+    :return: None
+    '''
+    return
+
 def random(game):
     '''
     Prefers moves randomly.

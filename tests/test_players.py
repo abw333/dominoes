@@ -18,6 +18,30 @@ class TestPlayers(unittest.TestCase):
 
         self.assertEqual(g, g_copy)
 
+    def test_identity(self):
+        self._test_player_interface(dominoes.players.identity)
+
+        g = dominoes.Game.new()
+        d1 = dominoes.Domino(1, 1)
+        d2 = dominoes.Domino(2, 2)
+        d3 = dominoes.Domino(3, 3)
+
+        valid_moves_before = [
+            ((d1, True),),
+            ((d1, True), (d2, False)),
+            ((d1, True), (d2, False), (d3, False))
+        ]
+        valid_moves_after = [
+            ((d1, True),),
+            ((d1, True), (d2, False)),
+            ((d1, True), (d2, False), (d3, False))
+        ]
+
+        for vmb, vma in zip(valid_moves_before, valid_moves_after):
+            g.valid_moves = vmb
+            dominoes.players.identity(g)
+            self.assertEqual(g.valid_moves, vma)
+
     def test_random(self):
         self._test_player_interface(dominoes.players.random)
 
