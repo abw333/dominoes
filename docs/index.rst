@@ -151,6 +151,14 @@ Command Line Interface
     Team 0 wins!
     $
 
+.. _players:
+
+Artificial Intelligence Players
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: dominoes.players
+   :members: random, reverse
+
 API Documentation
 ^^^^^^^^^^^^^^^^^
 
@@ -179,14 +187,6 @@ Hand
 
 .. autoclass:: dominoes.Hand
     :members: play, draw
-
-.. _players:
-
-Players
--------
-
-.. automodule:: dominoes.players
-   :members: random, reverse
 
 Result
 ------
