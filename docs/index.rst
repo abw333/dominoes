@@ -1,5 +1,5 @@
-dominoes: a Python library for the game of dominoes
-===================================================
+dominoes: a Python library for the game of dominoes, with an accompanying CLI and AI players
+============================================================================================
 
 Dominoes have been around for hundreds of years, and many variations of the game have been played all over the world. This library is based on a popular variation commonly played in San Juan, Puerto Rico, and surrounding municipalities, such as Guaynabo.
 

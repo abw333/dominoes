@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='dominoes',
     version='5.0.0',
-    description='A Python library for the game of dominoes.',
+    description='A Python library for the game of dominoes, with an accompanying CLI and AI players.',
     url='https://github.com/abw333/dominoes',
     author='Alan Wagner',
     author_email='alanwagner333@gmail.com',
