@@ -28,6 +28,7 @@ may be applied one after another for easy composability.
         \'\'\'
         game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
 '''
+import copy
 import dominoes
 import random as rand
 
@@ -103,14 +104,13 @@ def double(game):
     game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
 
 class omniscient:
-    def __init__(self, min_board_length=0, player=lambda g: None):
+    def __init__(self, min_board_length=0):
         self.min_board_length = min_board_length
-        self.player = player
         self.__name__ = type(self).__name__
 
     def __call__(self, game):
         if len(game.board) >= self.min_board_length and len(game.valid_moves) > 1:
             game_copy = copy.deepcopy(game)
             game_copy.skinny_board()
-            moves, _ = dominoes.search.alphabeta(game_copy, player=self.player)
+            moves, _ = dominoes.search.alphabeta(game_copy)
             game.valid_moves = (moves[0],) + tuple(m for m in game.valid_moves if m != moves[0])
