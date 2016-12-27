@@ -80,5 +80,32 @@ class TestPlayers(unittest.TestCase):
             dominoes.players.bota_gorda(g)
             self.assertEqual(g.valid_moves, vma)
 
+    def test_double(self):
+        self._test_player_interface(dominoes.players.double)
+
+        g = dominoes.Game.new()
+        d1 = dominoes.Domino(1, 1)
+        d2 = dominoes.Domino(2, 2)
+        d3 = dominoes.Domino(1, 0)
+
+        valid_moves_before = [
+            ((d1, True),),
+            ((d1, True), (d1, False)),
+            ((d1, True), (d2, True)),
+            ((d1, True), (d3, True)),
+            ((d3, True), (d1, True))
+        ]
+        valid_moves_after = [
+            ((d1, True),),
+            ((d1, True), (d1, False)),
+            ((d1, True), (d2, True)),
+            ((d1, True), (d3, True)),
+            ((d1, True), (d3, True))
+        ]
+        for vmb, vma in zip(valid_moves_before, valid_moves_after):
+            g.valid_moves = vmb
+            dominoes.players.double(g)
+            self.assertEqual(g.valid_moves, vma)
+
 if __name__ == '__main__':
     unittest.main()
