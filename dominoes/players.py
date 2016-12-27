@@ -104,12 +104,24 @@ def double(game):
     game.valid_moves = tuple(sorted(game.valid_moves, key=lambda m: m[0].first != m[0].second))
 
 class omniscient:
+    '''
+    Prefers to play the move that maximizes this player's final score,
+    assuming that all other players play with the same strategy. This
+    player "cheats" by looking at all hands to make its decision. An
+    instance of this class must first be initialized before it can be
+    called in the usual way.
+
+    :param int min_board_length: if the board length is less than this
+                                 parameter, this player has no effect.
+                                 This may be useful if performance is
+                                 important.
+    '''
     def __init__(self, min_board_length=0):
-        self.min_board_length = min_board_length
+        self._min_board_length = min_board_length
         self.__name__ = type(self).__name__
 
     def __call__(self, game):
-        if len(game.board) >= self.min_board_length and len(game.valid_moves) > 1:
+        if len(game.board) >= self._min_board_length and len(game.valid_moves) > 1:
             game_copy = copy.deepcopy(game)
             game_copy.skinny_board()
             moves, _ = dominoes.search.alphabeta(game_copy)
