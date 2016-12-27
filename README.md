@@ -158,6 +158,8 @@ $
 
 Players are Python objects with a __call__ method defined to accept a Game instance as the sole argument. Players return None, and leave the input Game unmodified, except for its valid_moves attribute. This value may be replaced with another tuple containing the same moves, but sorted in decreasing order of preference. Players may be applied one after another for easy composability.
 
+For more information on how these work, see the [full documentation](https://dominoes.readthedocs.io/en/latest/#players).
+
 ```
 >>> import dominoes
 >>> g = dominoes.Game.new()
