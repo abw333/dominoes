@@ -4,7 +4,8 @@ to accept a Game instance as the sole argument. Players
 return None, and leave the input Game unmodified, except
 for its valid_moves attribute. This value may be replaced
 with another tuple containing the same moves, but sorted
-in decreasing order of preference.
+in decreasing order of preference. Players may be applied
+one after another for easy composability.
 
 .. code-block:: python
 
