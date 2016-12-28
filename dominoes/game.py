@@ -152,9 +152,9 @@ class Game:
         >>> g.make_move(*g.valid_moves[0])
         ...
         >>> g.make_move(*g.valid_moves[0])
-        Result(player=1, won=True, points=32)
+        Result(player=1, won=True, points=-32)
         >>> g.result
-        Result(player=1, won=True, points=32)
+        Result(player=1, won=True, points=-32)
         >>> g
         Board: [2|6][6|3][3|4][4|1][1|1][1|6][6|4][4|5][5|2][2|4][4|0][0|6][6|6][6|5][5|0][0|3][3|5][5|5][5|1][1|0]
         Player 0's hand: [2|3][1|3][1|2]
@@ -282,7 +282,9 @@ class Game:
         # check if the game ended due to a player running out of dominoes
         if not self.hands[self.turn]:
             self.valid_moves = ()
-            self.result = dominoes.Result(self.turn, True, sum(_remaining_points(self.hands)))
+            self.result = dominoes.Result(
+                self.turn, True, pow(-1, self.turn) * sum(_remaining_points(self.hands))
+            )
             return self.result
 
         # advance the turn to the next player with a valid move.
@@ -307,11 +309,11 @@ class Game:
                            player_points[1] + player_points[3]]
 
             if team_points[0] < team_points[1]:
-                self.result = dominoes.Result(self.turn, False, pow(-1, self.turn) * sum(team_points))
+                self.result = dominoes.Result(self.turn, False, sum(team_points))
             elif team_points[0] == team_points[1]:
                 self.result = dominoes.Result(self.turn, False, 0)
             else:
-                self.result = dominoes.Result(self.turn, False, pow(-1, self.turn + 1) * sum(team_points))
+                self.result = dominoes.Result(self.turn, False, -sum(team_points))
 
             return self.result
 
@@ -374,23 +376,23 @@ class Game:
             if self.result.won:
                 string_list.append(
                     'Player {} won and scored {} points!'.format(self.result.player,
-                                                                 self.result.points)
+                                                                 abs(self.result.points))
                 )
             else:
-                if self.result.points > 0:
-                    string_list.append(
-                        'Player {} stuck the game and scored {} points!'.format(self.result.player,
-                                                                                self.result.points)
-                    )
-                elif not self.result.points:
+                if not self.result.points:
                     string_list.append(
                         'Player {} stuck the game and tied (0 points)!'.format(self.result.player)
+                    )
+                elif pow(-1, self.result.player) * self.result.points > 0:
+                    string_list.append(
+                        'Player {} stuck the game and scored {} points!'.format(self.result.player,
+                                                                                abs(self.result.points))
                     )
                 else:
                     string_list.append(
                         'Player {} stuck the game and scored'
                         ' {} points for the opposing team!'.format(self.result.player,
-                                                                   -1 * self.result.points)
+                                                                   abs(self.result.points))
                     )
 
         return '\n'.join(string_list)
