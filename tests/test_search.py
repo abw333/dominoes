@@ -117,6 +117,28 @@ class TestSearch(unittest.TestCase):
         self.assertEqual(([(d2, False), (d9, False)], 111),
                          dominoes.search.alphabeta(g4))
 
+        class CounterPlayer:
+            def __init__(self):
+                self.count = 0
+
+            def __call__(self, _):
+                self.count += 1
+
+        h9 = dominoes.Hand([d1, d2])
+        h10 = dominoes.Hand([d2, d3])
+        h11 = dominoes.Hand([d9, d10, d3])
+        h12 = dominoes.Hand([d2])
+
+        g5 = dominoes.Game.new(starting_player=0)
+        g5.hands = [h9, h10, h11, h12]
+        g5.make_move(d1, True)
+
+        cp1 = CounterPlayer()
+
+        self.assertEqual(([(d2, False), (d9, False)], -12),
+                         dominoes.search.alphabeta(g5, player=cp1))
+
+        self.assertEqual(cp1.count, 4)
 
 if __name__ == '__main__':
     unittest.main()
