@@ -118,7 +118,8 @@ class omniscient:
     :param callable player: player used to sort moves to be explored
                             in the underlying call to alphabeta search.
                             Ordering better moves first may significantly
-                            reduce the amount of moves that need to be explored.
+                            reduce the amount of moves that need to be
+                            explored. The identity player is the default.
     :param str name: the name of this player. The default is the name
                      of this class.
     :var str __name__: the name of this player
