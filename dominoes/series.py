@@ -55,7 +55,7 @@ class Series:
         >>> s.games[0].make_move(*s.games[0].valid_moves[0])
         ...
         >>> s.games[0].make_move(*s.games[0].valid_moves[0])
-        Result(player=3, won=False, points=24)
+        Result(player=3, won=False, points=-24)
         >>> s.next_game()
         Board:
         Player 0's hand: [5|6][3|6][2|2][2|3][4|6][4|4][1|1]
@@ -112,20 +112,20 @@ class Series:
 
         # update each team's score with the points from the previous game
         if result.points >= 0:
-            self.scores[result.player % 2] += result.points
+            self.scores[0] += result.points
         else:
-            self.scores[(result.player + 1) % 2] -= result.points
+            self.scores[1] -= result.points
 
         # return None if the series is now over
         if self.is_over():
             return
 
         # determine the starting player for the next game
-        if result.won or result.points > 0:
+        if result.won or pow(-1, result.player) * result.points > 0:
             starting_player = result.player
         elif not result.points:
             starting_player = self.games[-1].starting_player
-        else: # result.points < 0
+        else: # pow(-1, result.player) * result.points < 0
             starting_player = (result.player + 1) % 4
 
         # start the next game

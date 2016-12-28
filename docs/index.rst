@@ -55,9 +55,9 @@ Usage Example
     >>> g.make_move(*g.valid_moves[0])
     ...
     >>> g.make_move(*g.valid_moves[0])
-    Result(player=1, won=True, points=32)
+    Result(player=1, won=True, points=-32)
     >>> g.result
-    Result(player=1, won=True, points=32)
+    Result(player=1, won=True, points=-32)
     >>> g
     Board: [2|6][6|3][3|4][4|1][1|1][1|6][6|4][4|5][5|2][2|4][4|0][0|6][6|6][6|5][5|0][0|3][3|5][5|5][5|1][1|0]
     Player 0's hand: [2|3][1|3][1|2]
