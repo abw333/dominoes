@@ -17,6 +17,10 @@ def make_moves(game, player=dominoes.players.identity):
                             made. The identity
                             player is the default.
     '''
+    # game is over - do not yield anything
+    if game.result is not None:
+        return
+
     # determine the order in which to make moves
     player(game)
 
