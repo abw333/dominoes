@@ -61,16 +61,6 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(dominoes.game._remaining_points(h2), [0, 1, 13])
 
-    def test_result(self):
-        p = 0
-        w = True
-        pts = 100
-        r = dominoes.Result(p, w, pts)
-
-        self.assertEqual(r.player, p)
-        self.assertEqual(r.won, True)
-        self.assertEqual(r.points, pts)
-
     def test_init(self):
         g1 = dominoes.Game.new()
 
