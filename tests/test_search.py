@@ -57,5 +57,16 @@ class TestSearch(unittest.TestCase):
             self.assertEqual(g.starting_player, 0)
             self.assertIsNone(g.result)
 
+    def test_alphabeta(self):
+        g1 = dominoes.Game.new()
+        g1.result = dominoes.Result(0, True, 10)
+
+        self.assertEqual(([], 10), dominoes.search.alphabeta(g1))
+
+        g2 = dominoes.Game.new()
+        g2.result = dominoes.Result(1, True, -10)
+
+        self.assertEqual(([], -10), dominoes.search.alphabeta(g2))
+
 if __name__ == '__main__':
     unittest.main()
