@@ -115,12 +115,17 @@ class omniscient:
                            player. If this player is called before the
                            specified move number, it will have no effect.
                            Moves are 0-indexed. The default is 0.
+    :param callable player: player used to sort moves to be explored
+                            in the underlying call to alphabeta search.
+                            Ordering better moves first may significantly
+                            reduce the amount of moves that need to be explored.
     :param str name: the name of this player. The default is the name
                      of this class.
     :var str __name__: the name of this player
     '''
-    def __init__(self, start_move=0, name=None):
+    def __init__(self, start_move=0, player=identity, name=None):
         self._start_move = start_move
+        self._player = player
         if name is None:
             self.__name__ = type(self).__name__
         else:
@@ -139,7 +144,7 @@ class omniscient:
         game_copy.skinny_board()
 
         # perform an alphabeta search to find the optimal move sequence
-        moves, _ = dominoes.search.alphabeta(game_copy)
+        moves, _ = dominoes.search.alphabeta(game_copy, player=self._player)
 
         # place the optimal move at the beginning of game.valid_moves,
         # while leaving the rest of the ordering unchanged
