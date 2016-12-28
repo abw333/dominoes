@@ -94,12 +94,29 @@ class TestSearch(unittest.TestCase):
         h3 = dominoes.Hand(h3)
         h4 = dominoes.Hand([d2])
 
-        g3 = dominoes.Game.new()
+        g3 = dominoes.Game.new(starting_player=0)
         g3.hands = [h1, h2, h3, h4]
         g3.make_move(d1, True)
 
         self.assertEqual(([(d2, False), (d9, False)], -111),
                          dominoes.search.alphabeta(g3))
+
+        h5 = dominoes.Hand([d2])
+        h6 = dominoes.Hand([d1, d2])
+        h7 = [d2, d3, d4, d5, d6, d7, d8]
+        random.shuffle(h7)
+        h7 = dominoes.Hand(h7)
+        h8 = [d9, d10, d11, d12, d13, d14, d15]
+        random.shuffle(h8)
+        h8 = dominoes.Hand(h8)
+
+        g4 = dominoes.Game.new(starting_player=1)
+        g4.hands = [h5, h6, h7, h8]
+        g4.make_move(d1, True)
+
+        self.assertEqual(([(d2, False), (d9, False)], 111),
+                         dominoes.search.alphabeta(g4))
+
 
 if __name__ == '__main__':
     unittest.main()
