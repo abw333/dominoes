@@ -33,7 +33,20 @@ def make_moves(game, player=dominoes.players.identity):
     game.make_move(*move)
     yield move, game
 
-def alphabeta(game, alpha_beta=(-float('inf'), float('inf')), player=lambda g: None):
+def alphabeta(game, alpha_beta=(-float('inf'), float('inf')),
+              player=dominoes.players.identity):
+    '''
+    Runs minimax search with alpha-beta pruning on the provided game.
+
+    :param Game game: game to search
+    :param tuple alpha_beta: a tuple of two floats that indicate
+                             the initial values of alpha and beta,
+                             respectively. The default is (-inf, inf).
+    :param callable player: player used to sort moves to be explored.
+                            Ordering better moves first may significantly
+                            reduce the amount of moves that need to be
+                            explored. The identity player is the default.
+    '''
     if game.result is not None:
         return [], pow(-1, game.result.player) * game.result.points
 
