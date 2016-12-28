@@ -1,5 +1,6 @@
 import copy
 import dominoes
+import random
 import unittest
 
 class TestSearch(unittest.TestCase):
@@ -67,6 +68,38 @@ class TestSearch(unittest.TestCase):
         g2.result = dominoes.Result(1, True, -10)
 
         self.assertEqual(([], -10), dominoes.search.alphabeta(g2))
+
+        d1 = dominoes.Domino(7, 0)
+        d2 = dominoes.Domino(0, 0)
+        d3 = dominoes.Domino(0, 1)
+        d4 = dominoes.Domino(0, 2)
+        d5 = dominoes.Domino(0, 3)
+        d6 = dominoes.Domino(0, 4)
+        d7 = dominoes.Domino(0, 5)
+        d8 = dominoes.Domino(0, 6)
+        d9 = dominoes.Domino(0, 8)
+        d10 = dominoes.Domino(1, 9)
+        d11 = dominoes.Domino(2, 10)
+        d12 = dominoes.Domino(3, 11)
+        d13 = dominoes.Domino(4, 12)
+        d14 = dominoes.Domino(5, 13)
+        d15 = dominoes.Domino(6, 14)
+
+        h1 = dominoes.Hand([d1, d2])
+        h2 = [d2, d3, d4, d5, d6, d7, d8]
+        random.shuffle(h2)
+        h2 = dominoes.Hand(h2)
+        h3 = [d9, d10, d11, d12, d13, d14, d15]
+        random.shuffle(h3)
+        h3 = dominoes.Hand(h3)
+        h4 = dominoes.Hand([d2])
+
+        g3 = dominoes.Game.new()
+        g3.hands = [h1, h2, h3, h4]
+        g3.make_move(d1, True)
+
+        self.assertEqual(([(d2, False), (d9, False)], -111),
+                         dominoes.search.alphabeta(g3))
 
 if __name__ == '__main__':
     unittest.main()
