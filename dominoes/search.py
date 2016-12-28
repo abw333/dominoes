@@ -1,7 +1,8 @@
 import copy
+import dominoes
 import operator
 
-def make_moves(game, player=lambda g: None):
+def make_moves(game, player=dominoes.players.identity):
     '''
     For each of a Game object's valid moves, yields
     a tuple containing the move and the Game object
@@ -13,7 +14,8 @@ def make_moves(game, player=lambda g: None):
                             game before making any
                             moves, to determine the
                             order in which they get
-                            made.
+                            made. The identity
+                            player is the default.
     '''
     # determine the order in which to make moves
     player(game)
