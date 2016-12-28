@@ -47,18 +47,22 @@ def alphabeta(game, alpha_beta=(-float('inf'), float('inf')),
                             reduce the amount of moves that need to be
                             explored. The identity player is the default.
     '''
+    # base case - game is over
     if game.result is not None:
-        return [], pow(-1, game.result.player) * game.result.points
+        return [], game.result.points
 
     if game.turn % 2:
+        # minimizing player
         best_value = float('inf')
         op = operator.lt
         update = lambda ab, v: (ab[0], min(ab[1], v))
     else:
+        # maximizing player
         best_value = -float('inf')
         op = operator.gt
         update = lambda ab, v: (max(ab[0], v), ab[1])
 
+    # recursive case - game is not over
     for move, new_game in make_moves(game, player):
         moves, value = alphabeta(new_game, alpha_beta, player)
         if op(value, best_value):
@@ -67,5 +71,7 @@ def alphabeta(game, alpha_beta=(-float('inf'), float('inf')),
             best_moves.insert(0, move)
             alpha_beta = update(alpha_beta, best_value)
             if alpha_beta[1] <= alpha_beta[0]:
+                # alpha-beta cutoff
                 break
+
     return best_moves, best_value
