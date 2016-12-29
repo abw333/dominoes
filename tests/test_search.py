@@ -185,6 +185,5 @@ class TestSearch(unittest.TestCase):
 
         self.assertEqual(cp4.count, 4)
 
-
 if __name__ == '__main__':
     unittest.main()
