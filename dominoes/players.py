@@ -39,6 +39,32 @@ def identity(game):
     '''
     return
 
+class counter:
+    '''
+    Prefers moves in the same order as the passed-in player. Keeps
+    a counter of the amount of times that this player gets called.
+    An instance of this class must first be initialized before it
+    can be called in the usual way.
+
+    :param callable player: player that determines the move preferences of
+                            this player. The identity player is the default.
+    :param str name: the name of this player. The default is the name
+                     of this class.
+    :var int count: the amount of times that this player has been called.
+    :var str __name__: the name of this player.
+    '''
+    def __init__(self, player=identity, name=None):
+        self.count = 0
+        self._player = player
+        if name is None:
+            self.__name__ = type(self).__name__
+        else:
+            self.__name__ = name
+
+    def __call__(self, game):
+        self.count += 1
+        return self._player(game)
+
 def random(game):
     '''
     Prefers moves randomly.

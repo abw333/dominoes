@@ -42,6 +42,29 @@ class TestPlayers(unittest.TestCase):
             dominoes.players.identity(g)
             self.assertEqual(g.valid_moves, vma)
 
+    def test_counter(self):
+        self._test_player_interface(dominoes.players.counter())
+
+        self.assertEqual(dominoes.players.counter(name='test').__name__, 'test')
+
+        bgc = dominoes.players.counter(dominoes.players.bota_gorda)
+
+        self.assertEqual(bgc.__name__, 'counter')
+        self.assertEqual(bgc.count, 0)
+
+        # there is a small chance that the valid moves are already
+        # sorted in bota gorda order, in which case this won't
+        # test anything interesting. this test suite gets run
+        # often enough that the danger is negligible.
+        g = dominoes.Game.new()
+        g_copy = copy.deepcopy(g)
+
+        bgc(g)
+        dominoes.players.bota_gorda(g_copy)
+
+        self.assertEqual(g, g_copy)
+        self.assertEqual(bgc.count, 1)
+
     def test_random(self):
         self._test_player_interface(dominoes.players.random)
 
