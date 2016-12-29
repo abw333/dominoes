@@ -161,5 +161,11 @@ class TestPlayers(unittest.TestCase):
         # game cannot have ended after 6 fixed moves.
         self._test_player_interface(dominoes.players.omniscient(), 6)
 
+        self.assertEqual(dominoes.players.omniscient(name='test').__name__, 'test')
+
+        op = dominoes.players.omniscient()
+
+        self.assertEqual(op.__name__, 'omniscient')
+
 if __name__ == '__main__':
     unittest.main()
