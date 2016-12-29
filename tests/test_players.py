@@ -3,8 +3,11 @@ import dominoes
 import unittest
 
 class TestPlayers(unittest.TestCase):
-    def _test_player_interface(self, player):
+    def _test_player_interface(self, player, fixed_moves=0):
         g = dominoes.Game.new()
+
+        for _ in range(fixed_moves):
+            g.make_move(*g.valid_moves[0])
 
         g_copy = copy.deepcopy(g)
 
@@ -153,6 +156,64 @@ class TestPlayers(unittest.TestCase):
             g.valid_moves = vmb
             dominoes.players.double(g)
             self.assertEqual(g.valid_moves, vma)
+
+    def test_omniscient(self):
+        # game cannot have ended after 6 fixed moves.
+        self._test_player_interface(dominoes.players.omniscient(), 6)
+
+        self.assertEqual(dominoes.players.omniscient(name='test').__name__, 'test')
+        self.assertEqual(dominoes.players.omniscient().__name__, 'omniscient')
+
+        cp1 = dominoes.players.counter()
+        op1 = dominoes.players.omniscient(start_move=1, player=cp1)
+
+        g1 = dominoes.Game.new()
+        op1(g1)
+
+        self.assertEqual(cp1.count, 0)
+
+        # due to passes, the amount of total moves will be greater
+        # than or equal to 6 after playing 6 fixed moves. therefore,
+        # the following will not test the boundary condition every time.
+        # this test suite gets run often enough that the danger is negligible.
+        cp2 = dominoes.players.counter()
+        op2 = dominoes.players.omniscient(start_move=6, player=cp2)
+
+        while True:
+            g2 = dominoes.Game.new()
+            for _ in range(6):
+                g2.make_move(*g2.valid_moves[0])
+
+            # the omniscient player is smart enough not
+            # to run when there is only one valid move.
+            if len(g2.valid_moves) > 1:
+                break
+        op2(g2)
+
+        self.assertNotEqual(cp2.count, 0)
+
+        d1 = dominoes.Domino(7, 0)
+        d2 = dominoes.Domino(0, 0)
+        d3 = dominoes.Domino(0, 1)
+        d4 = dominoes.Domino(0, 8)
+        d5 = dominoes.Domino(1, 9)
+
+        h1 = dominoes.Hand([d1, d2])
+        h2 = dominoes.Hand([d3, d2])
+        h3 = dominoes.Hand([d3, d4, d5])
+        h4 = dominoes.Hand([d2])
+
+        g3 = dominoes.Game.new(starting_player=0)
+        g3.hands = [h1, h2, h3, h4]
+        g3.make_move(d1, True)
+
+        op3 = dominoes.players.omniscient()
+
+        self.assertEqual(g3.valid_moves, ((d3, False), (d2, False)))
+
+        op3(g3)
+
+        self.assertEqual(g3.valid_moves, ((d2, False), (d3, False)))
 
 if __name__ == '__main__':
     unittest.main()

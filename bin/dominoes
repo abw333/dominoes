@@ -6,7 +6,8 @@ import subprocess
 # possible strategies for each of the players
 PLAYER_SETTINGS = [
     ('Human', None),
-    ('AI: random', dominoes.players.random)
+    ('AI: random', dominoes.players.random),
+    ('AI: omniscient', dominoes.players.omniscient())
 ]
 
 def validated_input(prompt, validate_and_transform, error_message):
