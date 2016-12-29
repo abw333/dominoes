@@ -162,10 +162,28 @@ class TestPlayers(unittest.TestCase):
         self._test_player_interface(dominoes.players.omniscient(), 6)
 
         self.assertEqual(dominoes.players.omniscient(name='test').__name__, 'test')
+        self.assertEqual(dominoes.players.omniscient().__name__, 'omniscient')
 
-        op = dominoes.players.omniscient()
+        cp = dominoes.players.counter()
+        op = dominoes.players.omniscient(start_move=1, player=cp)
 
-        self.assertEqual(op.__name__, 'omniscient')
+        g1 = dominoes.Game.new()
+        op(g1)
+
+        self.assertEqual(cp.count, 0)
+
+        while True:
+            g2 = dominoes.Game.new()
+            for _ in range(6):
+                g2.make_move(*g2.valid_moves[0])
+
+            # the omniscient player is smart enough not
+            # to run when there is only one valid move.
+            if len(g2.valid_moves) > 1:
+                break
+        op(g2)
+
+        self.assertNotEqual(cp.count, 0)
 
 if __name__ == '__main__':
     unittest.main()
