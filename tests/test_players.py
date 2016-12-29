@@ -192,5 +192,28 @@ class TestPlayers(unittest.TestCase):
 
         self.assertNotEqual(cp2.count, 0)
 
+        d1 = dominoes.Domino(7, 0)
+        d2 = dominoes.Domino(0, 0)
+        d3 = dominoes.Domino(0, 1)
+        d4 = dominoes.Domino(0, 8)
+        d5 = dominoes.Domino(1, 9)
+
+        h1 = dominoes.Hand([d1, d2])
+        h2 = dominoes.Hand([d3, d2])
+        h3 = dominoes.Hand([d3, d4, d5])
+        h4 = dominoes.Hand([d2])
+
+        g3 = dominoes.Game.new(starting_player=0)
+        g3.hands = [h1, h2, h3, h4]
+        g3.make_move(d1, True)
+
+        op3 = dominoes.players.omniscient()
+
+        self.assertEqual(g3.valid_moves, ((d3, False), (d2, False)))
+
+        op3(g3)
+
+        self.assertEqual(g3.valid_moves, ((d2, False), (d3, False)))
+
 if __name__ == '__main__':
     unittest.main()
