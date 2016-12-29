@@ -30,6 +30,15 @@ may be applied one after another for easy composability.
 '''
 import random as rand
 
+def identity(game):
+    '''
+    Leaves move preferences unchanged.
+
+    :param Game game: game to play
+    :return: None
+    '''
+    return
+
 class counter:
     '''
     Prefers moves in the same order as the passed-in player. Keeps
@@ -55,15 +64,6 @@ class counter:
     def __call__(self, game):
         self.count += 1
         return self._player(game)
-
-def identity(game):
-    '''
-    Leaves move preferences unchanged.
-
-    :param Game game: game to play
-    :return: None
-    '''
-    return
 
 def random(game):
     '''
