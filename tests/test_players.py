@@ -3,8 +3,11 @@ import dominoes
 import unittest
 
 class TestPlayers(unittest.TestCase):
-    def _test_player_interface(self, player):
+    def _test_player_interface(self, player, fixed_moves=0):
         g = dominoes.Game.new()
+
+        for _ in range(fixed_moves):
+            g.make_move(*g.valid_moves[0])
 
         g_copy = copy.deepcopy(g)
 
