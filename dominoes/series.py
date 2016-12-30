@@ -126,7 +126,7 @@ class Series:
         elif not result.points:
             starting_player = self.games[-1].starting_player
         else: # pow(-1, result.player) * result.points < 0
-            starting_player = (result.player + 1) % 4
+            starting_player = dominoes.game.next_player(result.player)
 
         # start the next game
         self.games.append(dominoes.Game.new(starting_player=starting_player))

@@ -61,6 +61,12 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(dominoes.game._remaining_points(h2), [0, 1, 13])
 
+    def test_next_player(self):
+        self.assertEqual(dominoes.game.next_player(0), 1)
+        self.assertEqual(dominoes.game.next_player(1), 2)
+        self.assertEqual(dominoes.game.next_player(2), 3)
+        self.assertEqual(dominoes.game.next_player(3), 0)
+
     def test_init(self):
         g1 = dominoes.Game.new()
 

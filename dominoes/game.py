@@ -51,6 +51,16 @@ def _remaining_points(hands):
 
     return points
 
+def next_player(player):
+    '''
+    Returns the player that plays after the specified player.
+
+    :param int player: player for which to calculate the
+                       next player. Must be 0, 1, 2, or 3.
+    :return: the next player
+    '''
+    return (player + 1) % 4
+
 class Game:
     '''
     Python class for objects that represent a dominoes game.
@@ -290,11 +300,10 @@ class Game:
         # advance the turn to the next player with a valid move.
         # if no player has a valid move, the game is stuck. also,
         # record all the passes.
-        num_players = len(self.hands)
         passes = []
         stuck = True
-        for _ in range(num_players):
-            self.turn = (self.turn + 1) % num_players
+        for _ in self.hands:
+            self.turn = next_player(self.turn)
             self._update_valid_moves()
             if self.valid_moves:
                 self.moves.extend(passes)
