@@ -20,12 +20,12 @@ class SkinnyBoard:
         >>> b = dominoes.SkinnyBoard()
         >>> repr(b)
         ''
-        >>> b.add_left(d1)
+        >>> b.add(d1, True)
         >>> b
         [1|2]
-        >>> b.add_right(d2)
+        >>> b.add(d2, False)
         EndsMismatchException: [1|3] cannot be added to the right of the board - values do not match!
-        >>> b.add_left(d2)
+        >>> b.add(d2, True)
         >>> b
         [3|?][?|2]
         >>> b.left_end()
@@ -77,7 +77,7 @@ class SkinnyBoard:
 
         return self._right
 
-    def add_left(self, d):
+    def _add_left(self, d):
         '''
         Adds the provided domino to the left end of the board.
 
@@ -100,7 +100,7 @@ class SkinnyBoard:
 
         self._length += 1
 
-    def add_right(self, d):
+    def _add_right(self, d):
         '''
         Adds the provided domino to the right end of the board.
 
@@ -122,6 +122,21 @@ class SkinnyBoard:
             )
 
         self._length += 1
+
+    def add(self, d, left):
+        '''
+        Adds the provided domino to the specifed end of the board.
+
+        :param Domino d: domino to add
+        :param bool left: end of the board to which to add the
+                          domino (True for left, False for right)
+        :return: None
+        :raises EndsMismatchException: if the values do not match
+        '''
+        if left:
+            self._add_left(d)
+        else:
+            self._add_right(d)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

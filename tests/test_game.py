@@ -282,7 +282,7 @@ class TestGame(unittest.TestCase):
         p = 3
         g = dominoes.Game.new(starting_player=p)
 
-        g.board.add_left(d1)
+        g.board.add(d1, True)
 
         h = dominoes.Hand([d1, d2])
         g.hands[p] = h
@@ -295,7 +295,7 @@ class TestGame(unittest.TestCase):
         self.assertTrue((d1, False) in g.valid_moves)
         self.assertTrue((d2, False) in g.valid_moves)
 
-        g.board.add_left(d1)
+        g.board.add(d1, True)
 
         g._update_valid_moves()
 
@@ -308,7 +308,7 @@ class TestGame(unittest.TestCase):
         g1 = dominoes.Game.new()
 
         d1 = dominoes.Domino(7, 7)
-        g1.board.add_left(d1)
+        g1.board.add(d1, True)
 
         d2 = dominoes.Domino(7, 6)
         p1 = g1.turn

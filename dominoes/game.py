@@ -276,10 +276,7 @@ class Game:
         i = self.hands[self.turn].play(d)
 
         try:
-            if left:
-                self.board.add_left(d)
-            else:
-                self.board.add_right(d)
+            self.board.add(d, left)
         except dominoes.EndsMismatchException as error:
             # return the domino to the hand if it cannot be placed on the board
             self.hands[self.turn].draw(d, i)

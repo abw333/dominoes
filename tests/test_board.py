@@ -28,27 +28,27 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(b1, b2)
         self.assertNotEqual(b1, pb)
 
-        b1.add_left(d1)
+        b1.add(d1, True)
 
         self.assertNotEqual(b1, b2)
 
-        b2.add_left(d1)
+        b2.add(d1, True)
 
         self.assertEqual(b1, b2)
 
-        b1.add_left(d2)
+        b1.add(d2, True)
 
         self.assertNotEqual(b1, b2)
 
-        b2.add_left(d2)
+        b2.add(d2, True)
 
         self.assertEqual(b1, b2)
 
-        b1.add_right(d3)
+        b1.add(d3, False)
 
         self.assertNotEqual(b1, b2)
 
-        b2.add_right(d3)
+        b2.add(d3, False)
 
         self.assertEqual(b1, b2)
 
@@ -60,7 +60,7 @@ class TestBoard(unittest.TestCase):
         d3 = dominoes.Domino(2, 3)
         d4 = dominoes.Domino(4, 4)
 
-        b.add_left(d1)
+        b.add(d1, True)
 
         self.assertEqual(len(b), 1)
         self.assertEqual(b.left_end(), 1)
@@ -68,7 +68,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[1|2]')
         self.assertEqual(repr(b), '[1|2]')
 
-        b.add_left(d2)
+        b.add(d2, True)
 
         self.assertEqual(len(b), 2)
         self.assertEqual(b.left_end(), 3)
@@ -76,7 +76,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[3|1][1|2]')
         self.assertEqual(repr(b), '[3|1][1|2]')
 
-        b.add_left(d3)
+        b.add(d3, True)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -84,7 +84,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|3][3|1][1|2]')
         self.assertEqual(repr(b), '[2|3][3|1][1|2]')
 
-        self.assertRaises(dominoes.EndsMismatchException, b.add_left, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add, d4, True)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -100,7 +100,7 @@ class TestBoard(unittest.TestCase):
         d3 = dominoes.Domino(3, 2)
         d4 = dominoes.Domino(4, 4)
 
-        b.add_right(d1)
+        b.add(d1, False)
 
         self.assertEqual(len(b), 1)
         self.assertEqual(b.left_end(), 2)
@@ -108,7 +108,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1]')
         self.assertEqual(repr(b), '[2|1]')
 
-        b.add_right(d2)
+        b.add(d2, False)
 
         self.assertEqual(len(b), 2)
         self.assertEqual(b.left_end(), 2)
@@ -116,7 +116,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1][1|3]')
         self.assertEqual(repr(b), '[2|1][1|3]')
 
-        b.add_right(d3)
+        b.add(d3, False)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -124,7 +124,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1][1|3][3|2]')
         self.assertEqual(repr(b), '[2|1][1|3][3|2]')
 
-        self.assertRaises(dominoes.EndsMismatchException, b.add_right, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add, d4, False)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
