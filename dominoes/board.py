@@ -102,7 +102,7 @@ class Board:
         Adds the provided domino to the specifed end of the board.
 
         :param Domino d: domino to add
-        :param bool left: end of the board on which to add the
+        :param bool left: end of the board to which to add the
                           domino (True for left, False for right)
         :return: None
         :raises EndsMismatchException: if the values do not match
