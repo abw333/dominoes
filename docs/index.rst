@@ -166,7 +166,7 @@ Board
 -----
 
 .. autoclass:: dominoes.Board
-    :members: left_end, right_end, add_left, add_right
+    :members: left_end, right_end, add
 
 Domino
 ------
@@ -203,7 +203,7 @@ SkinnyBoard
 -----------
 
 .. autoclass:: dominoes.SkinnyBoard
-    :members: from_board, left_end, right_end, add_left, add_right
+    :members: from_board, left_end, right_end, add
 
 Questions, Comments, Ideas?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

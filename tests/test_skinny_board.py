@@ -18,7 +18,7 @@ class TestSkinnyBoard(unittest.TestCase):
 
         d = dominoes.Domino(1, 2)
 
-        b.add_left(d)
+        b.add(d, True)
 
         sb2 = dominoes.SkinnyBoard.from_board(b)
 
@@ -63,7 +63,7 @@ class TestSkinnyBoard(unittest.TestCase):
         d3 = dominoes.Domino(2, 3)
         d4 = dominoes.Domino(4, 4)
 
-        b.add_left(d1)
+        b.add(d1, True)
 
         self.assertEqual(len(b), 1)
         self.assertEqual(b.left_end(), 1)
@@ -71,7 +71,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[1|2]')
         self.assertEqual(repr(b), '[1|2]')
 
-        b.add_left(d2)
+        b.add(d2, True)
 
         self.assertEqual(len(b), 2)
         self.assertEqual(b.left_end(), 3)
@@ -79,7 +79,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[3|?][?|2]')
         self.assertEqual(repr(b), '[3|?][?|2]')
 
-        b.add_left(d3)
+        b.add(d3, True)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -87,7 +87,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|?][?|?][?|2]')
         self.assertEqual(repr(b), '[2|?][?|?][?|2]')
 
-        self.assertRaises(dominoes.EndsMismatchException, b.add_left, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add, d4, True)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -103,7 +103,7 @@ class TestSkinnyBoard(unittest.TestCase):
         d3 = dominoes.Domino(3, 2)
         d4 = dominoes.Domino(4, 4)
 
-        b.add_right(d1)
+        b.add(d1, False)
 
         self.assertEqual(len(b), 1)
         self.assertEqual(b.left_end(), 2)
@@ -111,7 +111,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|1]')
         self.assertEqual(repr(b), '[2|1]')
 
-        b.add_right(d2)
+        b.add(d2, False)
 
         self.assertEqual(len(b), 2)
         self.assertEqual(b.left_end(), 2)
@@ -119,7 +119,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|?][?|3]')
         self.assertEqual(repr(b), '[2|?][?|3]')
 
-        b.add_right(d3)
+        b.add(d3, False)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)
@@ -127,7 +127,7 @@ class TestSkinnyBoard(unittest.TestCase):
         self.assertEqual(str(b), '[2|?][?|?][?|2]')
         self.assertEqual(repr(b), '[2|?][?|?][?|2]')
 
-        self.assertRaises(dominoes.EndsMismatchException, b.add_right, d4)
+        self.assertRaises(dominoes.EndsMismatchException, b.add, d4, False)
 
         self.assertEqual(len(b), 3)
         self.assertEqual(b.left_end(), 2)

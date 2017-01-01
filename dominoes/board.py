@@ -17,12 +17,12 @@ class Board:
         >>> b = dominoes.Board()
         >>> repr(b)
         ''
-        >>> b.add_left(d1)
+        >>> b.add(d1, True)
         >>> b
         [1|2]
-        >>> b.add_right(d2)
+        >>> b.add(d2, False)
         EndsMismatchException: [1|3] cannot be added to the right of the board - values do not match!
-        >>> b.add_left(d2)
+        >>> b.add(d2, True)
         >>> b
         [3|1][1|2]
         >>> b.left_end()
@@ -57,7 +57,7 @@ class Board:
             raise dominoes.EmptyBoardException('Cannot retrieve the right end of'
                                                ' the board because it is empty!')
 
-    def add_left(self, d):
+    def _add_left(self, d):
         '''
         Adds the provided domino to the left end of the board.
 
@@ -77,7 +77,7 @@ class Board:
                 ' the board - values do not match!'.format(d)
             )
 
-    def add_right(self, d):
+    def _add_right(self, d):
         '''
         Adds the provided domino to the right end of the board.
 
@@ -96,6 +96,21 @@ class Board:
                 '{} cannot be added to the right of'
                 ' the board - values do not match!'.format(d)
             )
+
+    def add(self, d, left):
+        '''
+        Adds the provided domino to the specifed end of the board.
+
+        :param Domino d: domino to add
+        :param bool left: end of the board on which to play the
+                          domino (True for left, False for right)
+        :return: None
+        :raises EndsMismatchException: if the values do not match
+        '''
+        if left:
+            self._add_left(d)
+        else:
+            self._add_right(d)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
