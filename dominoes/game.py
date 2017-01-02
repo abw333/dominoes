@@ -334,14 +334,18 @@ class Game:
         '''
         missing = [set() for _ in self.hands]
 
+        # replay the game from the beginning
         board = dominoes.SkinnyBoard()
         player = self.starting_player
         for move in self.moves:
             if move is None:
+                # pass - update the missing values
                 missing[player].update([board.left_end(), board.right_end()])
             else:
+                # not a pass - update the board
                 board.add(*move)
 
+            # move on to the next player
             player = next_player(player)
 
         return missing
