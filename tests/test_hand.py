@@ -207,5 +207,16 @@ class TestHand(unittest.TestCase):
         self.assertTrue(d3 in h)
         self.assertTrue(d4 in h)
 
+    def test_has_value(self):
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(3, 3)
+
+        h = dominoes.Hand([d1, d2])
+
+        self.assertFalse(h.has_value(0))
+        self.assertTrue(h.has_value(1))
+        self.assertTrue(h.has_value(2))
+        self.assertTrue(h.has_value(3))
+
 if __name__ == '__main__':
     unittest.main()
