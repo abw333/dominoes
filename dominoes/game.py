@@ -323,6 +323,21 @@ class Game:
 
             return self.result
 
+    def missing_values(self):
+        missing = [set() for _ in self.hands]
+
+        board = dominoes.SkinnyBoard()
+        player = self.starting_player
+        for move in self.moves:
+            if move is None:
+                missing[player].update([board.left_end(), board.right_end()])
+            else:
+                board.add(*move)
+
+            player = next_player(player)
+
+        return missing
+
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
