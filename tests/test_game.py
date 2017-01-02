@@ -620,5 +620,26 @@ class TestGame(unittest.TestCase):
         self.assertTrue('Player 1 won and scored 19 points!' in str5)
         self.assertEqual(str5, repr5)
 
+    def test_missing_values(self):
+        g = dominoes.Game.new()
+
+        self.assertEqual(g.missing_values(), [set()] * 4)
+
+        d1 = dominoes.Domino(1, 2)
+        d2 = dominoes.Domino(3, 4)
+        d3 = dominoes.Domino(5, 6)
+        d4 = dominoes.Domino(7, 8)
+
+        h1 = dominoes.Hand([d1, d1])
+        h2 = dominoes.Hand([d2])
+        h3 = dominoes.Hand([d3])
+        h4 = dominoes.Hand([d4])
+
+        g.hands = [h1, h2, h3, h4]
+
+        g.make_move(d1, True)
+
+        self.assertEqual(g.missing_values(), [set()] + [{1, 2}] * 3)
+
 if __name__ == '__main__':
     unittest.main()

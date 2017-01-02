@@ -323,6 +323,29 @@ class Game:
 
             return self.result
 
+    def missing_values(self):
+        '''
+        Computes the values that must be missing from each
+        player's hand, based on when they have passed.
+
+        :return: a list of sets, each one containing the
+                 values that must be missing from the
+                 corresponding player's hand
+        '''
+        missing = [set() for _ in self.hands]
+
+        board = dominoes.SkinnyBoard()
+        player = self.starting_player
+        for move in self.moves:
+            if move is None:
+                missing[player].update([board.left_end(), board.right_end()])
+            else:
+                board.add(*move)
+
+            player = next_player(player)
+
+        return missing
+
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
