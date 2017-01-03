@@ -65,7 +65,7 @@ def _validate_hands(hands, missing):
     '''
     for h, m in zip(hands, missing):
         for value in m:
-            if h.contains_value(value):
+            if dominoes.hand.contains_value(h, value):
                 return False
 
     return True

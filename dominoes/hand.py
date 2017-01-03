@@ -1,6 +1,19 @@
 import collections
 import dominoes
 
+def contains_value(hand, value):
+    '''
+    Checks whether a value appears in any of the dominoes in the hand.
+
+    :param int value: value to look for in the hand
+    :return: bool indicating whether the value was found in the hand
+    '''
+    for d in hand:
+        if value in d:
+            return True
+
+    return False
+
 class Hand(collections.abc.Sequence):
     '''
     Python class for objects that represent a hand of dominoes.
@@ -59,19 +72,6 @@ class Hand(collections.abc.Sequence):
             self._dominoes.append(d)
         else:
             self._dominoes.insert(i, d)
-
-    def contains_value(self, value):
-        '''
-        Checks whether a value appears in any of the dominoes in the hand.
-
-        :param int value: value to look for in the hand
-        :return: bool indicating whether the value was found in the hand
-        '''
-        for d in self._dominoes:
-            if value in d:
-                return True
-
-        return False
 
     def __getitem__(self, i):
         return self._dominoes[i]
