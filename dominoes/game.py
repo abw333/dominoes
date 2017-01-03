@@ -369,6 +369,31 @@ class Game:
 
         return missing
 
+    def random_possible_hands(self):
+        '''
+        Returns random possible hands for all players, given the information
+        known by the player whose turn it is. This information includes the
+        current player's hand, the sizes of the other players' hands, and the
+        moves played by every player, including the passes.
+
+        :return: a list of possible Hand objects, corresponding to each player
+        '''
+        missing = self.missing_values()
+
+        other_dominoes = [d for p, h in enumerate(self.hands) for d in h if p != self.turn]
+
+        while True:
+            shuffled_dominoes = (d for d in random.sample(other_dominoes, len(other_dominoes)))
+
+            hands = []
+            for player, hand in enumerate(self.hands):
+                if player != self.turn:
+                    hand = [next(shuffled_dominoes) for _ in hand]
+                hands.append(dominoes.Hand(hand))
+
+            if _validate_hands(hands, missing):
+                return hands
+
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
