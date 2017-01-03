@@ -208,17 +208,17 @@ class TestHand(unittest.TestCase):
         self.assertTrue(d4 in h)
 
     def test_contains_value(self):
-        self.assertFalse(dominoes.Hand([]).contains_value(0))
+        self.assertFalse(dominoes.hand.contains_value(dominoes.Hand([]), 0))
 
         d1 = dominoes.Domino(1, 2)
         d2 = dominoes.Domino(3, 3)
 
         h = dominoes.Hand([d1, d2])
 
-        self.assertFalse(h.contains_value(0))
-        self.assertTrue(h.contains_value(1))
-        self.assertTrue(h.contains_value(2))
-        self.assertTrue(h.contains_value(3))
+        self.assertFalse(dominoes.hand.contains_value(h, 0))
+        self.assertTrue(dominoes.hand.contains_value(h, 1))
+        self.assertTrue(dominoes.hand.contains_value(h, 2))
+        self.assertTrue(dominoes.hand.contains_value(h, 3))
 
 if __name__ == '__main__':
     unittest.main()
