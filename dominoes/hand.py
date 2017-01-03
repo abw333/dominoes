@@ -5,6 +5,7 @@ def contains_value(hand, value):
     '''
     Checks whether a value appears in any of the dominoes in the hand.
 
+    :param Hand hand: hand in which to look for the value
     :param int value: value to look for in the hand
     :return: bool indicating whether the value was found in the hand
     '''
