@@ -60,7 +60,7 @@ class Hand(collections.abc.Sequence):
         else:
             self._dominoes.insert(i, d)
 
-    def has_value(self, value):
+    def contains_value(self, value):
         '''
         Checks whether a value appears in any of the dominoes in the hand.
 
