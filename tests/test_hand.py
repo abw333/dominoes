@@ -208,6 +208,8 @@ class TestHand(unittest.TestCase):
         self.assertTrue(d4 in h)
 
     def test_contains_value(self):
+        self.assertFalse(dominoes.Hand([]).contains_value(0))
+
         d1 = dominoes.Domino(1, 2)
         d2 = dominoes.Domino(3, 3)
 
