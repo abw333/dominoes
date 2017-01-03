@@ -61,6 +61,23 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(dominoes.game._remaining_points(h2), [0, 1, 13])
 
+    def test_validate_hands(self):
+        d1 = dominoes.Domino(0, 0)
+        d2 = dominoes.Domino(1, 2)
+        d3 = dominoes.Domino(3, 4)
+        d4 = dominoes.Domino(5, 6)
+
+        hs = [
+            dominoes.Hand([d1, d2]),
+            dominoes.Hand([d3]),
+            dominoes.Hand([d4]),
+            dominoes.Hand([])
+        ]
+
+        self.assertTrue(dominoes.game._validate_hands(hs, [set()] * 4))
+        self.assertTrue(dominoes.game._validate_hands(hs, [{3}, {5}, {7}, {1}]))
+        self.assertFalse(dominoes.game._validate_hands(hs, [{0}] + [set()] * 3))
+
     def test_next_player(self):
         self.assertEqual(dominoes.game.next_player(0), 1)
         self.assertEqual(dominoes.game.next_player(1), 2)

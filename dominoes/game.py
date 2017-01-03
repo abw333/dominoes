@@ -51,6 +51,25 @@ def _remaining_points(hands):
 
     return points
 
+def _validate_hands(hands, missing):
+    '''
+    Validates hands, based on values that
+    are supposed to be missing from them.
+
+    :param list hands: list of Hand objects to validate
+    :param list missing: list of sets that indicate the values
+                         that are supposed to be missing from
+                         the respective Hand objects
+    :return: True if no Hand objects contain values that they
+             are supposed to be missing; False otherwise
+    '''
+    for h, m in zip(hands, missing):
+        for value in m:
+            if h.contains_value(value):
+                return False
+
+    return True
+
 def next_player(player):
     '''
     Returns the player that plays after the specified player.
