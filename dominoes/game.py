@@ -369,6 +369,46 @@ class Game:
 
         return missing
 
+    def random_possible_hands(self):
+        '''
+        Returns random possible hands for all players, given the information
+        known by the player whose turn it is. This information includes the
+        current player's hand, the sizes of the other players' hands, and the
+        moves played by every player, including the passes.
+
+        :return: a list of possible Hand objects, corresponding to each player
+        '''
+        # compute values that must be missing from
+        # each hand, to rule out impossible hands
+        missing = self.missing_values()
+
+        # get the dominoes that are in all of the other hands. note that, even
+        # though we are 'looking' at the other hands to get these dominoes, we
+        # are not 'cheating' because these dominoes could also be computed by
+        # subtracting the dominoes that have been played (which are public
+        # knowledge) and the dominoes in the current player's hand from the
+        # initial set of dominoes
+        other_dominoes = [d for p, h in enumerate(self.hands) for d in h if p != self.turn]
+
+        while True:
+            # generator for a shuffled shallow copy of other_dominoes
+            shuffled_dominoes = (d for d in random.sample(other_dominoes, len(other_dominoes)))
+
+            # generate random hands by partitioning the shuffled dominoes according
+            # to how many dominoes need to be in each of the other hands. since we
+            # know the current player's hand, we just use a shallow copy of it
+            hands = []
+            for player, hand in enumerate(self.hands):
+                if player != self.turn:
+                    hand = [next(shuffled_dominoes) for _ in hand]
+                hands.append(dominoes.Hand(hand))
+
+            # only return the hands if they are possible, according to the values we
+            # know to be missing from each hand. if the hands are not possible, try
+            # generating random hands again
+            if _validate_hands(hands, missing):
+                return hands
+
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False

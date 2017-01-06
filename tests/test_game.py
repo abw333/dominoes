@@ -658,5 +658,34 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(g.missing_values(), [set()] + [{1, 2}] * 3)
 
+    def test_random_possible_hands(self):
+        d1 = dominoes.Domino(0, 0)
+        d2 = dominoes.Domino(1, 2)
+        d3 = dominoes.Domino(3, 4)
+        d4 = dominoes.Domino(5, 6)
+
+        g = dominoes.Game.new()
+
+        g.hands = [
+            dominoes.Hand([d1, d1]),
+            dominoes.Hand([d2, d3]),
+            dominoes.Hand([d1, d1]),
+            dominoes.Hand([d4])
+        ]
+
+        g.make_move(d1, True)
+        g.make_move(d1, True)
+
+        # there is a small chance that this assertion will fail, if any of
+        # the 3 possible hands does not get generated in the 100 attempts.
+        self.assertEqual(
+            {tuple(frozenset(h) for h in g.random_possible_hands()) for _ in range(100)},
+            {
+                (frozenset([d1]), frozenset([d3, d4]), frozenset([d1]), frozenset([d2])),
+                (frozenset([d1]), frozenset([d2, d4]), frozenset([d1]), frozenset([d3])),
+                (frozenset([d1]), frozenset([d2, d3]), frozenset([d1]), frozenset([d4]))
+            }
+        )
+
 if __name__ == '__main__':
     unittest.main()
