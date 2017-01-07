@@ -235,10 +235,10 @@ class TestPlayers(unittest.TestCase):
 
         # test that start move can prevent running of player
         cp1 = dominoes.players.counter()
-        op1 = dominoes.players.probabilistic_alphabeta(start_move=1, player=cp1)
+        pap1 = dominoes.players.probabilistic_alphabeta(start_move=1, player=cp1)
 
         g1 = dominoes.Game.new()
-        op1(g1)
+        pap1(g1)
 
         self.assertEqual(cp1.count, 0)
 
@@ -248,7 +248,7 @@ class TestPlayers(unittest.TestCase):
         # the following will not test the boundary condition every time.
         # this test suite gets run often enough that the danger is negligible.
         cp2 = dominoes.players.counter()
-        op2 = dominoes.players.probabilistic_alphabeta(start_move=15, player=cp2)
+        pap2 = dominoes.players.probabilistic_alphabeta(start_move=15, player=cp2)
 
         while True:
             g2 = _new_game_with_fixed_moves(15)
@@ -257,7 +257,7 @@ class TestPlayers(unittest.TestCase):
             # not to run when there is only one valid move.
             if len(g2.valid_moves) > 1:
                 break
-        op2(g2)
+        pap2(g2)
 
         self.assertNotEqual(cp2.count, 0)
 
