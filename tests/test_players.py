@@ -1,5 +1,6 @@
 import copy
 import dominoes
+import time
 import unittest
 
 def _new_game_with_fixed_moves(fixed_moves):
@@ -260,6 +261,16 @@ class TestPlayers(unittest.TestCase):
         pap2(g2)
 
         self.assertNotEqual(cp2.count, 0)
+
+        # testing that a small sample size greatly limits the amount of work done
+        g3 = _new_game_with_fixed_moves(10)
+        pap3 = dominoes.players.probabilistic_alphabeta(sample_size=1)
+
+        start = time.time()
+        pap3(g3)
+        elapsed = time.time() - start
+
+        self.assertTrue(elapsed < 1)
 
 if __name__ == '__main__':
     unittest.main()
