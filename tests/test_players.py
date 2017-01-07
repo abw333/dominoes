@@ -225,5 +225,41 @@ class TestPlayers(unittest.TestCase):
 
         self.assertEqual(g3.valid_moves, ((d2, False), (d3, False)))
 
+    def test_probabilistic_alphabeta(self):
+        # test player interface
+        self._test_player_interface(dominoes.players.probabilistic_alphabeta(), 15)
+
+        # test name
+        self.assertEqual(dominoes.players.probabilistic_alphabeta(name='test').__name__, 'test')
+        self.assertEqual(dominoes.players.probabilistic_alphabeta().__name__, 'probabilistic_alphabeta')
+
+        # test that start move can prevent running of player
+        cp1 = dominoes.players.counter()
+        op1 = dominoes.players.probabilistic_alphabeta(start_move=1, player=cp1)
+
+        g1 = dominoes.Game.new()
+        op1(g1)
+
+        self.assertEqual(cp1.count, 0)
+
+        # test that player can still run even with a start move.
+        # due to passes, the amount of total moves will be greater
+        # than or equal to 15 after playing 15 fixed moves. therefore,
+        # the following will not test the boundary condition every time.
+        # this test suite gets run often enough that the danger is negligible.
+        cp2 = dominoes.players.counter()
+        op2 = dominoes.players.probabilistic_alphabeta(start_move=15, player=cp2)
+
+        while True:
+            g2 = _new_game_with_fixed_moves(15)
+
+            # the probabilistic_alphabeta player is smart enough
+            # not to run when there is only one valid move.
+            if len(g2.valid_moves) > 1:
+                break
+        op2(g2)
+
+        self.assertNotEqual(cp2.count, 0)
+
 if __name__ == '__main__':
     unittest.main()
