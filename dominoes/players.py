@@ -158,7 +158,7 @@ class probabilistic_alphabeta:
     and prefers moves that are most frequently optimal. It takes into account all
     known information to determine what hands the other players could possibly have,
     including its hand, the sizes of the other players' hands, and the moves played
-    by every player, including the passes, An instance of this class must first be
+    by every player, including the passes. An instance of this class must first be
     initialized before it can be called in the usual way.
 
     :param int start_move: move number at which to start applying this
