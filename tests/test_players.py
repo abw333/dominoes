@@ -272,5 +272,30 @@ class TestPlayers(unittest.TestCase):
 
         self.assertTrue(elapsed < 1)
 
+        # test for correct results on a simple example
+        d1 = dominoes.Domino(2, 0)
+        d2 = dominoes.Domino(3, 0)
+        d3 = dominoes.Domino(4, 0)
+        d4 = dominoes.Domino(5, 0)
+        d5 = dominoes.Domino(5, 1)
+        d6 = dominoes.Domino(6, 0)
+
+        h1 = dominoes.Hand([d1, d2])
+        h2 = dominoes.Hand([d3, d4])
+        h3 = dominoes.Hand([d5])
+        h4 = dominoes.Hand([d6])
+
+        g4 = dominoes.Game.new(starting_player=0)
+        g4.hands = [h1, h2, h3, h4]
+        g4.make_move(d1, True)
+
+        pap4 = dominoes.players.probabilistic_alphabeta()
+
+        self.assertEqual(g4.valid_moves, ((d3, False), (d4, False)))
+
+        pap4(g4)
+
+        self.assertEqual(g4.valid_moves, ((d4, False), (d3, False)))
+
 if __name__ == '__main__':
     unittest.main()
