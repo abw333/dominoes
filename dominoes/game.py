@@ -1,5 +1,6 @@
 import copy
 import dominoes
+import itertools
 import random
 
 def _randomized_hands():
@@ -69,6 +70,35 @@ def _validate_hands(hands, missing):
                 return False
 
     return True
+
+def _all_possible_partitionings(elements, sizes):
+    '''
+    Helper function for Game.all_possible_hands(). Given a set of elements
+    and the sizes of partitions, yields all possible partitionings of the
+    elements into partitions of the provided sizes.
+
+    :param set elements: a set of elements to partition.
+    :param list sizes: a list of sizes for the partitions. The sum of the
+                       sizes should equal the length of the set of elements.
+    :yields: a tuple of tuples, each inner tuple corresponding to a partition.
+    '''
+    try:
+        # get the size of the current partition
+        size = sizes[0]
+    except IndexError:
+        # base case: no more sizes left
+        yield ()
+        return
+
+    # don't include the current size in the recursive calls
+    sizes = sizes[1:]
+
+    # iterate over all possible partitions of the current size
+    for partition in itertools.combinations(elements, size):
+        # recursive case: pass down the remaining elements and the remaining sizes
+        for other_partitions in _all_possible_partitionings(elements.difference(partition), sizes):
+            # put results together and yield up
+            yield (partition,) + other_partitions
 
 def next_player(player):
     '''
@@ -408,6 +438,50 @@ class Game:
             # generating random hands again
             if _validate_hands(hands, missing):
                 return hands
+
+    def all_possible_hands(self):
+        '''
+        Yields all possible hands for all players, given the information
+        known by the player whose turn it is. This information includes the
+        current player's hand, the sizes of the other players' hands, and the
+        moves played by every player, including the passes.
+
+        :yields: a list of possible Hand objects, corresponding to each player
+        '''
+        # compute values that must be missing from
+        # each hand, to rule out impossible hands
+        missing = self.missing_values()
+
+        # get the dominoes that are in all of the other hands. note that, even
+        # though we are 'looking' at the other hands to get these dominoes, we
+        # are not 'cheating' because these dominoes could also be computed by
+        # subtracting the dominoes that have been played (which are public
+        # knowledge) and the dominoes in the current player's hand from the
+        # initial set of dominoes
+        other_dominoes = {d for p, h in enumerate(self.hands) for d in h if p != self.turn}
+
+        # get the lengths of all the other hands, so
+        # that we know how many dominoes to place in each
+        other_hand_lengths = [len(h) for p, h in enumerate(self.hands) if p != self.turn]
+
+        # iterate over all possible hands that the other players might have
+        for possible_hands in _all_possible_partitionings(other_dominoes, other_hand_lengths):
+            # given possible hands for all players, this is a generator for
+            # tuples containing the dominoes that are in the other players' hands
+            possible_hands = (h for h in possible_hands)
+
+            # build a list containing possible hands for all players. since we
+            # know the current player's hand, we just use a shallow copy of it
+            hands = []
+            for player, hand in enumerate(self.hands):
+                if player != self.turn:
+                    hand = next(possible_hands)
+                hands.append(dominoes.Hand(hand))
+
+            # only yield the hands if they are possible, according
+            # to the values we know to be missing from each hand
+            if _validate_hands(hands, missing):
+                yield hands
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

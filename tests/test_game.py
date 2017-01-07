@@ -687,5 +687,32 @@ class TestGame(unittest.TestCase):
             }
         )
 
+    def test_all_possible_hands(self):
+        d1 = dominoes.Domino(0, 0)
+        d2 = dominoes.Domino(1, 2)
+        d3 = dominoes.Domino(3, 4)
+        d4 = dominoes.Domino(5, 6)
+
+        g = dominoes.Game.new()
+
+        g.hands = [
+            dominoes.Hand([d1, d1]),
+            dominoes.Hand([d2, d3]),
+            dominoes.Hand([d1, d1]),
+            dominoes.Hand([d4])
+        ]
+
+        g.make_move(d1, True)
+        g.make_move(d1, True)
+
+        self.assertEqual(
+            {tuple(frozenset(h) for h in phs) for phs in g.all_possible_hands()},
+            {
+                (frozenset([d1]), frozenset([d3, d4]), frozenset([d1]), frozenset([d2])),
+                (frozenset([d1]), frozenset([d2, d4]), frozenset([d1]), frozenset([d3])),
+                (frozenset([d1]), frozenset([d2, d3]), frozenset([d1]), frozenset([d4]))
+            }
+        )
+
 if __name__ == '__main__':
     unittest.main()
