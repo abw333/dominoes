@@ -4,10 +4,17 @@ import unittest
 
 class TestPlayers(unittest.TestCase):
     def _test_player_interface(self, player, fixed_moves=0):
-        g = dominoes.Game.new()
+        while True:
+            g = dominoes.Game.new()
 
-        for _ in range(fixed_moves):
-            g.make_move(*g.valid_moves[0])
+            for _ in range(fixed_moves):
+                g.make_move(*g.valid_moves[0])
+
+                if g.result is not None:
+                    break
+
+            if g.result is None:
+                break
 
         g_copy = copy.deepcopy(g)
 
