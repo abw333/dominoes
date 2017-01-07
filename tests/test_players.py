@@ -1,13 +1,24 @@
 import copy
 import dominoes
+import time
 import unittest
 
-class TestPlayers(unittest.TestCase):
-    def _test_player_interface(self, player, fixed_moves=0):
+def _new_game_with_fixed_moves(fixed_moves):
+    while True:
         g = dominoes.Game.new()
 
         for _ in range(fixed_moves):
             g.make_move(*g.valid_moves[0])
+
+            if g.result is not None:
+                break
+
+        if g.result is None:
+            return g
+
+class TestPlayers(unittest.TestCase):
+    def _test_player_interface(self, player, fixed_moves=0):
+        g = _new_game_with_fixed_moves(fixed_moves)
 
         g_copy = copy.deepcopy(g)
 
@@ -214,6 +225,77 @@ class TestPlayers(unittest.TestCase):
         op3(g3)
 
         self.assertEqual(g3.valid_moves, ((d2, False), (d3, False)))
+
+    def test_probabilistic_alphabeta(self):
+        # test player interface
+        self._test_player_interface(dominoes.players.probabilistic_alphabeta(), 15)
+
+        # test name
+        self.assertEqual(dominoes.players.probabilistic_alphabeta(name='test').__name__, 'test')
+        self.assertEqual(dominoes.players.probabilistic_alphabeta().__name__, 'probabilistic_alphabeta')
+
+        # test that start move can prevent running of player
+        cp1 = dominoes.players.counter()
+        pap1 = dominoes.players.probabilistic_alphabeta(start_move=1, player=cp1)
+
+        g1 = dominoes.Game.new()
+        pap1(g1)
+
+        self.assertEqual(cp1.count, 0)
+
+        # test that player can still run even with a start move.
+        # due to passes, the amount of total moves will be greater
+        # than or equal to 15 after playing 15 fixed moves. therefore,
+        # the following will not test the boundary condition every time.
+        # this test suite gets run often enough that the danger is negligible.
+        cp2 = dominoes.players.counter()
+        pap2 = dominoes.players.probabilistic_alphabeta(start_move=15, player=cp2)
+
+        while True:
+            g2 = _new_game_with_fixed_moves(15)
+
+            # the probabilistic_alphabeta player is smart enough
+            # not to run when there is only one valid move.
+            if len(g2.valid_moves) > 1:
+                break
+        pap2(g2)
+
+        self.assertNotEqual(cp2.count, 0)
+
+        # testing that a small sample size greatly limits the amount of work done
+        g3 = _new_game_with_fixed_moves(10)
+        pap3 = dominoes.players.probabilistic_alphabeta(sample_size=1)
+
+        start = time.time()
+        pap3(g3)
+        elapsed = time.time() - start
+
+        self.assertTrue(elapsed < 1)
+
+        # test for correct results on a simple example
+        d1 = dominoes.Domino(2, 0)
+        d2 = dominoes.Domino(3, 0)
+        d3 = dominoes.Domino(4, 0)
+        d4 = dominoes.Domino(5, 0)
+        d5 = dominoes.Domino(5, 1)
+        d6 = dominoes.Domino(6, 0)
+
+        h1 = dominoes.Hand([d1, d2])
+        h2 = dominoes.Hand([d3, d4])
+        h3 = dominoes.Hand([d5])
+        h4 = dominoes.Hand([d6])
+
+        g4 = dominoes.Game.new(starting_player=0)
+        g4.hands = [h1, h2, h3, h4]
+        g4.make_move(d1, True)
+
+        pap4 = dominoes.players.probabilistic_alphabeta()
+
+        self.assertEqual(g4.valid_moves, ((d3, False), (d4, False)))
+
+        pap4(g4)
+
+        self.assertEqual(g4.valid_moves, ((d4, False), (d3, False)))
 
 if __name__ == '__main__':
     unittest.main()
