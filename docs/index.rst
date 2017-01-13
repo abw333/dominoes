@@ -80,6 +80,7 @@ Command Line Interface
     Player settings:
     0) Human
     1) AI: random
+    2) AI: omniscient
     Select a setting for player 0: 0
     Select a setting for player 1: 1
     Select a setting for player 2: 0
@@ -156,8 +157,17 @@ Command Line Interface
 Artificial Intelligence Players
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Players
+-------
+
 .. automodule:: dominoes.players
-   :members: random, reverse, bota_gorda, double
+    :members: bota_gorda, counter, double, identity, omniscient, probabilistic_alphabeta, random, reverse
+
+Search
+------
+
+.. automodule:: dominoes.search
+    :members: alphabeta, make_moves
 
 API Documentation
 ^^^^^^^^^^^^^^^^^
@@ -179,14 +189,14 @@ Domino
 Game
 ----
 
-.. autoclass:: dominoes.Game
-    :members: new, skinny_board, make_move
+.. automodule:: dominoes.game
+    :members: next_player, Game
 
 Hand
 ----
 
-.. autoclass:: dominoes.Hand
-    :members: play, draw
+.. automodule:: dominoes.hand
+    :members: contains_value, Hand
 
 Result
 ------

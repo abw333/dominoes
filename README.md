@@ -82,6 +82,7 @@ Up to how many points would you like to play: 100
 Player settings:
 0) Human
 1) AI: random
+2) AI: omniscient
 Select a setting for player 0: 0
 Select a setting for player 1: 1
 Select a setting for player 2: 0
