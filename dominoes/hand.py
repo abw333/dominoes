@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import dominoes
 
 def contains_value(hand, value):

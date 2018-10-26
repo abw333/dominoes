@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import dominoes
 import unittest
 
@@ -34,7 +34,7 @@ class TestHand(unittest.TestCase):
     def test_iter(self):
         h = dominoes.Hand([])
 
-        self.assertIsInstance(h, collections.Iterable)
+        self.assertIsInstance(h, collections.abc.Iterable)
         self.assertIsNotNone(iter(h))
 
     def test_eq(self):
