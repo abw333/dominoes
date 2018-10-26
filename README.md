@@ -4,7 +4,7 @@ dominoes: a Python library for the game of dominoes, with an accompanying CLI an
 [![Build Status](https://travis-ci.org/abw333/dominoes.svg?branch=master)](https://travis-ci.org/abw333/dominoes)
 [![Test Code Coverage](https://codecov.io/gh/abw333/dominoes/branch/master/graph/badge.svg)](https://codecov.io/gh/abw333/dominoes)
 [![PyPI version](https://badge.fury.io/py/dominoes.svg)](https://badge.fury.io/py/dominoes)
-[![Python version](https://img.shields.io/badge/python-3.6-brightgreen.svg)](https://www.python.org/)
+[![Python version](https://img.shields.io/badge/python-3.6%2C%203.7-brightgreen.svg)](https://www.python.org/)
 [![Documentation Status](https://readthedocs.org/projects/dominoes/badge/?version=latest)](https://dominoes.readthedocs.io/en/latest/?badge=latest)
 
 Dominoes have been around for hundreds of years, and many variations of the game have been played all over the world. This library is based on a popular variation commonly played in San Juan, Puerto Rico, and surrounding municipalities, such as Guaynabo.
