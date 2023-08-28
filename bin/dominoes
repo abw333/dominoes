@@ -2,12 +2,15 @@
 
 import dominoes
 import subprocess
+import sys
 
 # possible strategies for each of the players
 PLAYER_SETTINGS = [
     ('Human', None),
     ('AI: random', dominoes.players.random),
-    ('AI: omniscient', dominoes.players.omniscient())
+    ('AI: omniscient', dominoes.players.omniscient()),
+     ('AI: bota gorda', dominoes.players.bota_gorda),
+    ('AI: minimax', dominoes.players.probabilistic_alphabeta(player = dominoes.players.identity) ), # buggy
 ]
 
 def validated_input(prompt, validate_and_transform, error_message):
@@ -122,6 +125,7 @@ for player in range(len(game.hands)):
 
 # the game will be None once the series has ended
 while game is not None:
+
     # clear the terminal upon starting a new game
     input('Press enter to begin game {}.'.format(len(series.games) - 1))
     subprocess.call(['tput', 'reset'])
@@ -139,10 +143,12 @@ while game is not None:
         for player, hand in enumerate(game.hands):
             print('Player {} has {} dominoes in his/her hand.'.format(player, len(hand)))
 
-        # clear the terminal upon starting a new turn
-        input("It is now player {}'s turn. Press enter"
-              " to continue.".format(game.turn))
-        subprocess.call(['tput', 'reset'])
+        ### commented the following line ######################################################
+
+        ### clear the terminal upon starting a new turn
+        # input("It is now player {}'s turn. Press enter"
+        #       " to continue.".format(game.turn))
+        # subprocess.call(['tput', 'reset'])
 
         # print the board so that the player can decide what to play
         print('Board:')
@@ -207,8 +213,10 @@ while game is not None:
 
         # clear the terminal upon moving to the next
         # turn - no looking at the previous player's hand!
-        input("Press enter to end player {}'s turn.".format(turn))
-        subprocess.call(['tput', 'reset'])
+
+        ### commented out the following lines #######################################
+        # input("Press enter to end player {}'s turn.".format(turn))
+        # subprocess.call(['tput', 'reset'])
 
     # game over - move on to the next game
     print('Game over!')

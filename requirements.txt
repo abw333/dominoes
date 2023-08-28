@@ -1,0 +1,1 @@
+-e git+https://github.com/Brunozml/dominoes_cli.git@ea9f532c9b834117a5c07d214711515872f7537e#egg=dominoes
