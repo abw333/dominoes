@@ -1,1 +1,36 @@
--e git+https://github.com/Brunozml/dominoes_cli.git@ea9f532c9b834117a5c07d214711515872f7537e#egg=dominoes
+appnope==0.1.3
+asttokens==2.4.0
+backcall==0.2.0
+comm==0.1.4
+debugpy==1.8.0
+decorator==5.1.1
+-e git+https://github.com/Brunozml/dominoes_cli.git@9f2f6e104eb4898328b1ee279cf77956ecc33a2a#egg=dominoes
+exceptiongroup==1.1.3
+executing==2.0.0
+importlib-metadata==6.8.0
+ipykernel==6.25.2
+ipython==8.16.1
+jedi==0.19.1
+jupyter_client==8.4.0
+jupyter_core==5.4.0
+matplotlib-inline==0.1.6
+nest-asyncio==1.5.8
+packaging==23.2
+parso==0.8.3
+pexpect==4.8.0
+pickleshare==0.7.5
+platformdirs==3.11.0
+prompt-toolkit==3.0.39
+psutil==5.9.5
+ptyprocess==0.7.0
+pure-eval==0.2.2
+Pygments==2.16.1
+python-dateutil==2.8.2
+pyzmq==25.1.1
+six==1.16.0
+stack-data==0.6.3
+tornado==6.3.3
+traitlets==5.11.2
+typing_extensions==4.8.0
+wcwidth==0.2.8
+zipp==3.17.0
